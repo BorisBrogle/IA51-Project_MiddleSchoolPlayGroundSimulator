@@ -1,5 +1,6 @@
 package fr.utbm.ia51;
 
+import fr.utbm.ia51.graph.environment.GraphEnvironment;
 import fr.utbm.ia51.graph.human.GraphHuman;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -26,7 +27,8 @@ public class Main extends Application {
         Scene scene = new Scene(root, this.WIDTH, this.HEIGHT, Color.LIGHTGREEN);
         
         root.getChildren().add(new GraphHuman(1000, 300, "", "", 3));
-       
+        root.getChildren().add(new GraphEnvironment(this.WIDTH, this.HEIGHT));
+
         primaryStage.setScene(scene);
         primaryStage.show();
         System.out.println("pouet");

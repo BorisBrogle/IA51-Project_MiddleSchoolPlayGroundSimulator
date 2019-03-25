@@ -46,15 +46,11 @@ public class GraphHuman extends StackPane {
 		this.righteye.translateYProperty().bind(head.translateXProperty().add(3*sizeRatioHead));
 		
 		
-		this.nameLabel=new Label();
-		this.nameLabel.resize(this.arms.getWidth(), this.arms.getHeight());
-		this.nameLabel.setText("Patrick");
-		this.head.setOnMouseEntered(e->this.nameLabel.setVisible(true));
-		this.head.setOnMouseExited(e->this.nameLabel.setVisible(false));
+		
 		
 		this.arms = new Rectangle(x-4,y-4,18*sizeRatioHead,6*sizeRatioHead);
 		this.arms.setFill(Color.GREEN);
-		this.getChildren().addAll(arms,head,lefteye,righteye,nameLabel);
+		this.getChildren().addAll(arms,head,lefteye,righteye);
 		
 				
 	}
