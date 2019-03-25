@@ -9,7 +9,7 @@ import com.sun.javafx.sg.prism.NGNode;
 public class GraphStudent extends GraphHuman {
 
 	public GraphStudent(int x, int y, String headStyle, String armStyle, int sizeRatioHead) {
-		super(x, y, headStyle, armStyle, sizeRatioHead);
+		super(x, y, headStyle, armStyle, sizeRatioHead,null);
 		// TODO Auto-generated constructor stub
 	}
 
