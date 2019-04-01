@@ -26,9 +26,14 @@ public class Main extends Application {
         Group root = new Group();
         Scene scene = new Scene(root, this.WIDTH, this.HEIGHT, Color.LIGHTGREEN);
         
-        root.getChildren().add(new GraphHuman(1000, 300, "", "", 3));
+//        root.getChildren().add(new GraphHuman(1000, 300, "", "", 3,""));
         root.getChildren().add(new GraphEnvironment(this.WIDTH, this.HEIGHT));
 
+
+        GraphHuman buddy = new GraphHuman(1000, 300, "", "", 3,null); 
+        root.getChildren().add(buddy);
+        buddy.rotateGraph(180);
+       
         primaryStage.setScene(scene);
         primaryStage.show();
         System.out.println("pouet");
