@@ -7,21 +7,24 @@ import javafx.scene.shape.Rectangle;
 
 public class SoccerField extends StackPane{
 	
-	private ImageView grass;
+	private ImageView soccerField;
 	private Image fieldImage;
 		
 	
-	public SoccerField(int x, int y) {
+	public SoccerField(int width) {
 		super();
 				
 		this.fieldImage = new Image("file:src/main/resources/graphism/image/footfield-01.png");
-		this.grass = new ImageView();
-        grass.setImage(this.fieldImage);
+		this.soccerField = new ImageView();
+		soccerField.setImage(this.fieldImage);
         
-        grass.setFitWidth(x);
-        grass.setPreserveRatio(true);
+		soccerField.setFitWidth(width);
+		soccerField.setPreserveRatio(true);
+       
         this.setStyle("-fx-border-color : red");
-        this.setPrefSize(300, 100);
-        this.getChildren().addAll(grass);
+      
+        this.setMaxSize(this.soccerField.getFitWidth(), this.soccerField.getFitHeight());
+        
+        this.getChildren().addAll(soccerField);
 	}
 }
