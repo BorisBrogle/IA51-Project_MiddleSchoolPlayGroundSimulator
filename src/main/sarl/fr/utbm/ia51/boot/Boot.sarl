@@ -1,0 +1,19 @@
+/** 
+ * 
+ */
+package fr.utbm.ia51.boot
+
+import fr.utbm.ia51.environment.Environment
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+
+agent Boot {
+	uses Logging, Lifecycle
+
+	on Initialize {
+		info("Booting the application")
+		val variableToSend = 0 //example: nb of agents
+		spawn(typeof(Environment), variableToSend)
+	}
+}
