@@ -15,6 +15,8 @@ import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
 
+import fr.utbm.ia51.agents.Person
+
 agent Environment {
 	uses Logging, DefaultContextInteractions, Lifecycle
 	
@@ -27,6 +29,7 @@ agent Environment {
 		// Event trigger before the agent begin to live or to be used.
 		// You should put all the initialization statements in this block of code.
 		info("The environment was started.")
+		spawn(typeof(Person))
 		emit(new RunBeginingOfStep)
 	}
 
@@ -66,16 +69,20 @@ agent Environment {
 
 	on Influence [occurrence.time >= time] {
 		synchronized (this) {
+			info("Got an influence")
 			// this.actions += new MazeChangeQuery(occurrence.source.UUID, occurrence.direction)
 
 			if (allInfluencesAreGoT) {
+				info("Got all the influences")
 				emit(new RunEndOfStep) // [it == defaultAddress]
 			}
 		}
 	}
 
 	on RunEndOfStep {
-		synchronized (this) { /*
+		synchronized (this) { 
+			info("The step ends")
+		/*
 			// Endogenous behavior: move the pacman from the player's action
 			var avatarDirection = this.player.direction
 			var avatarAction = new MazeChangeQuery(this.player.bodyId, avatarDirection)
@@ -105,11 +112,13 @@ agent Environment {
 
 	on RunBeginingOfStep {
 		synchronized (this) {
+			info("The step begins")
 			/*this.actions.clear
 
 			for (e : getPerceptions().entrySet) {
 				sendPerception(this.time, e.key.agentId, e.value, e.key.position)
 			}*/
+			info("Sending a perception")
 			emit(new Perception)
 		}
 	}

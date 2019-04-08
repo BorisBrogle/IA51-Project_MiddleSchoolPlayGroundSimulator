@@ -30,8 +30,9 @@ agent Person {
 		// Event trigger before the agent begin to live or to be used.
 		// You should put all the initialization statements in this block of code.
 		info("The agent was started.")
-		b = new NormalBehavior(this)
-		b.registerBehavior
+
+//		b = new NormalBehavior(this)
+//		b.registerBehavior
 	}
 	
 	def sendInfluence() {
@@ -40,9 +41,13 @@ agent Person {
 	
 	on Perception {
 		if (bellRings) {
+			info("Sending an influence")
+			sendInfluence
+			/*
 			b.unregisterBehavior
-			// b = new goToClassBehavior(this)
+			b = new goToClassBehavior(this)
 			b.registerBehavior
+			*/
 		}
 	}
 
