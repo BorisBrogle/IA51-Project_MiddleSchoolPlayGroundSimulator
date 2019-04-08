@@ -27,10 +27,11 @@ public class Main extends Application {
         Scene scene = new Scene(root, this.WIDTH, this.HEIGHT, Color.LIGHTGREEN);
         
 //        root.getChildren().add(new GraphHuman(1000, 300, "", "", 3,""));
-        root.getChildren().add(new GraphEnvironment(this.WIDTH, this.HEIGHT));
+        GraphEnvironment environment = new GraphEnvironment(this.WIDTH, this.HEIGHT);
+        root.getChildren().add(environment);
 
 
-        GraphHuman buddy = new GraphHuman(300, 300, "", "", 1.5,null); 
+        GraphHuman buddy = new GraphHuman(300, 300, "", "", 1.5,null,environment); 
         root.getChildren().add(buddy);
        
         buddy.moveTo(100, 100, 0.5);

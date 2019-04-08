@@ -1,0 +1,8 @@
+.information-window{
+    -fx-background-color: #EE47464c;
+}
+
+.informationLabel{
+	-fx-text-fill : white;
+	-fx-font-size : 14px;
+}
