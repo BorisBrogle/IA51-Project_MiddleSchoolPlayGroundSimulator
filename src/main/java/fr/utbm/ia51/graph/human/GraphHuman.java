@@ -1,12 +1,20 @@
 package fr.utbm.ia51.graph.human;
 
+import fr.utbm.ia51.graph.environment.GraphEnvironment;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -16,20 +24,24 @@ import javafx.util.Duration;
 
 public class GraphHuman extends StackPane {
 	
+	
+	private GraphEnvironment environment;
 	private Rectangle arms;
 	private Circle head = new Circle();
+	private Circle selectionCircle = new Circle();
 	private Circle lefteye, righteye;
 	private Label nameLabel;
-	private Button tooltip = new Button();
-	
+	private SimpleBooleanProperty isSelected = new SimpleBooleanProperty(false);
+	private GraphInformationWindow infoWindow;
 	
 	//Add position 
 	
 	
 	
-	public GraphHuman (int x,int y, String headStyle, String armStyle, double sizeRatioHead,String name) {
+	public GraphHuman (int x,int y, String headStyle, String armStyle, double sizeRatioHead,String name, GraphEnvironment environment) {
 
 		super();
+		this.environment = environment;
 		this.setTranslateX(x);
 		this.setTranslateY(y);
 		this.head.setCenterX(x);
@@ -41,6 +53,8 @@ public class GraphHuman extends StackPane {
 		this.lefteye = new Circle(sizeRatioHead);
 		this.righteye = new Circle(sizeRatioHead);
 		
+		
+		// Binding of eye's position according to the head position
 		this.lefteye.translateXProperty().bind(head.translateXProperty().subtract(3*sizeRatioHead));
 		this.righteye.translateXProperty().bind(head.translateXProperty().add(3*sizeRatioHead));
 		this.lefteye.translateYProperty().bind(head.translateYProperty().add(3*sizeRatioHead));
@@ -63,13 +77,40 @@ public class GraphHuman extends StackPane {
 		this.nameLabel.setFont(new Font(sizeRatioHead*4));
 	
 		
-		this.head.setOnMouseEntered(e->this.nameLabel.setVisible(true));
-		this.head.setOnMouseExited(e->this.nameLabel.setVisible(false));
+		//Management of information view when clicking on the human head
 		
-		this.prefWidthProperty().bind(this.arms.widthProperty().add(10));
-		this.setStyle("-fx-border-color : red");
+		this.infoWindow = new GraphInformationWindow("Students", "Gudule", "2", "Good Goat");
 		
-		this.getChildren().addAll(arms,head,lefteye,righteye,tooltip);
+		this.selectionCircle.setRadius(this.head.getRadius()+2);
+		this.selectionCircle.setFill(Color.YELLOW);
+		this.selectionCircle.setVisible(false);
+		
+		
+		
+		HBox infoBox = new HBox();
+		infoBox.setAlignment(Pos.BOTTOM_LEFT);
+		infoBox.getChildren().add(this.infoWindow);
+		this.infoWindow.visibleProperty().bind(isSelected);
+		this.selectionCircle.visibleProperty().bind(isSelected);
+		this.environment.getChildren().add(infoBox);
+
+
+
+		
+		
+		this.head.setOnMouseClicked(e->{
+			if(this.isSelected.getValue() == true) 
+				this.isSelected.set(false);
+			else 
+				this.isSelected.set(true);
+		});
+		
+		this.addEventFilter(KeyEvent.ANY, e->{
+			if(e.getCode().equals(KeyCode.ESCAPE))
+				isSelected.set(false);
+		});
+		
+		this.getChildren().addAll(arms,selectionCircle,head,lefteye,righteye);
 		
 	}
 	

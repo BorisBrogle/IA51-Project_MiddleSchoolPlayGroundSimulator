@@ -1,0 +1,22 @@
+/** 
+ * 
+ */
+package fr.utbm.ia51.environment
+
+// Perception sent to the agents
+event Perception
+
+// Influence sent to the environment by an agent
+event Influence {
+	val time: int
+	
+	new(time: int) {
+		this.time = time
+	}
+}
+
+// When the loop starts
+event RunBeginingOfStep
+
+// When the loop ends
+event RunEndOfStep
