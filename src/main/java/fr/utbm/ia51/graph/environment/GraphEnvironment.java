@@ -15,7 +15,7 @@ public class GraphEnvironment extends StackPane {
 	private Courtyard courtyard;
 	private ClassLine classline;
 	
-	public GraphEnvironment(int width, int height){
+	public GraphEnvironment(double width, double height){
 		super();
 		this.setPrefSize(width, height);
 		this.setStyle("-fx-border-color : blue");
@@ -31,7 +31,7 @@ public class GraphEnvironment extends StackPane {
 		
 		this.bench = new Bench(30);
 		this.bench.setTranslateX(-30);
-		this.bench.setTranslateY((height/2)-20);
+		this.bench.setTranslateY((height/2)-50);
 		this.getChildren().addAll(bench);
 		
 		this.basketCourt= new BasketCourt(200);

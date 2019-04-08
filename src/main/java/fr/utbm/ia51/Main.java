@@ -9,6 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -27,9 +28,8 @@ public class Main extends Application {
         Scene scene = new Scene(root, this.WIDTH, this.HEIGHT, Color.LIGHTGREEN);
         
 //        root.getChildren().add(new GraphHuman(1000, 300, "", "", 3,""));
-        GraphEnvironment environment = new GraphEnvironment(this.WIDTH, this.HEIGHT);
+        GraphEnvironment environment = new GraphEnvironment(Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
         root.getChildren().add(environment);
-
 
         GraphHuman buddy = new GraphHuman(300, 300, "", "", 1.5,null,environment); 
         root.getChildren().add(buddy);

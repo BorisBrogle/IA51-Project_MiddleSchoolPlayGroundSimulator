@@ -8,8 +8,10 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventType;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Button;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -31,8 +33,6 @@ public class GraphHuman extends StackPane {
 	private Label nameLabel;
 	private SimpleBooleanProperty isSelected = new SimpleBooleanProperty(false);
 	private GraphInformationWindow infoWindow;
-	
-	
 	
 	//Add position 
 	
@@ -75,6 +75,7 @@ public class GraphHuman extends StackPane {
 			
 		this.nameLabel.setText(name);
 		this.nameLabel.setFont(new Font(sizeRatioHead*4));
+	
 		
 		//Management of information view when clicking on the human head
 		
@@ -109,7 +110,7 @@ public class GraphHuman extends StackPane {
 				isSelected.set(false);
 		});
 		
-		this.getChildren().addAll(arms,selectionCircle,head,lefteye,righteye,nameLabel);
+		this.getChildren().addAll(arms,selectionCircle,head,lefteye,righteye);
 		
 	}
 	

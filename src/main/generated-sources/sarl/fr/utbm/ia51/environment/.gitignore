@@ -3,3 +3,10 @@
 /.Perception.java._trace
 /.RunBeginingOfStep.java._trace
 /.RunEndOfStep.java._trace
+/.Environment.sarlbin
+/.Events.sarlbin
+/Environment.java
+/Influence.java
+/Perception.java
+/RunBeginingOfStep.java
+/RunEndOfStep.java

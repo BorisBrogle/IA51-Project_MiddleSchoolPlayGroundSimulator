@@ -10,7 +10,7 @@ public class Courtyard extends StackPane{
 	private Rectangle building;
 		
 	
-	public Courtyard(int width, int height) {
+	public Courtyard(double width, double height) {
 		super();
         
         building= new Rectangle(width, height, Color.LIGHTGREY);
