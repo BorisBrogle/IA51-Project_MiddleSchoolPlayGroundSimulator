@@ -4,7 +4,9 @@ import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -18,6 +20,7 @@ public class GraphHuman extends StackPane {
 	private Circle head = new Circle();
 	private Circle lefteye, righteye;
 	private Label nameLabel;
+	private Button tooltip = new Button();
 	
 	
 	//Add position 
@@ -58,6 +61,7 @@ public class GraphHuman extends StackPane {
 			
 		this.nameLabel.setText(name);
 		this.nameLabel.setFont(new Font(sizeRatioHead*4));
+	
 		
 		this.head.setOnMouseEntered(e->this.nameLabel.setVisible(true));
 		this.head.setOnMouseExited(e->this.nameLabel.setVisible(false));
@@ -65,7 +69,7 @@ public class GraphHuman extends StackPane {
 		this.prefWidthProperty().bind(this.arms.widthProperty().add(10));
 		this.setStyle("-fx-border-color : red");
 		
-		this.getChildren().addAll(arms,head,lefteye,righteye,nameLabel);
+		this.getChildren().addAll(arms,head,lefteye,righteye,tooltip);
 		
 	}
 	
