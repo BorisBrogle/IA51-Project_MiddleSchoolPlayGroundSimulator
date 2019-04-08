@@ -1,15 +1,15 @@
 package fr.utbm.ia51.graph.human;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.RotateTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 public class GraphHuman extends StackPane {
@@ -24,7 +24,7 @@ public class GraphHuman extends StackPane {
 	
 	
 	
-	public GraphHuman (int x,int y, String headStyle, String armStyle, int sizeRatioHead,String name) {
+	public GraphHuman (int x,int y, String headStyle, String armStyle, double sizeRatioHead,String name) {
 
 		super();
 		this.setTranslateX(x);
@@ -70,18 +70,46 @@ public class GraphHuman extends StackPane {
 	}
 	
 	
-	public void rotateGraph(int rotate) {
-		System.out.println("GetWidht "+this.widthProperty().doubleValue()+" GetHeight"+this.getHeight());
-		Rotate rotation = new Rotate(rotate,this.head.getTranslateX(),this.head.getTranslateY());
-		this.getTransforms().add(rotation);
-        Timeline timeline = new Timeline();
-        timeline.getKeyFrames().addAll(
-            new KeyFrame(Duration.ZERO, new KeyValue(rotation.angleProperty(), rotate)),
-            new KeyFrame(new Duration(1000), new KeyValue(rotation.angleProperty(), -rotate))
-        );
-        timeline.setAutoReverse(true);
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+	public RotateTransition rotateGraph(double angle,double speed) {
+		RotateTransition rotation = new RotateTransition(Duration.millis(1000/speed));
+		rotation.setFromAngle(this.head.getRotate());
+		rotation.setToAngle(angle);
+		return rotation;
+	}
+	
+	public TranslateTransition translateGraph(double x, double y, double speed) {
+		
+		TranslateTransition translation = new TranslateTransition(Duration.millis((3000/speed)));
+		translation.setFromX(this.head.getCenterX());
+		translation.setFromY(this.head.getCenterY());
+		translation.setToX(x);
+		translation.setToY(y);
+		
+		return translation;
+	}
+	
+	
+	public void moveTo(double x,double y, double speed) {
+		
+		Point2D p1;
+		Point2D p2;
+		Point2D p3;
+		Point2D p4;
+
+		p1 = new Point2D(this.head.getCenterX(), this.head.getCenterY());
+		p2 = new Point2D(x, y);
+
+		p3 = p2.subtract(p1);
+		p4 = new Point2D(1, 0);
+		
+		SequentialTransition sequentialTransition = new SequentialTransition();
+		sequentialTransition.getChildren().addAll(rotateGraph(p4.angle(p3), speed),translateGraph(x, y, speed));
+		sequentialTransition.setNode(this);
+		sequentialTransition.play();
+		
+
+		System.out.println( "Point2D: " + p4.angle(p3));
+		
 	}
 //	
 //	

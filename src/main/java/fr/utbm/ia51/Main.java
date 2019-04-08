@@ -30,10 +30,10 @@ public class Main extends Application {
         root.getChildren().add(new GraphEnvironment(this.WIDTH, this.HEIGHT));
 
 
-        GraphHuman buddy = new GraphHuman(1000, 300, "", "", 3,null); 
+        GraphHuman buddy = new GraphHuman(300, 300, "", "", 1.5,null); 
         root.getChildren().add(buddy);
-        buddy.rotateGraph(180);
        
+        buddy.moveTo(100, 100, 0.5);
         primaryStage.setScene(scene);
         primaryStage.show();
         System.out.println("pouet");
