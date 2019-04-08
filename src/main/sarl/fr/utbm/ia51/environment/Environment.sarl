@@ -7,25 +7,27 @@ import io.sarl.core.AgentKilled
 import io.sarl.core.AgentSpawned
 import io.sarl.core.ContextJoined
 import io.sarl.core.ContextLeft
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
 
-
 agent Environment {
-	uses Logging
-
-	def startLoop() {
-		
-	}
+	uses Logging, DefaultContextInteractions, Lifecycle
+	
+	// the time/date of the app
+	var time = 0
+	
+	var allInfluencesAreGoT = true
 	
 	on Initialize {
 		// Event trigger before the agent begin to live or to be used.
 		// You should put all the initialization statements in this block of code.
 		info("The environment was started.")
-		startLoop();
+		emit(new RunBeginingOfStep)
 	}
 
 	on Destroy {
@@ -62,53 +64,54 @@ agent Environment {
 		// Sent to all members of the considered super-holon.
 	}
 
-//	on Action [occurrence.time >= time] {
-//		synchronized (this) {
-//			this.actions += new MazeChangeQuery(occurrence.source.UUID, occurrence.direction)
-//
-//			if (this.actions.size >= bodyCount - 1) {
-//				emit(new RunEndOfStep)[it == defaultAddress]
-//			}
-//		}
-//	}
-//
-//	on RunEndOfStep {
-//		synchronized (this) {
-//			// Endogenous behavior: move the pacman from the player's action
-//			var avatarDirection = this.player.direction
-//			var avatarAction = new MazeChangeQuery(this.player.bodyId, avatarDirection)
-//			this.actions += avatarAction
-//
-//			// Endogenous behavior: decrease the super power of Pacman
-//			getSuperPowerAccessor(this.player.bodyId).decreaseSuperPower
-//
-//			// Change the state of the universe
-//			if (applyActions(this.actions)) {
-//				// Pacman is dead.
-//				emit(new PacManIsDead)
-//				fireGameOver
-//				killMe
-//			}
-//
-//			// Increase time
-//			this.time++
-//
-//			// Notify about environment's changes
-//			fireEnvironmentChange
-//
-//			// Move to next step
-//			emit(new RunBeginingOfStep)
-//		}
-//	}
-//
-//	on RunBeginingOfStep {
-//		synchronized (this) {
-//			this.actions.clear
-//
-//			for (e : getPerceptions().entrySet) {
-//				sendPerception(this.time, e.key.agentId, e.value, e.key.position)
-//			}
-//		}
-//	}
+	on Influence [occurrence.time >= time] {
+		synchronized (this) {
+			// this.actions += new MazeChangeQuery(occurrence.source.UUID, occurrence.direction)
+
+			if (allInfluencesAreGoT) {
+				emit(new RunEndOfStep) // [it == defaultAddress]
+			}
+		}
+	}
+
+	on RunEndOfStep {
+		synchronized (this) { /*
+			// Endogenous behavior: move the pacman from the player's action
+			var avatarDirection = this.player.direction
+			var avatarAction = new MazeChangeQuery(this.player.bodyId, avatarDirection)
+			this.actions += avatarAction
+
+			// Endogenous behavior: decrease the super power of Pacman
+			getSuperPowerAccessor(this.player.bodyId).decreaseSuperPower
+
+			// Change the state of the universe
+			if (applyActions(this.actions)) {
+				// Pacman is dead.
+				emit(new PacManIsDead)
+				fireGameOver
+				killMe
+			}
+
+			// Increase time
+			this.time++
+
+			// Notify about environment's changes
+			fireEnvironmentChange
+			*/
+			// Move to next step
+			emit(new RunBeginingOfStep)
+		}
+	}
+
+	on RunBeginingOfStep {
+		synchronized (this) {
+			/*this.actions.clear
+
+			for (e : getPerceptions().entrySet) {
+				sendPerception(this.time, e.key.agentId, e.value, e.key.position)
+			}*/
+			emit(new Perception)
+		}
+	}
 
 }

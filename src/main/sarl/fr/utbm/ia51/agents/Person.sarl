@@ -4,12 +4,14 @@
 package fr.utbm.ia51.agents
 
 import fr.utbm.ia51.agents.behaviors.NormalBehavior
-import fr.utbm.ia51.events.Perception
+import fr.utbm.ia51.environment.Influence
+import fr.utbm.ia51.environment.Perception
 import io.sarl.core.AgentKilled
 import io.sarl.core.AgentSpawned
 import io.sarl.core.Behaviors
 import io.sarl.core.ContextJoined
 import io.sarl.core.ContextLeft
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
@@ -19,7 +21,7 @@ import io.sarl.lang.core.Behavior
 
 // Person = corps, behavior = tete en gros
 agent Person {
-	uses Logging, Behaviors
+	uses Logging, DefaultContextInteractions, Behaviors
 	
 	var b: Behavior
 	var bellRings = true
@@ -30,6 +32,10 @@ agent Person {
 		info("The agent was started.")
 		b = new NormalBehavior(this)
 		b.registerBehavior
+	}
+	
+	def sendInfluence() {
+		emit(new Influence(0))
 	}
 	
 	on Perception {

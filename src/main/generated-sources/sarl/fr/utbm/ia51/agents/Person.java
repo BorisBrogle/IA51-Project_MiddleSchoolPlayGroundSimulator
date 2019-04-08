@@ -1,12 +1,14 @@
 package fr.utbm.ia51.agents;
 
 import fr.utbm.ia51.agents.behaviors.NormalBehavior;
-import fr.utbm.ia51.events.Perception;
+import fr.utbm.ia51.environment.Influence;
+import fr.utbm.ia51.environment.Perception;
 import io.sarl.core.AgentKilled;
 import io.sarl.core.AgentSpawned;
 import io.sarl.core.Behaviors;
 import io.sarl.core.ContextJoined;
 import io.sarl.core.ContextLeft;
+import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
@@ -45,6 +47,12 @@ public class Person extends Agent {
     this.b = _normalBehavior;
     Behaviors _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER = this.$castSkill(Behaviors.class, (this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS == null || this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS = this.$getSkill(Behaviors.class)) : this.$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS);
     _$CAPACITY_USE$IO_SARL_CORE_BEHAVIORS$CALLER.registerBehavior(this.b);
+  }
+  
+  protected void sendInfluence() {
+    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$castSkill(DefaultContextInteractions.class, (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = this.$getSkill(DefaultContextInteractions.class)) : this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
+    Influence _influence = new Influence(0);
+    _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_influence);
   }
   
   private void $behaviorUnit$Perception$1(final Perception occurrence) {
@@ -95,6 +103,21 @@ public class Person extends Agent {
   }
   
   @Extension
+  @ImportedCapacityFeature(DefaultContextInteractions.class)
+  @SyntheticMember
+  private transient ClearableReference<Skill> $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS;
+  
+  @SyntheticMember
+  @Pure
+  @Inline(value = "$castSkill(DefaultContextInteractions.class, ($0$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || $0$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) ? ($0$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $0$getSkill(DefaultContextInteractions.class)) : $0$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS)", imported = DefaultContextInteractions.class)
+  private DefaultContextInteractions $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
+    }
+    return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
+  }
+  
+  @Extension
   @ImportedCapacityFeature(Behaviors.class)
   @SyntheticMember
   private transient ClearableReference<Skill> $CAPACITY_USE$IO_SARL_CORE_BEHAVIORS;
@@ -115,6 +138,14 @@ public class Person extends Agent {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$Perception(final Perception occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Perception$1(occurrence));
   }
   
   @SyntheticMember
@@ -155,14 +186,6 @@ public class Person extends Agent {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Destroy$2(occurrence));
-  }
-  
-  @SyntheticMember
-  @PerceptGuardEvaluator
-  private void $guardEvaluator$Perception(final Perception occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Perception$1(occurrence));
   }
   
   @SyntheticMember
