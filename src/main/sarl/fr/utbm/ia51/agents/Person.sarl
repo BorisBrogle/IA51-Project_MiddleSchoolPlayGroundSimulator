@@ -23,12 +23,16 @@ import io.sarl.lang.core.Behavior
 agent Person {
 	uses Logging, DefaultContextInteractions, Behaviors
 	
+	var posX = 0
+	var posY = 0
+	
 	var b: Behavior
 	var bellRings = true
 
 	on Initialize {
 		// Event trigger before the agent begin to live or to be used.
 		// You should put all the initialization statements in this block of code.
+		loggingName = ""+occurrence.parameters.get(0)
 		info("The agent was started.")
 
 //		b = new NormalBehavior(this)
@@ -36,7 +40,7 @@ agent Person {
 	}
 	
 	def sendInfluence() {
-		emit(new Influence(0))
+		emit(new Influence(this, 0, 0.1, 0.1))
 	}
 	
 	on Perception {

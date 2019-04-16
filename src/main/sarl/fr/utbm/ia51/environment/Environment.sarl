@@ -19,17 +19,22 @@ import fr.utbm.ia51.agents.Person
 
 agent Environment {
 	uses Logging, DefaultContextInteractions, Lifecycle
-	
+		
 	// the time/date of the app
 	var time = 0
-	
-	var allInfluencesAreGoT = true
+
+	var numberOfPersonToSpawn = 10
+	var numberOfInfluencesGot = 0
+	var numberOfInfluencesToGet = 0
 	
 	on Initialize {
 		// Event trigger before the agent begin to live or to be used.
 		// You should put all the initialization statements in this block of code.
+		loggingName = "Environment"
 		info("The environment was started.")
-		spawn(typeof(Person))
+		for (var i = 0; i < numberOfPersonToSpawn; i++) {
+			spawnAPerson("Person"+i)
+		}
 		emit(new RunBeginingOfStep)
 	}
 
@@ -67,13 +72,14 @@ agent Environment {
 		// Sent to all members of the considered super-holon.
 	}
 
-	on Influence [occurrence.time >= time] {
+	on Influence {
 		synchronized (this) {
 			info("Got an influence")
 			// this.actions += new MazeChangeQuery(occurrence.source.UUID, occurrence.direction)
-
-			if (allInfluencesAreGoT) {
+			numberOfInfluencesGot++
+			if (numberOfInfluencesGot > numberOfInfluencesToGet-1) {
 				info("Got all the influences")
+				numberOfInfluencesGot = 0
 				emit(new RunEndOfStep) // [it == defaultAddress]
 			}
 		}
@@ -121,6 +127,12 @@ agent Environment {
 			info("Sending a perception")
 			emit(new Perception)
 		}
+	}
+	
+	def spawnAPerson(name: String) {
+		spawn(Person, name)
+		info(name + " spawned")
+		numberOfInfluencesToGet++
 	}
 
 }

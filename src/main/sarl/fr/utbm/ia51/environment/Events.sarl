@@ -3,17 +3,26 @@
  */
 package fr.utbm.ia51.environment
 
+import fr.utbm.ia51.agents.Person
+
 // Perception sent to the agents
 event Perception
 
 // Influence sent to the environment by an agent
 event Influence {
-	val time: int
-	
-	new(time: int) {
+	val caller : Person
+	val time : int
+	val wantedPosX : double
+	val wantedPosY : double
+
+	new(caller : Person, time : int, wantedPosX : double, wantedPosY : double) {
+		this.caller = caller
 		this.time = time
+		this.wantedPosX = wantedPosX
+		this.wantedPosY = wantedPosY
 	}
 }
+
 
 // When the loop starts
 event RunBeginingOfStep
