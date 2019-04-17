@@ -3,6 +3,7 @@
  */
 package fr.utbm.ia51.environment
 
+import fr.utbm.ia51.agents.Person
 import io.sarl.core.AgentKilled
 import io.sarl.core.AgentSpawned
 import io.sarl.core.ContextJoined
@@ -14,14 +15,17 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
-
-import fr.utbm.ia51.agents.Person
+import java.util.LinkedList
+import java.util.UUID
 
 agent Environment {
 	uses Logging, DefaultContextInteractions, Lifecycle
 		
 	// the time/date of the app
 	var time = 0
+	
+	var personIdList = <UUID>newLinkedList
+	var influenceList = <Influence>newLinkedList
 
 	var numberOfPersonToSpawn = 10
 	var numberOfInfluencesGot = 0
@@ -76,6 +80,7 @@ agent Environment {
 		synchronized (this) {
 			info("Got an influence")
 			// this.actions += new MazeChangeQuery(occurrence.source.UUID, occurrence.direction)
+			influenceList.add(occurrence)
 			numberOfInfluencesGot++
 			if (numberOfInfluencesGot > numberOfInfluencesToGet-1) {
 				info("Got all the influences")
@@ -88,6 +93,7 @@ agent Environment {
 	on RunEndOfStep {
 		synchronized (this) { 
 			info("The step ends")
+			applyInfluences(influenceList)
 		/*
 			// Endogenous behavior: move the pacman from the player's action
 			var avatarDirection = this.player.direction
@@ -112,6 +118,8 @@ agent Environment {
 			fireEnvironmentChange
 			*/
 			// Move to next step
+			
+			time++
 			emit(new RunBeginingOfStep)
 		}
 	}
@@ -124,15 +132,24 @@ agent Environment {
 			for (e : getPerceptions().entrySet) {
 				sendPerception(this.time, e.key.agentId, e.value, e.key.position)
 			}*/
+			influenceList.clear()
 			info("Sending a perception")
 			emit(new Perception)
 		}
 	}
 	
 	def spawnAPerson(name: String) {
-		spawn(Person, name)
+		var id = spawn(Person, name)
 		info(name + " spawned")
 		numberOfInfluencesToGet++
+		personIdList.add(id)
+	}
+	
+	def applyInfluences(influenceList: LinkedList<Influence>) {
+		for(var i=0; i<influenceList.size; i++) {
+			var influence = influenceList.get(i)
+			// influence.caller.posX
+		}
 	}
 
 }
