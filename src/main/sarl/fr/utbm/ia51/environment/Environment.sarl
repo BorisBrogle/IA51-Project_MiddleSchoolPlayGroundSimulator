@@ -146,8 +146,11 @@ agent Environment {
 	}
 	
 	def applyInfluences(influenceList: LinkedList<Influence>) {
-		for(var i=0; i<influenceList.size; i++) {
+		for (var i = 0; i < influenceList.size; i++) {
 			var influence = influenceList.get(i)
+			var newPosX : double = influence.wantedPosX
+			var newPosY : double = influence.wantedPosY
+			emit(new ActionToPerson(newPosX, newPosY), [it.UUID == influence.caller.ID])
 			// influence.caller.posX
 		}
 	}

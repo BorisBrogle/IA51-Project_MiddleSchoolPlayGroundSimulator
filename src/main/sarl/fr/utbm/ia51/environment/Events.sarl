@@ -23,6 +23,15 @@ event Influence {
 	}
 }
 
+event ActionToPerson {
+	val newPosX : double
+	val newPosY : double
+	
+	new(newPosX : double, newPosY : double) {
+		this.newPosX = newPosX
+		this.newPosY = newPosY
+	}
+}
 
 // When the loop starts
 event RunBeginingOfStep
