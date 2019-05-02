@@ -26,8 +26,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /**
  * @author Yann
  */
-@SarlSpecification("0.8")
-@SarlElementType(20)
+@SarlSpecification("0.9")
+@SarlElementType(21)
 @SuppressWarnings("all")
 public class NormalBehavior extends Behavior {
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {

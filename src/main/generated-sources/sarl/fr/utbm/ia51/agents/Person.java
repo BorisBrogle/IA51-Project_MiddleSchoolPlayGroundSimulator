@@ -1,5 +1,6 @@
 package fr.utbm.ia51.agents;
 
+import fr.utbm.ia51.environment.ActionToPerson;
 import fr.utbm.ia51.environment.Influence;
 import fr.utbm.ia51.environment.Perception;
 import io.sarl.core.AgentKilled;
@@ -31,23 +32,32 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-@SarlSpecification("0.8")
-@SarlElementType(18)
+@SarlSpecification("0.9")
+@SarlElementType(19)
 @SuppressWarnings("all")
 public class Person extends Agent {
+  private double posX = 0;
+  
+  private double posY = 0;
+  
   private Behavior b;
   
   private boolean bellRings = true;
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$castSkill(Logging.class, (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = this.$getSkill(Logging.class)) : this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The agent was started.");
+    Object _get = occurrence.parameters[0];
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName(("" + _get));
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$castSkill(Logging.class, (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = this.$getSkill(Logging.class)) : this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("The agent was started.");
   }
   
   protected void sendInfluence() {
-    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$castSkill(DefaultContextInteractions.class, (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = this.$getSkill(DefaultContextInteractions.class)) : this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
-    Influence _influence = new Influence(0);
-    _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_influence);
+    synchronized (this) {
+      DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$castSkill(DefaultContextInteractions.class, (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = this.$getSkill(DefaultContextInteractions.class)) : this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
+      Influence _influence = new Influence(this, 0, (this.posX + 0.1), (this.posY + 0.1));
+      _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_influence);
+    }
   }
   
   private void $behaviorUnit$Perception$1(final Perception occurrence) {
@@ -58,27 +68,33 @@ public class Person extends Agent {
     }
   }
   
-  private void $behaviorUnit$Destroy$2(final Destroy occurrence) {
+  private void $behaviorUnit$ActionToPerson$2(final ActionToPerson occurrence) {
+    synchronized (this) {
+      this.posX = occurrence.newPosX;
+    }
+  }
+  
+  private void $behaviorUnit$Destroy$3(final Destroy occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$castSkill(Logging.class, (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = this.$getSkill(Logging.class)) : this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The agent was stopped.");
   }
   
-  private void $behaviorUnit$AgentSpawned$3(final AgentSpawned occurrence) {
+  private void $behaviorUnit$AgentSpawned$4(final AgentSpawned occurrence) {
   }
   
-  private void $behaviorUnit$AgentKilled$4(final AgentKilled occurrence) {
+  private void $behaviorUnit$AgentKilled$5(final AgentKilled occurrence) {
   }
   
-  private void $behaviorUnit$ContextJoined$5(final ContextJoined occurrence) {
+  private void $behaviorUnit$ContextJoined$6(final ContextJoined occurrence) {
   }
   
-  private void $behaviorUnit$ContextLeft$6(final ContextLeft occurrence) {
+  private void $behaviorUnit$ContextLeft$7(final ContextLeft occurrence) {
   }
   
-  private void $behaviorUnit$MemberJoined$7(final MemberJoined occurrence) {
+  private void $behaviorUnit$MemberJoined$8(final MemberJoined occurrence) {
   }
   
-  private void $behaviorUnit$MemberLeft$8(final MemberLeft occurrence) {
+  private void $behaviorUnit$MemberLeft$9(final MemberLeft occurrence) {
   }
   
   @Extension
@@ -147,7 +163,7 @@ public class Person extends Agent {
   private void $guardEvaluator$ContextLeft(final ContextLeft occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$ContextLeft$6(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$ContextLeft$7(occurrence));
   }
   
   @SyntheticMember
@@ -155,7 +171,7 @@ public class Person extends Agent {
   private void $guardEvaluator$ContextJoined(final ContextJoined occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$ContextJoined$5(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$ContextJoined$6(occurrence));
   }
   
   @SyntheticMember
@@ -163,7 +179,7 @@ public class Person extends Agent {
   private void $guardEvaluator$MemberLeft(final MemberLeft occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MemberLeft$8(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MemberLeft$9(occurrence));
   }
   
   @SyntheticMember
@@ -171,7 +187,15 @@ public class Person extends Agent {
   private void $guardEvaluator$AgentSpawned(final AgentSpawned occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AgentSpawned$3(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AgentSpawned$4(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$ActionToPerson(final ActionToPerson occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$ActionToPerson$2(occurrence));
   }
   
   @SyntheticMember
@@ -179,7 +203,7 @@ public class Person extends Agent {
   private void $guardEvaluator$Destroy(final Destroy occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Destroy$2(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Destroy$3(occurrence));
   }
   
   @SyntheticMember
@@ -187,7 +211,7 @@ public class Person extends Agent {
   private void $guardEvaluator$AgentKilled(final AgentKilled occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AgentKilled$4(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$AgentKilled$5(occurrence));
   }
   
   @SyntheticMember
@@ -195,7 +219,7 @@ public class Person extends Agent {
   private void $guardEvaluator$MemberJoined(final MemberJoined occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MemberJoined$7(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MemberJoined$8(occurrence));
   }
   
   @Override
@@ -209,6 +233,10 @@ public class Person extends Agent {
     if (getClass() != obj.getClass())
       return false;
     Person other = (Person) obj;
+    if (Double.doubleToLongBits(other.posX) != Double.doubleToLongBits(this.posX))
+      return false;
+    if (Double.doubleToLongBits(other.posY) != Double.doubleToLongBits(this.posY))
+      return false;
     if (other.bellRings != this.bellRings)
       return false;
     return super.equals(obj);
@@ -220,6 +248,8 @@ public class Person extends Agent {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
+    result = prime * result + (int) (Double.doubleToLongBits(this.posX) ^ (Double.doubleToLongBits(this.posX) >>> 32));
+    result = prime * result + (int) (Double.doubleToLongBits(this.posY) ^ (Double.doubleToLongBits(this.posY) >>> 32));
     result = prime * result + (this.bellRings ? 1231 : 1237);
     return result;
   }

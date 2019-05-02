@@ -6,7 +6,7 @@ import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Event;
 
-@SarlSpecification("0.8")
+@SarlSpecification("0.9")
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class RunBeginingOfStep extends Event {
@@ -21,5 +21,5 @@ public class RunBeginingOfStep extends Event {
   }
   
   @SyntheticMember
-  private final static long serialVersionUID = 588368462L;
+  private static final long serialVersionUID = 588368462L;
 }

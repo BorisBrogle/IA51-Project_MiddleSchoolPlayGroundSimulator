@@ -1,6 +1,8 @@
 package fr.utbm.ia51.environment;
 
+import com.google.common.base.Objects;
 import fr.utbm.ia51.agents.Person;
+import fr.utbm.ia51.environment.ActionToPerson;
 import fr.utbm.ia51.environment.Influence;
 import fr.utbm.ia51.environment.Perception;
 import fr.utbm.ia51.environment.RunBeginingOfStep;
@@ -21,31 +23,48 @@ import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
+import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.DynamicSkillProvider;
+import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.util.ClearableReference;
+import io.sarl.lang.util.SerializableProxy;
+import java.io.ObjectStreamException;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.UUID;
 import javax.inject.Inject;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-@SarlSpecification("0.8")
-@SarlElementType(18)
+@SarlSpecification("0.9")
+@SarlElementType(19)
 @SuppressWarnings("all")
 public class Environment extends Agent {
   private int time = 0;
   
-  private boolean allInfluencesAreGoT = true;
+  private LinkedList<UUID> personIdList = CollectionLiterals.<UUID>newLinkedList();
+  
+  private LinkedList<Influence> influenceList = CollectionLiterals.<Influence>newLinkedList();
+  
+  private int numberOfPersonToSpawn = 10;
+  
+  private int numberOfInfluencesGot = 0;
+  
+  private int numberOfInfluencesToGet = 0;
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$castSkill(Logging.class, (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = this.$getSkill(Logging.class)) : this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The environment was started.");
-    Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$castSkill(Lifecycle.class, (this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE == null || this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE = this.$getSkill(Lifecycle.class)) : this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE);
-    _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawn(Person.class);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName("Environment");
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$castSkill(Logging.class, (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = this.$getSkill(Logging.class)) : this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("The environment was started.");
+    for (int i = 0; (i < this.numberOfPersonToSpawn); i++) {
+      this.spawnAPerson(("Person" + Integer.valueOf(i)));
+    }
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$castSkill(DefaultContextInteractions.class, (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = this.$getSkill(DefaultContextInteractions.class)) : this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
     RunBeginingOfStep _runBeginingOfStep = new RunBeginingOfStep();
     _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_runBeginingOfStep);
@@ -78,9 +97,12 @@ public class Environment extends Agent {
     synchronized (this) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$castSkill(Logging.class, (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = this.$getSkill(Logging.class)) : this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Got an influence");
-      if (this.allInfluencesAreGoT) {
+      this.influenceList.add(occurrence);
+      this.numberOfInfluencesGot++;
+      if ((this.numberOfInfluencesGot > (this.numberOfInfluencesToGet - 1))) {
         Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$castSkill(Logging.class, (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = this.$getSkill(Logging.class)) : this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
         _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Got all the influences");
+        this.numberOfInfluencesGot = 0;
         DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$castSkill(DefaultContextInteractions.class, (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = this.$getSkill(DefaultContextInteractions.class)) : this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
         RunEndOfStep _runEndOfStep = new RunEndOfStep();
         _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_runEndOfStep);
@@ -88,16 +110,12 @@ public class Environment extends Agent {
     }
   }
   
-  @SyntheticMember
-  @Pure
-  private boolean $behaviorUnitGuard$Influence$8(final Influence it, final Influence occurrence) {
-    return (occurrence.time >= it.time);
-  }
-  
   private void $behaviorUnit$RunEndOfStep$9(final RunEndOfStep occurrence) {
     synchronized (this) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$castSkill(Logging.class, (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = this.$getSkill(Logging.class)) : this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The step ends");
+      this.applyInfluences(this.influenceList);
+      this.time++;
       DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$castSkill(DefaultContextInteractions.class, (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = this.$getSkill(DefaultContextInteractions.class)) : this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
       RunBeginingOfStep _runBeginingOfStep = new RunBeginingOfStep();
       _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_runBeginingOfStep);
@@ -108,11 +126,63 @@ public class Environment extends Agent {
     synchronized (this) {
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$castSkill(Logging.class, (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = this.$getSkill(Logging.class)) : this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The step begins");
+      this.influenceList.clear();
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$castSkill(Logging.class, (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = this.$getSkill(Logging.class)) : this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Sending a perception");
       DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$castSkill(DefaultContextInteractions.class, (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = this.$getSkill(DefaultContextInteractions.class)) : this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
       Perception _perception = new Perception();
       _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_perception);
+    }
+  }
+  
+  protected boolean spawnAPerson(final String name) {
+    boolean _xblockexpression = false;
+    {
+      Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$castSkill(Lifecycle.class, (this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE == null || this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE = this.$getSkill(Lifecycle.class)) : this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE);
+      UUID id = _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawn(Person.class, name);
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$castSkill(Logging.class, (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING == null || this.$CAPACITY_USE$IO_SARL_CORE_LOGGING.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = this.$getSkill(Logging.class)) : this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info((name + " spawned"));
+      this.numberOfInfluencesToGet++;
+      _xblockexpression = this.personIdList.add(id);
+    }
+    return _xblockexpression;
+  }
+  
+  protected void applyInfluences(final LinkedList<Influence> influenceList) {
+    for (int i = 0; (i < influenceList.size()); i++) {
+      {
+        Influence influence = influenceList.get(i);
+        double newPosX = influence.wantedPosX;
+        double newPosY = influence.wantedPosY;
+        DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$castSkill(DefaultContextInteractions.class, (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = this.$getSkill(DefaultContextInteractions.class)) : this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
+        ActionToPerson _actionToPerson = new ActionToPerson(newPosX, newPosY);
+        class $SerializableClosureProxy implements Scope<Address> {
+          
+          private final UUID $_iD;
+          
+          public $SerializableClosureProxy(final UUID $_iD) {
+            this.$_iD = $_iD;
+          }
+          
+          @Override
+          public boolean matches(final Address it) {
+            UUID _uUID = it.getUUID();
+            return Objects.equal(_uUID, $_iD);
+          }
+        }
+        final Scope<Address> _function = new Scope<Address>() {
+          @Override
+          public boolean matches(final Address it) {
+            UUID _uUID = it.getUUID();
+            UUID _iD = influence.caller.getID();
+            return Objects.equal(_uUID, _iD);
+          }
+          private Object writeReplace() throws ObjectStreamException {
+            return new SerializableProxy($SerializableClosureProxy.class, influence.caller.getID());
+          }
+        };
+        _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_actionToPerson, _function);
+      }
     }
   }
   
@@ -222,9 +292,7 @@ public class Environment extends Agent {
   private void $guardEvaluator$Influence(final Influence occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    if ($behaviorUnitGuard$Influence$8(occurrence, occurrence)) {
-      ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Influence$8(occurrence));
-    }
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Influence$8(occurrence));
   }
   
   @SyntheticMember
@@ -264,7 +332,11 @@ public class Environment extends Agent {
     Environment other = (Environment) obj;
     if (other.time != this.time)
       return false;
-    if (other.allInfluencesAreGoT != this.allInfluencesAreGoT)
+    if (other.numberOfPersonToSpawn != this.numberOfPersonToSpawn)
+      return false;
+    if (other.numberOfInfluencesGot != this.numberOfInfluencesGot)
+      return false;
+    if (other.numberOfInfluencesToGet != this.numberOfInfluencesToGet)
       return false;
     return super.equals(obj);
   }
@@ -276,7 +348,9 @@ public class Environment extends Agent {
     int result = super.hashCode();
     final int prime = 31;
     result = prime * result + this.time;
-    result = prime * result + (this.allInfluencesAreGoT ? 1231 : 1237);
+    result = prime * result + this.numberOfPersonToSpawn;
+    result = prime * result + this.numberOfInfluencesGot;
+    result = prime * result + this.numberOfInfluencesToGet;
     return result;
   }
   
