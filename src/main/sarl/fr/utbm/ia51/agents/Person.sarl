@@ -59,7 +59,11 @@ agent Person {
 	
 	on ActionToPerson {
 		synchronized (this) {
-			this.posX = occurrence.newPosX
+			var x = occurrence.newPosX
+			var y = occurrence.newPosY
+			info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", this.posX, this.posY, x, y)
+			this.posX = x
+			this.posY = y
 		}
 	}
 

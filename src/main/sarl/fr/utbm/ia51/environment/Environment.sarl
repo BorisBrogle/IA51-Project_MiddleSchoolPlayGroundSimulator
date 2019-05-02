@@ -15,31 +15,38 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
+import io.sarl.core.Schedules
 import java.util.LinkedList
 import java.util.UUID
 
 agent Environment {
-	uses Logging, DefaultContextInteractions, Lifecycle
+	uses Logging, DefaultContextInteractions, Lifecycle, Schedules
 		
 	// the time/date of the app
 	var time = 0
 	
+	var loop_duration : int = 0
+	
 	var personIdList = <UUID>newLinkedList
 	var influenceList = <Influence>newLinkedList
 
-	var numberOfPersonToSpawn = 10
+	var numberOfPersonToSpawn = 2
 	var numberOfInfluencesGot = 0
 	var numberOfInfluencesToGet = 0
 	
-	on Initialize {
-		// Event trigger before the agent begin to live or to be used.
-		// You should put all the initialization statements in this block of code.
-		loggingName = "Environment"
-		info("The environment was started.")
-		for (var i = 0; i < numberOfPersonToSpawn; i++) {
-			spawnAPerson("Person"+i)
+	on Initialize {	
+		synchronized (this) {
+			// Event trigger before the agent begin to live or to be used.
+			// You should put all the initialization statements in this block of code.
+			this.loop_duration = occurrence.parameters.get(0) as Integer
+			
+			loggingName = "Environment"
+			info("The environment was started.")
+			for (var i = 0; i < numberOfPersonToSpawn; i++) {
+				spawnAPerson("Person"+i)
+			}
+			emit(new RunBeginingOfStep)
 		}
-		emit(new RunBeginingOfStep)
 	}
 
 	on Destroy {
@@ -91,10 +98,10 @@ agent Environment {
 	}
 
 	on RunEndOfStep {
-		synchronized (this) { 
+		synchronized (this) {
 			info("The step ends")
 			applyInfluences(influenceList)
-		/*
+			/*
 			// Endogenous behavior: move the pacman from the player's action
 			var avatarDirection = this.player.direction
 			var avatarAction = new MazeChangeQuery(this.player.bodyId, avatarDirection)
