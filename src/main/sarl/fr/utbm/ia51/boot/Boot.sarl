@@ -3,17 +3,36 @@
  */
 package fr.utbm.ia51.boot
 
-import fr.utbm.ia51.environment.Environment
+import fr.utbm.ia51.GUI
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
+import javafx.application.Application
 
 agent Boot {
 	uses Logging, Lifecycle
 
 	on Initialize {
+		
+//		Thread thread = new Thread(){
+//			@Override
+//			 void run(){
+//				Application.launch(GUI.class);
+//			}
+//		}
+//		
+//		thread.start();
+//		
+//		GUI gui = GUI.waitForGUIStart();
+//		gui.printBoboLasticot();
+//		
 		info("Booting the application")
+<<<<<<< Updated upstream
 		val loop_duration = 10 //Duration between each steps, in seconds
 		spawn(typeof(Environment), loop_duration)
+=======
+		val variableToSend = 0 //example: nb of agents
+		//spawn(typeof(Environment), variableToSend)
+>>>>>>> Stashed changes
 	}
 }

@@ -41,6 +41,7 @@ public class GraphHuman extends StackPane {
 	public GraphHuman (int x,int y, String headStyle, String armStyle, double sizeRatioHead,String name, GraphEnvironment environment) {
 
 		super();
+		this.setStyle("-fx-border-color : red");
 		this.environment = environment;
 		this.setTranslateX(x);
 		this.setTranslateY(y);
@@ -78,6 +79,8 @@ public class GraphHuman extends StackPane {
 	
 		
 		//Management of information view when clicking on the human head
+		
+		//TODO Faire la récupération des données depuis la classe élève et non pas en dur comme codé actuellement 
 		
 		this.infoWindow = new GraphInformationWindow("Students", "Gudule", "2", "Good Goat");
 		
