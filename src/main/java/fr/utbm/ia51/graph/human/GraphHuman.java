@@ -26,6 +26,7 @@ public class GraphHuman extends StackPane {
 	
 	
 	private GraphEnvironment environment;
+	private StackPane humanBody;
 	private Rectangle arms;
 	private Circle head = new Circle();
 	private Circle selectionCircle = new Circle();
@@ -33,6 +34,8 @@ public class GraphHuman extends StackPane {
 	private Label nameLabel;
 	private SimpleBooleanProperty isSelected = new SimpleBooleanProperty(false);
 	private GraphInformationWindow infoWindow;
+	
+	private ActivityToolTip activityDesired;
 	
 	//Add position 
 	
@@ -110,7 +113,19 @@ public class GraphHuman extends StackPane {
 				isSelected.set(false);
 		});
 		
-		this.getChildren().addAll(arms,selectionCircle,head,lefteye,righteye);
+		//Infobox above the child
+		activityDesired = new ActivityToolTip();
+		this.activityDesired.rotateProperty().bind(this.rotateProperty().multiply(-1));
+		this.activityDesired.setTranslateX(5);
+		this.activityDesired.setTranslateY(-30);
+		
+		
+		this.humanBody = new StackPane();
+		this.humanBody.setStyle("-fx-border-color : pink");
+		this.humanBody.getChildren().addAll(arms,selectionCircle,head,lefteye,righteye);
+		this.getChildren().addAll(this.humanBody, activityDesired);
+		this.setStyle("-fx-border-color : blue");
+		//this.environment.getChildren().add(activityDesired);
 		
 	}
 	
@@ -147,11 +162,15 @@ public class GraphHuman extends StackPane {
 		p3 = p2.subtract(p1);
 		p4 = new Point2D(1, 0);
 		
-		SequentialTransition sequentialTransition = new SequentialTransition();
-		sequentialTransition.getChildren().addAll(rotateGraph(p4.angle(p3), speed),translateGraph(x, y, speed));
-		sequentialTransition.setNode(this);
-		sequentialTransition.play();
+		RotateTransition rotate = this.rotateGraph(p4.angle(p3), speed);
+		rotate.setNode(this.humanBody);
+		TranslateTransition translate = this.translateGraph(x, y, speed);
+		translate.setNode(this);
 		
+		
+		SequentialTransition sequentialTransition = new SequentialTransition();
+		sequentialTransition.getChildren().addAll(rotate,translate);
+		sequentialTransition.play();	
 
 		System.out.println( "Point2D: " + p4.angle(p3));
 		
