@@ -2,14 +2,12 @@ package fr.utbm.ia51;
 
 import java.util.concurrent.CountDownLatch;
 
+import fr.utbm.ia51.boot.BootLauncher;
 import fr.utbm.ia51.graph.environment.GraphEnvironment;
 import fr.utbm.ia51.graph.human.GraphHuman;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -62,6 +60,9 @@ public class GUI extends Application {
         buddy.moveTo(100, 100, 0.5);
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        BootLauncher bootlauncher = new BootLauncher();
+        bootlauncher.launchBoot();
         System.out.println("pouet");
     }
     
