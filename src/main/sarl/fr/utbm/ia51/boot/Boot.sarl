@@ -12,8 +12,21 @@ agent Boot {
 	uses Logging, Lifecycle
 
 	on Initialize {
+		
+//		Thread thread = new Thread(){
+//			@Override
+//			 void run(){
+//				Application.launch(GUI.class);
+//			}
+//		}
+//		
+//		thread.start();
+//		
+//		GUI gui = GUI.waitForGUIStart();
+//		gui.printBoboLasticot();
+//		
 		info("Booting the application")
-		val variableToSend = 0 //example: nb of agents
-		spawn(typeof(Environment), variableToSend)
+		val loop_duration = 10 //Duration between each steps, in seconds
+		spawn(typeof(Environment), loop_duration)
 	}
 }

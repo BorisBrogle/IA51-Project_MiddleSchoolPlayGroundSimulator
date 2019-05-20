@@ -3,7 +3,6 @@
  */
 package fr.utbm.ia51.agents
 
-import fr.utbm.ia51.agents.behaviors.NormalBehavior
 import fr.utbm.ia51.environment.Influence
 import fr.utbm.ia51.environment.Perception
 import io.sarl.core.AgentKilled
@@ -18,10 +17,14 @@ import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
 import io.sarl.lang.core.Behavior
+import fr.utbm.ia51.environment.ActionToPerson
 
 // Person = corps, behavior = tete en gros
 agent Person {
 	uses Logging, DefaultContextInteractions, Behaviors
+	
+	var posX : double = 0
+	var posY : double = 0
 	
 	var b: Behavior
 	var bellRings = true
@@ -29,20 +32,38 @@ agent Person {
 	on Initialize {
 		// Event trigger before the agent begin to live or to be used.
 		// You should put all the initialization statements in this block of code.
+		loggingName = ""+occurrence.parameters.get(0)
 		info("The agent was started.")
-		b = new NormalBehavior(this)
-		b.registerBehavior
+
+//		b = new NormalBehavior(this)
+//		b.registerBehavior
 	}
 	
 	def sendInfluence() {
-		emit(new Influence(0))
+		synchronized (this) {
+			emit(new Influence(this, 0, this.posX + 0.1, this.posY + 0.1))
+		}
 	}
 	
 	on Perception {
 		if (bellRings) {
+			info("Sending an influence")
+			sendInfluence
+			/*
 			b.unregisterBehavior
-			// b = new goToClassBehavior(this)
+			b = new goToClassBehavior(this)
 			b.registerBehavior
+			*/
+		}
+	}
+	
+	on ActionToPerson {
+		synchronized (this) {
+			var x = occurrence.newPosX
+			var y = occurrence.newPosY
+			info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", this.posX, this.posY, x, y)
+			this.posX = x
+			this.posY = y
 		}
 	}
 

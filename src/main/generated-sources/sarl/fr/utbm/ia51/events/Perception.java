@@ -1,4 +1,4 @@
-package fr.utbm.ia51.environment;
+package fr.utbm.ia51.events;
 
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
@@ -6,17 +6,20 @@ import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Event;
 
+/**
+ * @author Yann
+ */
 @SarlSpecification("0.8")
 @SarlElementType(15)
 @SuppressWarnings("all")
-public class RunEndOfStep extends Event {
+public class Perception extends Event {
   @SyntheticMember
-  public RunEndOfStep() {
+  public Perception() {
     super();
   }
   
   @SyntheticMember
-  public RunEndOfStep(final Address source) {
+  public Perception(final Address source) {
     super(source);
   }
   
