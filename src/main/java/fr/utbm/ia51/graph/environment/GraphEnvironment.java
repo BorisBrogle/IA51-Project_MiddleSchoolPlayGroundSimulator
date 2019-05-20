@@ -48,7 +48,7 @@ public class GraphEnvironment extends StackPane {
 		this.getChildren().addAll(forest);
 		
 		this.tennisTable= new TennisTable(50);
-		this.tennisTable.setTranslateX(-300);
+		this.tennisTable.setTranslateX(-(width/3));
 		this.tennisTable.setTranslateY((height/2)-50);
 		this.getChildren().addAll(tennisTable);
 		
@@ -58,12 +58,12 @@ public class GraphEnvironment extends StackPane {
 		this.getChildren().addAll(library);
 		
 		this.toilet= new Toilet(200);
-		this.toilet.setTranslateX(-350);
+		this.toilet.setTranslateX(-(width/4));
 		this.toilet.setTranslateY(-(height/2)+60);
 		this.getChildren().addAll(toilet);
 		
 		this.classline= new ClassLine(200);
-		this.classline.setTranslateX(-450);
+		this.classline.setTranslateX(-(width/4));
 		this.classline.setTranslateY(-(height/2)+250);
 		this.getChildren().addAll(classline);
 	}

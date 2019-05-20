@@ -117,7 +117,7 @@ public class GraphHuman extends StackPane {
 		});
 		
 		//Infobox above the child
-		activityDesired = new ActivityToolTip();
+		activityDesired = new ActivityToolTip(ActivityType.BASKETBALL);
 		this.activityDesired.rotateProperty().bind(this.rotateProperty().multiply(-1));
 		this.activityDesired.setTranslateX(5);
 		this.activityDesired.setTranslateY(-30);

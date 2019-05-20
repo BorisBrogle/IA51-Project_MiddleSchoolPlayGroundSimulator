@@ -13,10 +13,10 @@ public class ActivityToolTip extends StackPane{
 	private Image fieldImage;
 	private Circle position;
 	
-	public ActivityToolTip() {
+	public ActivityToolTip(ActivityType type) {
 		super();
 		
-		ActivityType type = ActivityType.BASKETBALL;		
+		//ActivityType type = ActivityType.BASKETBALL;		
 		this.tooltip = new ImageView();
 		
 		this.changeDesire(type);
@@ -94,7 +94,7 @@ public class ActivityToolTip extends StackPane{
 		tooltip.setImage(this.fieldImage);
 	}
 	
-	public enum ActivityType {
+	/*public enum ActivityType {
 		TENNISTABLE,
 		FOOTBALL,
 		BASKETBALL,
@@ -104,7 +104,7 @@ public class ActivityToolTip extends StackPane{
 		FOREST,
 		TOILET,
 		FIGHT;
-	}
+	}*/
 
 }
 
