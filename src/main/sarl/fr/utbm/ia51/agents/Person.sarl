@@ -33,6 +33,9 @@ agent Person {
 		// Event trigger before the agent begin to live or to be used.
 		// You should put all the initialization statements in this block of code.
 		loggingName = ""+occurrence.parameters.get(0)
+		
+		posX = occurrence.parameters.get(1) as Double
+		posY = occurrence.parameters.get(2) as Double
 		info("The agent was started.")
 
 //		b = new NormalBehavior(this)
