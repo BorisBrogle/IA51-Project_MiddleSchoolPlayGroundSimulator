@@ -27,6 +27,7 @@ agent Boot {
 //		
 		info("Booting the application")
 		val loop_duration = 10 //Duration between each steps, in seconds
-		spawn(typeof(Environment), loop_duration)
+		
+		spawn(typeof(Environment), loop_duration,occurrence.parameters.get(0))
 	}
 }

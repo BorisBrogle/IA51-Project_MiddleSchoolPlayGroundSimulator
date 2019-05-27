@@ -18,6 +18,8 @@ import io.sarl.core.MemberLeft
 import io.sarl.core.Schedules
 import java.util.LinkedList
 import java.util.UUID
+import java.util.Map
+import fr.utbm.ia51.graph.human.GraphHuman
 
 agent Environment {
 	uses Logging, DefaultContextInteractions, Lifecycle, Schedules
@@ -25,10 +27,15 @@ agent Environment {
 	// the time/date of the app
 	var time = 0
 	
-	var loop_duration : int = 0
+	var loop_duration : int = 100
 	
 	var personIdList = <UUID>newLinkedList
 	var influenceList = <Influence>newLinkedList
+	
+	
+	var listGraphHumans = <GraphHuman>newLinkedList
+	var graphHumans  = <UUID,GraphHuman>newHashMap
+	
 
 	var numberOfPersonToSpawn = 2
 	var numberOfInfluencesGot = 0
@@ -39,11 +46,19 @@ agent Environment {
 			// Event trigger before the agent begin to live or to be used.
 			// You should put all the initialization statements in this block of code.
 			this.loop_duration = occurrence.parameters.get(0) as Integer
+			this.listGraphHumans = occurrence.parameters.get(1) as LinkedList<GraphHuman>
+			
+			
+			
+			
 			
 			loggingName = "Environment"
 			info("The environment was started.")
-			for (var i = 0; i < numberOfPersonToSpawn; i++) {
-				spawnAPerson("Person"+i)
+			var i= 0
+			for (g : listGraphHumans) {
+				this.graphHumans.put(g.uuid, g)
+				spawnAPerson("Person"+i,g)
+				
 			}
 			emit(new RunBeginingOfStep)
 		}
@@ -145,18 +160,25 @@ agent Environment {
 		}
 	}
 	
-	def spawnAPerson(name: String) {
-		var id = spawn(Person, name)
+	def spawnAPerson(name: String, graphHuman : GraphHuman) {
+		
+		var id = spawnInContextWithID(typeof(Person),graphHuman.uuid,defaultContext,name,graphHuman.x,graphHuman.y)
 		info(name + " spawned")
 		numberOfInfluencesToGet++
 		personIdList.add(id)
 	}
 	
 	def applyInfluences(influenceList: LinkedList<Influence>) {
+		
+		
 		for (var i = 0; i < influenceList.size; i++) {
+			Thread::sleep(loop_duration)
 			var influence = influenceList.get(i)
+			
 			var newPosX : double = influence.wantedPosX
 			var newPosY : double = influence.wantedPosY
+			this.graphHumans.get(influence.caller.ID).moveTo(newPosX,newPosY,2)
+			
 			emit(new ActionToPerson(newPosX, newPosY), [it.UUID == influence.caller.ID])
 			// influence.caller.posX
 		}

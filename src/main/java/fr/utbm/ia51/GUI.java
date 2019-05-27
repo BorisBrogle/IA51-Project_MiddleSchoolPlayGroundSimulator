@@ -1,10 +1,14 @@
 package fr.utbm.ia51;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.concurrent.CountDownLatch;
 
+import fr.utbm.ia51.boot.Boot;
 import fr.utbm.ia51.boot.BootLauncher;
 import fr.utbm.ia51.graph.environment.GraphEnvironment;
 import fr.utbm.ia51.graph.human.GraphHuman;
+import io.sarl.bootstrap.SRE;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -16,6 +20,7 @@ public class GUI extends Application {
 	
 	public static final CountDownLatch latch = new CountDownLatch(1);
 	public static GUI gui = null;
+	public LinkedList<GraphHuman> graphHumans = new LinkedList<>();
 	
 	final int WIDTH = 1280;
 	final int HEIGHT = 720;
@@ -55,18 +60,22 @@ public class GUI extends Application {
         root.getChildren().add(environment);
 
         GraphHuman buddy = new GraphHuman(300, 300, "", "", 2,null,environment); 
+        GraphHuman bob = new GraphHuman(200,200,"","",2,null,environment);
         root.getChildren().add(buddy);
+        root.getChildren().add(bob);
+        this.graphHumans.add(bob);
+        this.graphHumans.add(buddy);
        
-        buddy.moveTo(100, 100, 0.5);
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        BootLauncher bootlauncher = new BootLauncher();
-        bootlauncher.launchBoot();
-        System.out.println("pouet");
+        try {
+			SRE.getBootstrap().startAgent(Boot.class, this.graphHumans);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
-    public void printBobo() {
-    	System.out.println("Bobo l'asticot");
-    }
+
 }
