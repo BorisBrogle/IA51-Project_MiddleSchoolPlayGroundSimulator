@@ -24,9 +24,9 @@ public class GraphEnvironment extends StackPane {
 		this.courtyard.setTranslateX(-(width/3));
 		this.getChildren().addAll(courtyard);
 		
-		this.soccerField = new SoccerField(200);
-		this.soccerField.setTranslateX((width/2)-130);
-		this.soccerField.setTranslateY((height/2)-100);
+		this.soccerField = new SoccerField(400);
+		this.soccerField.setTranslateX((width/2)-260);
+		this.soccerField.setTranslateY((height/2)-200);
 		this.getChildren().addAll(soccerField);
 		
 		this.bench = new Bench(30);
