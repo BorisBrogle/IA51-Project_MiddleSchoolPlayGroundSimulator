@@ -1,0 +1,44 @@
+/** 
+ * 
+ */
+package fr.utbm.ia51.agents.behaviors
+
+import fr.utbm.ia51.tools.MotionAlgorithmOutput
+import fr.utbm.ia51.tools.Point2f
+
+/** 
+ * Seek Behavior.
+ * 
+ * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
+ * @version $Name$ $Revision$ $Date$
+ */
+interface SeekAlgorithm {
+
+			/** 
+		 * @param position is the current position of the entity.
+		 * @param linearSpeed is the current linear speed of the entity.
+		 * @param maxLinear is the maximal linear speed or acceleration (depending on getType()) of the entity.
+		 * @param target is the point to flee.
+		 * @return the behaviour output.
+		 */
+	def run(position : Point2f, linearSpeed : float, maxLinear : float, target : Point2f) : MotionAlgorithmOutput
+
+}
+
+/** 
+ * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
+ * @version $Name$ $Revision$ $Date$
+ */
+class KinematicSeekAlgorithm implements SeekAlgorithm {
+	override run(position : Point2f, linearSpeed : float, maxLinear : float, target : Point2f) : MotionAlgorithmOutput {
+		var output = new MotionAlgorithmOutput()
+
+		var direction = target - position
+		direction.length = maxLinear
+
+		output.linear = direction
+
+		return output
+	}
+
+}

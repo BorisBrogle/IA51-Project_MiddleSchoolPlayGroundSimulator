@@ -1,0 +1,57 @@
+/** 
+ * 
+ */
+package fr.utbm.ia51.agents.behaviors
+
+import fr.utbm.ia51.tools.MotionAlgorithmOutput
+import fr.utbm.ia51.tools.Point2f
+import fr.utbm.ia51.tools.Vector2f
+import java.util.Random
+
+/** 
+ * Wander Behaviour.
+ * 
+ * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
+ * @version $Name$ $Revision$ $Date$
+ */
+interface WanderAlgorithm {
+
+		/** 
+		 * @param position is the current position of the entity.
+		 * @param orientation is the current orientation of the entity.
+		 * @param linearSpeed is the current linear speed of the entity.
+		 * @param maxLinear is the maximal linear speed or acceleration (depending on getType()) of the entity.
+		 * @param angularSpeed is the current angular speed of the entity.
+		 * @param maxAngular is the maximal angular speed or acceleration (depending on getType()) of the entity.
+		 * @return the behaviour output.
+		 */
+	def run(position : Point2f, orientation : Vector2f, linearSpeed : float, maxLinear : float, angularSpeed : float,
+		maxAngular : float) : MotionAlgorithmOutput
+
+}
+
+/** 
+ * Kinematic Wander Behaviour.
+ * 
+ * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
+ * @version $Name$ $Revision$ $Date$
+ */
+class KinematicWanderAlgorithm implements WanderAlgorithm {
+
+	val random = new Random
+
+	override run(position : Point2f, orientation : Vector2f, linearSpeed : float, maxLinear : float,
+		angularSpeed : float, maxAngular : float) : MotionAlgorithmOutput {
+		var output = new MotionAlgorithmOutput()
+
+		var v = orientation.clone
+		v.length = maxLinear
+		output.linear = v
+
+		var rotation = (this.random.nextGaussian * maxAngular) as float
+		output.angular = rotation
+
+		return output
+	}
+	
+}

@@ -3,11 +3,19 @@
  */
 package fr.utbm.ia51.agents
 
+import fr.utbm.ia51.agents.behaviors.KinematicSeekAlgorithm
+import fr.utbm.ia51.agents.behaviors.KinematicWanderAlgorithm
+import fr.utbm.ia51.agents.behaviors.SeekAlgorithm
+import fr.utbm.ia51.agents.behaviors.WanderAlgorithm
+import fr.utbm.ia51.environment.ActionToPerson
 import fr.utbm.ia51.environment.Influence
 import fr.utbm.ia51.environment.Perception
+import fr.utbm.ia51.graph.human.ActivityType
+import fr.utbm.ia51.tools.MotionAlgorithmOutput
+import fr.utbm.ia51.tools.Point2f
+import fr.utbm.ia51.tools.Vector2f
 import io.sarl.core.AgentKilled
 import io.sarl.core.AgentSpawned
-import io.sarl.core.Behaviors
 import io.sarl.core.ContextJoined
 import io.sarl.core.ContextLeft
 import io.sarl.core.DefaultContextInteractions
@@ -16,45 +24,120 @@ import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
-import io.sarl.lang.core.Behavior
-import fr.utbm.ia51.environment.ActionToPerson
 
 // Person = corps, behavior = tete en gros
 agent Person {
-	uses Logging, DefaultContextInteractions, Behaviors
+	uses Logging, DefaultContextInteractions
 	
 	var posX : double = 0
 	var posY : double = 0
+
+	var activityType : ActivityType
+	var target : Point2f
+
+	// behaviors
+	var seekBehavior : SeekAlgorithm
+	var wanderBehavior : WanderAlgorithm
+	// var b : Behavior
 	
-	var b: Behavior
-	var bellRings = true
+	var bellRings : boolean = false
 
 	on Initialize {
-		// Event trigger before the agent begin to live or to be used.
+		synchronized (this) {
+			// Event trigger before the agent begin to live or to be used.
 		// You should put all the initialization statements in this block of code.
-		loggingName = ""+occurrence.parameters.get(0)
-		info("The agent was started.")
+			loggingName = "" + occurrence.parameters.get(0)
+			info("The agent was started.")
 
-//		b = new NormalBehavior(this)
-//		b.registerBehavior
+			this.activityType = ActivityType.FOOTBALL
+
+			this.seekBehavior = new KinematicSeekAlgorithm
+			this.wanderBehavior = new KinematicWanderAlgorithm
+		
+			// b = new NormalBehavior(this)
+			// b.registerBehavior
+		}
 	}
 	
-	def sendInfluence() {
+	//TODO 
+	def updateTarget() {
+		synchronized (this) {
+			this.target = getTarget(this.activityType)
+		}
+	}
+	
+	//TODO
+	def getTarget(at : ActivityType) {
+		new Point2f
+	}
+	
+	def emitInfluence(output: MotionAlgorithmOutput) {
 		synchronized (this) {
 			emit(new Influence(this, 0, this.posX + 0.1, this.posY + 0.1))
 		}
 	}
 	
 	on Perception {
-		if (bellRings) {
-			info("Sending an influence")
-			sendInfluence
+		synchronized (this) {
+			if (target !== null) {
+				// run the seek behaviour
+				this.seekBehavior.run(
+					new Point2f,
+					0f,
+					0f,
+					new Point2f
+
+				/* 
+				 * occurrence.body.position,
+				 * occurrence.body.currentLinearSpeed,
+				 * occurrence.body.maxLinear,
+				 * target.position
+				 */
+				).emitInfluence
+			} else {
+				// doNothing
+				// // run the wander behaviour
+				this.wanderBehavior.run(
+					new Point2f,
+					new Vector2f,
+					0f,
+					0f,
+					0f,
+					0f
+
+				/* 
+				 * occurrence.body.position,
+				 * occurrence.body.direction,
+				 * occurrence.body.currentLinearSpeed,
+				 * occurrence.body.maxLinear,
+				 * occurrence.body.currentAngularSpeed,
+				 * occurrence.body.maxAngular
+				 */
+				).emitInfluence
+			}
+
+			if (bellRings) {
+				info("Sending an influence")
+				this.seekBehavior.run(
+					new Point2f,
+					0f,
+					0f,
+					new Point2f
+
+				/* 
+				 * occurrence.body.position,
+				 * occurrence.body.currentLinearSpeed,
+				 * occurrence.body.maxLinear,
+			 * target.position*/
+			).emitInfluence
 			/*
 			b.unregisterBehavior
 			b = new goToClassBehavior(this)
 			b.registerBehavior
 			*/
 		}
+		}
+	
 	}
 	
 	on ActionToPerson {
