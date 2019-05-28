@@ -28,7 +28,7 @@ agent Environment {
 	// the time/date of the app
 	var time = 0
 	
-	var loop_duration : int = 100
+	var loop_duration : int = 40
 	
 	var personIdList = <UUID>newLinkedList
 	var influenceList = <Influence>newLinkedList
@@ -166,6 +166,8 @@ agent Environment {
 			var perceivedObjects = <Point2f>newArrayList
 			
 			info("Sending a perception")
+			// Faire une for each qui fait pour tous les graphHumans
+			// .Get des artifacts autours 
 			emit(
 				new Perception(position, orientation, linearSpeed, maxLinear, angularSpeed, maxAngular,
 					perceivedObjects))

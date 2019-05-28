@@ -26,9 +26,9 @@ public class ActivityToolTip extends StackPane{
 		tooltip.setFitWidth(30);
 		tooltip.setPreserveRatio(true);
        
-        this.setStyle("-fx-border-color : red");
+//        this.setStyle("-fx-border-color : red");
         this.position = new Circle(1);
-        this.position.setFill(Color.LIME);
+        this.position.setFill(Color.TRANSPARENT);
         //this.position.setStyle("-fx-border-color : transparent");
         
         this.getChildren().addAll(tooltip,position);

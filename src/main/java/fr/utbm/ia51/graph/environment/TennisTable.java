@@ -1,10 +1,11 @@
 package fr.utbm.ia51.graph.environment;
 
+import fr.utbm.ia51.graph.human.GraphHuman;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 
-public class TennisTable extends StackPane{
+public class TennisTable extends EnvironmentEntity{
 	
 	private ImageView tennisTable;
 	private Image fieldImage;
@@ -21,9 +22,20 @@ public class TennisTable extends StackPane{
         tennisTable.setPreserveRatio(true);
 
         this.setMaxSize(this.tennisTable.getFitWidth(), this.tennisTable.getFitHeight());
-        this.setStyle("-fx-border-color : pink");
+//        this.setStyle("-fx-border-color : pink");
         
         this.getChildren().addAll(tennisTable);
+	}
+	
+	public Rectangle getArea() {
+		return new Rectangle(this.getTranslateX(),this.getTranslateY(),this.getWidth(),this.getHeight());
+		
+	}
+	
+	public boolean intersect(GraphHuman g) {
+		if(this.getArea().intersects(g.getLayoutBounds()))
+			return true;
+		return false;
 	}
 }
 

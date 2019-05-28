@@ -10,6 +10,7 @@ import fr.utbm.ia51.agents.behaviors.WanderAlgorithm
 import fr.utbm.ia51.environment.ActionToPerson
 import fr.utbm.ia51.environment.Influence
 import fr.utbm.ia51.environment.Perception
+
 import fr.utbm.ia51.graph.human.ActivityType
 import fr.utbm.ia51.tools.MotionAlgorithmOutput
 import fr.utbm.ia51.tools.Point2f
@@ -25,15 +26,22 @@ import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
 
+
 // Person = corps, behavior = tete en gros
 agent Person {
 	uses Logging, DefaultContextInteractions
 	
 	var posX : double = 0
 	var posY : double = 0
+	
+	
+	
+//	var perceptionField = newRectangle 
 
 	var activityType : ActivityType
 	var target : Point2f
+	
+//	var listPerceivedEnvironmentArtifact : 
 
 	// behaviors
 	var seekBehavior : SeekAlgorithm
@@ -81,6 +89,10 @@ agent Person {
 	}
 	
 	on Perception {
+		
+		
+		
+		
 		synchronized (this) {
 			var perceivedObjects = occurrence.perceivedObjects
 			

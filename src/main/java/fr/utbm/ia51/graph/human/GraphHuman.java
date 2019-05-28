@@ -6,6 +6,8 @@ import fr.utbm.ia51.graph.environment.GraphEnvironment;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventType;
@@ -34,12 +36,12 @@ public class GraphHuman extends StackPane {
 	private Circle head = new Circle();
 	private Circle selectionCircle = new Circle();
 	private Circle lefteye, righteye;
-	private Label nameLabel;
+	private Label coordinatesLabel;
 	private SimpleBooleanProperty isSelected = new SimpleBooleanProperty(false);
 	private GraphInformationWindow infoWindow;
 	private UUID uuid;
-	
 	private ActivityToolTip activityDesired;
+	private Rectangle viewField;
 	
 	//Add position 
 	
@@ -49,6 +51,8 @@ public class GraphHuman extends StackPane {
 
 		super();
 		this.setStyle("-fx-border-color : red");
+		
+		
 		this.environment = environment;
 		this.setTranslateX(x);
 		this.setTranslateY(y);
@@ -70,20 +74,18 @@ public class GraphHuman extends StackPane {
 		this.righteye.translateYProperty().bind(head.translateXProperty().add(3*sizeRatioHead));
 		
 			
+		
+		this.viewField = new Rectangle(head.getRadius()*8, head.getRadius()*8);
+		this.viewField.setFill(new Color(0,1,0,0.50));
 //		this.arms = new Rectangle(x-4,y-4,18*sizeRatioHead,6*sizeRatioHead);
 //		this.arms.setFill(Color.GREEN);
 		
-		this.nameLabel=new Label();
-		this.nameLabel.translateXProperty().bind(head.translateXProperty().subtract(head.getRadius()/2));
-		this.nameLabel.translateYProperty().bind(head.translateYProperty().subtract((head.getRadius()+5)*sizeRatioHead));
-//		this.nameLabel.setMaxWidth(arms.getWidth());
-//		this.nameLabel.setMaxHeight(arms.getHeight());
+		this.coordinatesLabel=new Label();
 		
-		if(name!=null) 
-			this.nameLabel.setText("Gudule");
-			
-		this.nameLabel.setText(name);
-		this.nameLabel.setFont(new Font(sizeRatioHead*4));
+//		this.coordinatesLabel.textProperty().bind(Bindings.createStringBinding(
+//				()->"x="+this.boundsInParentProperty().getValue().getMaxX()/2+" y="+this.boundsInParentProperty().getValue().getMaxY()/2,this.boundsInParentProperty(),this.boundsInParentProperty()));
+		this.coordinatesLabel.setFont(new Font(sizeRatioHead*5));
+		this.coordinatesLabel.setTranslateY(this.head.getRadius()*-2);
 	
 		
 		//Management of information view when clicking on the human head
@@ -126,41 +128,47 @@ public class GraphHuman extends StackPane {
 		this.activityDesired.rotateProperty().bind(this.rotateProperty().multiply(-1));
 		this.activityDesired.setTranslateX(5);
 		this.activityDesired.setTranslateY(-30);
+		this.activityDesired.setVisible(false);
 		
 		
 		this.humanBody = new StackPane();
-		this.humanBody.setStyle("-fx-border-color : pink");
 //		this.humanBody.getChildren().addAll(arms,selectionCircle,head,lefteye,righteye);
 		this.humanBody.getChildren().addAll(selectionCircle,head,lefteye,righteye);
-		this.getChildren().addAll(this.humanBody, activityDesired);
-		this.setStyle("-fx-border-color : blue");
+		this.getChildren().addAll(this.viewField,this.coordinatesLabel,this.humanBody, activityDesired);
+//		this.setStyle("-fx-border-color : blue");
 		//this.environment.getChildren().add(activityDesired);
 		
 	}
 	
 	
-	public RotateTransition rotateGraph(double angle,double speed) {
-		RotateTransition rotation = new RotateTransition(Duration.millis(1000/speed));
-		rotation.setFromAngle(this.head.getRotate());
-		rotation.setToAngle(angle);
-		return rotation;
-	}
-	
-	public TranslateTransition translateGraph(double x, double y, double speed) {
-		
-		TranslateTransition translation = new TranslateTransition(Duration.millis((3000/speed)));
-		translation.setFromX(this.head.getCenterX());
-		translation.setFromY(this.head.getCenterY());
-		translation.setToX(x);
-		translation.setToY(y);
-		
-		return translation;
-	}
+//	public RotateTransition rotateGraph(double angle,double speed) {
+//		RotateTransition rotation = new RotateTransition(Duration.millis(1000/speed));
+//		rotation.setFromAngle(this.head.getRotate());
+//		rotation.setToAngle(angle);
+//		return rotation;
+//	}
+//	
+//	public TranslateTransition translateGraph(double x, double y, double speed) {
+//		
+//		TranslateTransition translation = new TranslateTransition(Duration.millis((3000/speed)));
+//		translation.setFromX(this.head.getCenterX());
+//		translation.setFromY(this.head.getCenterY());
+//		translation.setToX(x);
+//		translation.setToY(y);
+//		
+//		return translation;
+//	}
 	
 	
 	public void moveTo(double x,double y, double speed) {
 		this.setTranslateX(x);
 		this.setTranslateY(y);
+		
+		
+		Platform.runLater(()->{
+			this.coordinatesLabel.setText("x="+(int)this.getTranslateX()+"y="+(int)this.getTranslateY());
+		});
+
 		
 	}
 
@@ -175,11 +183,15 @@ public class GraphHuman extends StackPane {
 	}
 	
 	public double getX() {
-		return this.getTranslateX();
+		return this.getBoundsInParent().getMaxX()/2;
 	}
 	
 	public double getY() {
-		return this.getTranslateY();
+		return this.getBoundsInParent().getMaxY()/2;
+	}
+	
+	public GraphEnvironment getGraphEnvironment(){
+		return this.environment;
 	}
 	
 //	

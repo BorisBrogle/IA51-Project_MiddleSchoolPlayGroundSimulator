@@ -1,11 +1,11 @@
 package fr.utbm.ia51.graph.environment;
 
+import fr.utbm.ia51.graph.human.GraphHuman;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 
-public class SoccerField extends StackPane{
+public class SoccerField extends EnvironmentEntity{
 	
 	private ImageView soccerField;
 	private Image fieldImage;
@@ -21,10 +21,21 @@ public class SoccerField extends StackPane{
 		soccerField.setFitWidth(width);
 		soccerField.setPreserveRatio(true);
        
-        this.setStyle("-fx-border-color : red");
+//        this.setStyle("-fx-border-color : red");
       
         this.setMaxSize(this.soccerField.getFitWidth(), this.soccerField.getFitHeight());
         
         this.getChildren().addAll(soccerField);
+	}
+	
+	public Rectangle getArea() {
+		return new Rectangle(this.getTranslateX(),this.getTranslateY(),this.getWidth(),this.getHeight());
+		
+	}
+	
+	public boolean intersect(GraphHuman g) {
+		if(this.getArea().intersects(g.getLayoutBounds()))
+			return true;
+		return false;
 	}
 }

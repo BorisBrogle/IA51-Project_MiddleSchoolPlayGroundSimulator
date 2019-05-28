@@ -1,10 +1,12 @@
 package fr.utbm.ia51.graph.environment;
 
+
+import fr.utbm.ia51.graph.human.GraphHuman;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 
-public class BasketCourt extends StackPane{
+public class BasketCourt extends EnvironmentEntity{
 	
 	private ImageView basketCourt;
 	private Image fieldImage;
@@ -20,10 +22,24 @@ public class BasketCourt extends StackPane{
 		basketCourt.setFitWidth(width);
 		basketCourt.setPreserveRatio(true);
        
-        this.setStyle("-fx-border-color : red");
+//        this.setStyle("-fx-border-color : red");
       
         this.setMaxSize(this.basketCourt.getFitWidth(), this.basketCourt.getFitHeight());
         
         this.getChildren().addAll(basketCourt);
 	}
+	
+	
+	public Rectangle getArea() {
+		return new Rectangle(this.getTranslateX(),this.getTranslateY(),this.getWidth(),this.getHeight());
+	}
+	
+	public boolean intersect(GraphHuman g) {
+		if(this.getArea().intersects(g.getLayoutBounds()))
+			return true;
+		return false;
+	}
+
+
+
 }
