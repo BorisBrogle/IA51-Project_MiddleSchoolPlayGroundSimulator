@@ -1,10 +1,11 @@
 package fr.utbm.ia51.graph.environment;
 
+import fr.utbm.ia51.graph.human.GraphHuman;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 
-public class ClassLine extends StackPane{
+public class ClassLine extends EnvironmentEntity{
 	
 	private ImageView classline;
 	private Image fieldImage;
@@ -24,6 +25,16 @@ public class ClassLine extends StackPane{
         this.setStyle("-fx-border-color : pink");
         
         this.getChildren().addAll(classline);
+	}
+	public Rectangle getArea() {
+		return new Rectangle(this.getTranslateX(),this.getTranslateY(),this.getWidth(),this.getHeight());
+		
+	}
+	
+	public boolean intersect(GraphHuman g) {
+		if(this.getArea().intersects(g.getLayoutBounds()))
+			return true;
+		return false;
 	}
 }
 

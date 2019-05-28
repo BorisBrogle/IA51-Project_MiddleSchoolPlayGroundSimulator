@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.concurrent.CountDownLatch;
 
 import fr.utbm.ia51.boot.Boot;
-import fr.utbm.ia51.boot.BootLauncher;
 import fr.utbm.ia51.graph.environment.GraphEnvironment;
 import fr.utbm.ia51.graph.human.GraphHuman;
 import io.sarl.bootstrap.SRE;
@@ -75,6 +74,10 @@ public class GUI extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+    @Override
+    public void stop() throws Exception {
+    	
     }
     
 

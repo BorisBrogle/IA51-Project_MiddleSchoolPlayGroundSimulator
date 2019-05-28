@@ -1,13 +1,13 @@
 package fr.utbm.ia51.graph.environment;
 
+import fr.utbm.ia51.graph.human.GraphHuman;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 
-public class Library extends StackPane{
+public class Library extends EnvironmentEntity{
 	
 	private ImageView book;
 	private Image fieldImage;
@@ -28,9 +28,20 @@ public class Library extends StackPane{
         
 
         this.setMaxSize(this.building.getWidth(), this.building.getHeight());
-        this.setStyle("-fx-border-color : pink");
+//        this.setStyle("-fx-border-color : pink");
         
         this.getChildren().addAll(building, book);
+	}
+	
+	public Rectangle getArea() {
+		return new Rectangle(this.getTranslateX(),this.getTranslateY(),this.getWidth(),this.getHeight());
+		
+	}
+	
+	public boolean intersect(GraphHuman g) {
+		if(this.getArea().intersects(g.getLayoutBounds()))
+			return true;
+		return false;
 	}
 }
 

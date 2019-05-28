@@ -1,10 +1,11 @@
 package fr.utbm.ia51.graph.environment;
 
+import fr.utbm.ia51.graph.human.GraphHuman;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 
-public class Forest extends StackPane{
+public class Forest extends EnvironmentEntity{
 	
 	private ImageView forest;
 	private Image fieldImage;
@@ -21,9 +22,20 @@ public class Forest extends StackPane{
         forest.setPreserveRatio(true);
 
         this.setMaxSize(this.forest.getFitWidth(), this.forest.getFitHeight());
-        this.setStyle("-fx-border-color : pink");
+//        this.setStyle("-fx-border-color : pink");
         
         this.getChildren().addAll(forest);
+	}
+	
+	public Rectangle getArea() {
+		return new Rectangle(this.getTranslateX(),this.getTranslateY(),this.getWidth(),this.getHeight());
+		
+	}
+	
+	public boolean intersect(GraphHuman g) {
+		if(this.getArea().intersects(g.getLayoutBounds()))
+			return true;
+		return false;
 	}
 }
 
