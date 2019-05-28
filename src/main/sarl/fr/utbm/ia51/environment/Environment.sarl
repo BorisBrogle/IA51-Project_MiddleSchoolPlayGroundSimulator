@@ -4,6 +4,9 @@
 package fr.utbm.ia51.environment
 
 import fr.utbm.ia51.agents.Person
+import fr.utbm.ia51.graph.human.GraphHuman
+import fr.utbm.ia51.tools.Point2f
+import fr.utbm.ia51.tools.Vector2f
 import io.sarl.core.AgentKilled
 import io.sarl.core.AgentSpawned
 import io.sarl.core.ContextJoined
@@ -18,8 +21,6 @@ import io.sarl.core.MemberLeft
 import io.sarl.core.Schedules
 import java.util.LinkedList
 import java.util.UUID
-import java.util.Map
-import fr.utbm.ia51.graph.human.GraphHuman
 
 agent Environment {
 	uses Logging, DefaultContextInteractions, Lifecycle, Schedules
@@ -155,8 +156,19 @@ agent Environment {
 				sendPerception(this.time, e.key.agentId, e.value, e.key.position)
 			}*/
 			influenceList.clear()
+
+			var position : Point2f = new Point2f
+			var orientation : Vector2f = new Vector2f
+			var linearSpeed : float = 0f
+			var maxLinear : float = 0f
+			var angularSpeed : float = 0f
+			var maxAngular : float = 0f
+			var perceivedObjects = <Point2f>newArrayList
+			
 			info("Sending a perception")
-			emit(new Perception)
+			emit(
+				new Perception(position, orientation, linearSpeed, maxLinear, angularSpeed, maxAngular,
+					perceivedObjects))
 		}
 	}
 	

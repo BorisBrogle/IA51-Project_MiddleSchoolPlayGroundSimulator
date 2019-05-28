@@ -4,9 +4,35 @@
 package fr.utbm.ia51.environment
 
 import fr.utbm.ia51.agents.Person
+import fr.utbm.ia51.tools.Point2f
+import fr.utbm.ia51.tools.Vector2f
+import java.util.ArrayList
+
 
 // Perception sent to the agents
-event Perception
+event Perception {
+	val position : Point2f
+	val orientation : Vector2f
+	val currentLinearSpeed : float
+	val maxLinear : float
+	val currentAngularSpeed : float
+	val maxAngular : float
+
+	// liste des points les plus proches des objets perçus par l'agent (dans son champ de vision)
+	val perceivedObjects = <Point2f>newArrayList
+
+	new(position : Point2f, orientation : Vector2f, currentLinearSpeed : float, maxLinear : float,
+		currentAngularSpeed : float,
+		maxAngular : float, perceivedObjects : ArrayList<Point2f>) {
+		this.position = position
+		this.orientation = orientation
+		this.currentLinearSpeed = currentLinearSpeed
+		this.maxLinear = maxLinear
+		this.currentAngularSpeed = currentAngularSpeed
+		this.maxAngular = maxAngular
+	}
+	
+}
 
 // Influence sent to the environment by an agent
 event Influence {

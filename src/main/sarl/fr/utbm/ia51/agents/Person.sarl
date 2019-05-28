@@ -82,65 +82,44 @@ agent Person {
 	
 	on Perception {
 		synchronized (this) {
+			var perceivedObjects = occurrence.perceivedObjects
+			
 			if (target !== null) {
-				// run the seek behaviour
+				// run the seek behavior
 				this.seekBehavior.run(
-					new Point2f,
-					0f,
-					0f,
-					new Point2f
-
-				/* 
-				 * occurrence.body.position,
-				 * occurrence.body.currentLinearSpeed,
-				 * occurrence.body.maxLinear,
-				 * target.position
-				 */
+					 occurrence.position,
+					 occurrence.currentLinearSpeed,
+					 occurrence.maxLinear,
+					 target
 				).emitInfluence
 			} else {
-				// doNothing
-				// // run the wander behaviour
+				// run the wander behavior
 				this.wanderBehavior.run(
-					new Point2f,
-					new Vector2f,
-					0f,
-					0f,
-					0f,
-					0f
-
-				/* 
-				 * occurrence.body.position,
-				 * occurrence.body.direction,
-				 * occurrence.body.currentLinearSpeed,
-				 * occurrence.body.maxLinear,
-				 * occurrence.body.currentAngularSpeed,
-				 * occurrence.body.maxAngular
-				 */
+					 occurrence.position,
+					 occurrence.orientation,
+					 occurrence.currentLinearSpeed,
+					 occurrence.maxLinear,
+					 occurrence.currentAngularSpeed,
+					 occurrence.maxAngular
 				).emitInfluence
 			}
 
 			if (bellRings) {
 				info("Sending an influence")
 				this.seekBehavior.run(
-					new Point2f,
-					0f,
-					0f,
-					new Point2f
-
-				/* 
-				 * occurrence.body.position,
-				 * occurrence.body.currentLinearSpeed,
-				 * occurrence.body.maxLinear,
-			 * target.position*/
-			).emitInfluence
-			/*
-			b.unregisterBehavior
-			b = new goToClassBehavior(this)
-			b.registerBehavior
-			*/
+				 	occurrence.position,
+				 	occurrence.currentLinearSpeed,
+				 	occurrence.maxLinear,
+			 		target
+				).emitInfluence
+				
+				/* behavior example
+				b.unregisterBehavior
+				b = new goToClassBehavior(this)
+				b.registerBehavior
+				*/
+			}
 		}
-		}
-	
 	}
 	
 	on ActionToPerson {
