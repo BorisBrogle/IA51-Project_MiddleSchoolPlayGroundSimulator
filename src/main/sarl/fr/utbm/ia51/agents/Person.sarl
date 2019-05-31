@@ -7,14 +7,14 @@ import fr.utbm.ia51.agents.behaviors.KinematicSeekAlgorithm
 import fr.utbm.ia51.agents.behaviors.KinematicWanderAlgorithm
 import fr.utbm.ia51.agents.behaviors.SeekAlgorithm
 import fr.utbm.ia51.agents.behaviors.WanderAlgorithm
+import fr.utbm.ia51.agents.motion.FleeAlgorithm
+import fr.utbm.ia51.agents.motion.KinematicFleeAlgorithm
 import fr.utbm.ia51.environment.ActionToPerson
 import fr.utbm.ia51.environment.Influence
 import fr.utbm.ia51.environment.Perception
-
 import fr.utbm.ia51.graph.human.ActivityType
 import fr.utbm.ia51.tools.MotionAlgorithmOutput
 import fr.utbm.ia51.tools.Point2f
-import fr.utbm.ia51.tools.Vector2f
 import io.sarl.core.AgentKilled
 import io.sarl.core.AgentSpawned
 import io.sarl.core.ContextJoined
@@ -26,7 +26,6 @@ import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
 
-
 // Person = corps, behavior = tete en gros
 agent Person {
 	uses Logging, DefaultContextInteractions
@@ -34,22 +33,25 @@ agent Person {
 	var posX : double = 0
 	var posY : double = 0
 	
-	
-	
 //	var perceptionField = newRectangle 
 
+	// the activity that the agent wants to perform
 	var activityType : ActivityType
+	
+	// his target which depends on the his activity
 	var target : Point2f
+
+	// the maximum distance between the agent and its target for him to stop moving
+	var maxTargetDistance = 10f
 	
 //	var listPerceivedEnvironmentArtifact : 
 
 	// behaviors
 	var seekBehavior : SeekAlgorithm
 	var wanderBehavior : WanderAlgorithm
+	var fleeBehavior : FleeAlgorithm
 	// var b : Behavior
 	
-	var bellRings : boolean = false
-
 	on Initialize {
 		synchronized (this) {
 			// Event trigger before the agent begin to live or to be used.
@@ -64,6 +66,7 @@ agent Person {
 
 			this.seekBehavior = new KinematicSeekAlgorithm
 			this.wanderBehavior = new KinematicWanderAlgorithm
+			this.fleeBehavior = new KinematicFleeAlgorithm
 		
 			// b = new NormalBehavior(this)
 			// b.registerBehavior
@@ -89,47 +92,62 @@ agent Person {
 	}
 	
 	on Perception {
-		
-		
-		
-		
 		synchronized (this) {
 			var perceivedObjects = occurrence.perceivedObjects
-			
-			if (target !== null) {
-				// run the seek behavior
-				this.seekBehavior.run(
-					 occurrence.position,
-					 occurrence.currentLinearSpeed,
-					 occurrence.maxLinear,
-					 target
-				).emitInfluence
-			} else {
-				// run the wander behavior
-				this.wanderBehavior.run(
-					 occurrence.position,
-					 occurrence.orientation,
-					 occurrence.currentLinearSpeed,
-					 occurrence.maxLinear,
-					 occurrence.currentAngularSpeed,
-					 occurrence.maxAngular
-				).emitInfluence
-			}
 
-			if (bellRings) {
-				info("Sending an influence")
-				this.seekBehavior.run(
-				 	occurrence.position,
-				 	occurrence.currentLinearSpeed,
-				 	occurrence.maxLinear,
-			 		target
-				).emitInfluence
+			var targetMotionOutput = new MotionAlgorithmOutput
+			var fleeMotionOutput = new MotionAlgorithmOutput
+
+			// if the bell rings, setting the target to the classroom position
+			if (occurrence.bellRings) {
+				//TODO
+				this.target.set(0f, 0f)
+			}
+			
+			if (occurrence.position.distance(target) > this.maxTargetDistance) {
+				if (target !== null) {
+					
+					// run the seek behavior
+					targetMotionOutput = this.seekBehavior.run(
+						 occurrence.position,
+						 occurrence.currentLinearSpeed,
+						 occurrence.maxLinear,
+						 target
+					)
+				} else {
+					// run the wander behavior
+					targetMotionOutput = this.wanderBehavior.run(
+						 occurrence.position,
+						 occurrence.orientation,
+						 occurrence.currentLinearSpeed,
+						 occurrence.maxLinear,
+						 occurrence.currentAngularSpeed,
+						 occurrence.maxAngular
+					)
+				}
 				
-				/* behavior example
-				b.unregisterBehavior
-				b = new goToClassBehavior(this)
-				b.registerBehavior
-				*/
+				for (object : perceivedObjects) {
+					// run the flee behavior
+					var tmpFleeMotionOutput = this.fleeBehavior.run(
+						occurrence.position,
+						occurrence.currentLinearSpeed,
+						occurrence.maxLinear,
+						object
+					)
+					//TODO, check if it's the right way to add all the flee motions
+					// adding every repulsive vector to the flee output
+					fleeMotionOutput.linear += tmpFleeMotionOutput.linear 
+				}
+
+				//TODO, check if it's the right way to add all the motions together
+				// taking the repulsive behavior into account
+				targetMotionOutput.linear += fleeMotionOutput.linear
+				
+				// emitting an influence with the wanted motion
+				emitInfluence(targetMotionOutput)
+			} else {
+				// emitting an influence with no motion in case we reached the target
+				emitInfluence(new MotionAlgorithmOutput)
 			}
 		}
 	}
