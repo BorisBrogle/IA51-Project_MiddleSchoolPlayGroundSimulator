@@ -1,6 +1,7 @@
 package fr.utbm.ia51.graph.environment;
 
 
+import fr.utbm.ia51.graph.human.ActivityType;
 import fr.utbm.ia51.graph.human.GraphHuman;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,6 +11,7 @@ public class BasketCourt extends EnvironmentEntity{
 	
 	private ImageView basketCourt;
 	private Image fieldImage;
+	private ActivityType BASKETBALL;
 		
 	
 	public BasketCourt(int width) {

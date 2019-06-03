@@ -12,8 +12,7 @@ agent Boot {
 	uses Logging, Lifecycle
 
 	on Initialize {
-		
-//		Thread thread = new Thread(){
+		//		Thread thread = new Thread(){
 //			@Override
 //			 void run(){
 //				Application.launch(GUI.class);

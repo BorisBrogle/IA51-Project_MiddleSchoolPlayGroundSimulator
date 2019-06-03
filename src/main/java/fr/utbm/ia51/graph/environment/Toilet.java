@@ -1,5 +1,6 @@
 package fr.utbm.ia51.graph.environment;
 
+import fr.utbm.ia51.graph.human.ActivityType;
 import fr.utbm.ia51.graph.human.GraphHuman;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,6 +13,7 @@ public class Toilet extends EnvironmentEntity{
 	private ImageView toiletIcon;
 	private Image fieldImage;
 	private Rectangle building;
+	private ActivityType TOILET;
 		
 	
 	public Toilet(int width) {

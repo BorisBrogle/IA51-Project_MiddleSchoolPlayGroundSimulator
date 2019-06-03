@@ -10,6 +10,7 @@ public class SoccerField extends EnvironmentEntity{
 	
 	private ImageView soccerField;
 	private Image fieldImage;
+	private ActivityType SOCCER;
 		
 	
 	public SoccerField(int width) {

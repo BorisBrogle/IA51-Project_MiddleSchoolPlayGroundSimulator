@@ -1,12 +1,12 @@
 package fr.utbm.ia51;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.CountDownLatch;
 
 import fr.utbm.ia51.boot.Boot;
 import fr.utbm.ia51.graph.environment.GraphEnvironment;
 import fr.utbm.ia51.graph.human.GraphHuman;
+import fr.utbm.ia51.tools.PseudoRandomGenerator;
 import io.sarl.bootstrap.SRE;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -16,7 +16,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
-	
 	public static final CountDownLatch latch = new CountDownLatch(1);
 	public static GUI gui = null;
 	public LinkedList<GraphHuman> graphHumans = new LinkedList<>();

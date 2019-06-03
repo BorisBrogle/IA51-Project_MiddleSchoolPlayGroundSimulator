@@ -3,6 +3,7 @@
  */
 package fr.utbm.ia51.agents
 
+import fr.utbm.ia51.Globals
 import fr.utbm.ia51.agents.behaviors.KinematicSeekAlgorithm
 import fr.utbm.ia51.agents.behaviors.KinematicWanderAlgorithm
 import fr.utbm.ia51.agents.behaviors.SeekAlgorithm
@@ -75,6 +76,7 @@ agent Person {
 		
 		info("The agent was started.")
 
+			this.chooseRandomActivity();
 
 		//TODO à remplacer par le random 
 		this.activityType = ActivityType.SOCCER
@@ -90,6 +92,16 @@ agent Person {
 		
 			// b = new NormalBehavior(this)
 			// b.registerBehavior
+			
+			info(this.activityType);
+		}
+	}
+	
+	def chooseRandomActivity() {
+		synchronized (this) {
+			var enumValues = ActivityType.values()
+			var activity = Globals::randomGenerator.getRandom(0, enumValues.length)
+			this.activityType = enumValues.get(activity);
 		}
 	}
 	
