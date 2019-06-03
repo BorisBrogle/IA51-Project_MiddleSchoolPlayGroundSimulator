@@ -3,6 +3,7 @@
  */
 package fr.utbm.ia51.agents
 
+import fr.utbm.ia51.Globals
 import fr.utbm.ia51.agents.behaviors.KinematicSeekAlgorithm
 import fr.utbm.ia51.agents.behaviors.KinematicWanderAlgorithm
 import fr.utbm.ia51.agents.behaviors.SeekAlgorithm
@@ -10,11 +11,9 @@ import fr.utbm.ia51.agents.behaviors.WanderAlgorithm
 import fr.utbm.ia51.environment.ActionToPerson
 import fr.utbm.ia51.environment.Influence
 import fr.utbm.ia51.environment.Perception
-
 import fr.utbm.ia51.graph.human.ActivityType
 import fr.utbm.ia51.tools.MotionAlgorithmOutput
 import fr.utbm.ia51.tools.Point2f
-import fr.utbm.ia51.tools.Vector2f
 import io.sarl.core.AgentKilled
 import io.sarl.core.AgentSpawned
 import io.sarl.core.ContextJoined
@@ -25,7 +24,6 @@ import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
-
 
 // Person = corps, behavior = tete en gros
 agent Person {
@@ -68,6 +66,10 @@ agent Person {
 			// b = new NormalBehavior(this)
 			// b.registerBehavior
 		}
+	}
+	
+	def chooseRandomActivity() {
+		
 	}
 	
 	//TODO 
@@ -136,6 +138,7 @@ agent Person {
 	
 	on ActionToPerson {
 		synchronized (this) {
+			info(Globals::randomGenerator.getRandom(1, 3))
 			var x = occurrence.newPosX
 			var y = occurrence.newPosY
 			info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", this.posX, this.posY, x, y)

@@ -1,6 +1,8 @@
 package fr.utbm.ia51.graph.environment;
 
+import fr.utbm.ia51.GUI;
 import fr.utbm.ia51.tools.Point2f;
+import fr.utbm.ia51.tools.PseudoRandomGenerator;
 import javafx.scene.layout.StackPane;
 
 public class EnvironmentEntity extends StackPane {
@@ -10,7 +12,6 @@ public class EnvironmentEntity extends StackPane {
 	}
 	
 	public Point2f getNearestPointInEntity(Point2f point) {
-		
 		double xmin = this.getBoundsInLocal().getMinX();
 		double ymin = this.getBoundsInLocal().getMinY();
 		double xmax = this.getBoundsInLocal().getMaxX();

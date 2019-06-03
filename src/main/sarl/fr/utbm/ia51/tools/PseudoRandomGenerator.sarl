@@ -1,0 +1,33 @@
+/** 
+ * 
+ */
+package fr.utbm.ia51.tools
+
+import java.util.Random
+
+class PseudoRandomGenerator {	
+	var seed : long;
+	var M = 42949672L;
+	var generator: Random;
+	
+	new() {
+		seed = Math.floor(Math.random() * M) as Long;
+		generator = new Random(seed);
+		printSeed();
+	}
+	
+	new(_seed: double) {
+		seed = seed;
+		generator = new Random(seed);
+		printSeed();
+	}
+	
+	def printSeed() {
+		println("The random generator seed is: "+seed);
+	}
+	
+	def getRandom(min :int, max :int) {
+		return generator.nextInt(max-min+1)+min;
+	}
+	
+}
