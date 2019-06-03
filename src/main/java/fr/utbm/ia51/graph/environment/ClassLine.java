@@ -1,5 +1,6 @@
 package fr.utbm.ia51.graph.environment;
 
+import fr.utbm.ia51.graph.human.ActivityType;
 import fr.utbm.ia51.graph.human.GraphHuman;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -9,6 +10,7 @@ public class ClassLine extends EnvironmentEntity{
 	
 	private ImageView classline;
 	private Image fieldImage;
+	private ActivityType CLASSLINE;
 		
 	
 	public ClassLine(int width) {
