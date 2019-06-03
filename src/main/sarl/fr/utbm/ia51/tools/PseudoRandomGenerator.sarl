@@ -11,19 +11,19 @@ class PseudoRandomGenerator {
 	var generator: Random;
 	
 	new() {
-		seed = Math.floor(Math.random() * M) as Long;
+		this.seed = Math.floor(Math.random() * M) as Long;
 		generator = new Random(seed);
 		printSeed();
 	}
 	
-	new(_seed: double) {
-		seed = seed;
+	new(_seed: long) {
+		this.seed = _seed;
 		generator = new Random(seed);
 		printSeed();
 	}
 	
 	def printSeed() {
-		println("The random generator seed is: "+seed);
+		println("The random generator seed is: "+this.seed);
 	}
 	
 	def getRandom(min :int, max :int) {
