@@ -170,7 +170,7 @@ agent Environment {
 			// .Get des artifacts autours 
 			emit(
 				new Perception(position, orientation, linearSpeed, maxLinear, angularSpeed, maxAngular,
-					perceivedObjects))
+					true,perceivedObjects))
 		}
 	}
 	
