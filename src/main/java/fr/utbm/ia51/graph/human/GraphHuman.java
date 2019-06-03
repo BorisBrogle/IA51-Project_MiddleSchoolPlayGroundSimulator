@@ -193,6 +193,19 @@ public class GraphHuman extends StackPane {
 	public GraphEnvironment getGraphEnvironment(){
 		return this.environment;
 	}
+
+
+	public GraphEnvironment getEnvironment() {
+		return environment;
+	}
+
+
+	public void setEnvironment(GraphEnvironment environment) {
+		this.environment = environment;
+	}
+	
+	
+	
 	
 //	
 //	

@@ -21,6 +21,7 @@ import io.sarl.core.MemberLeft
 import io.sarl.core.Schedules
 import java.util.LinkedList
 import java.util.UUID
+import fr.utbm.ia51.graph.environment.GraphEnvironment
 
 agent Environment {
 	uses Logging, DefaultContextInteractions, Lifecycle, Schedules
@@ -58,7 +59,7 @@ agent Environment {
 			var i= 0
 			for (g : listGraphHumans) {
 				this.graphHumans.put(g.uuid, g)
-				spawnAPerson("Person"+i,g)
+				spawnAPerson("Person"+i,g,g.environment)
 				
 			}
 			emit(new RunBeginingOfStep)
@@ -168,15 +169,14 @@ agent Environment {
 			info("Sending a perception")
 			// Faire une for each qui fait pour tous les graphHumans
 			// .Get des artifacts autours 
-			emit(
-				new Perception(position, orientation, linearSpeed, maxLinear, angularSpeed, maxAngular,
-					perceivedObjects))
+			emit(new Perception(position, orientation, linearSpeed, maxLinear, angularSpeed, maxAngular,true,perceivedObjects))
+
 		}
 	}
 	
-	def spawnAPerson(name: String, graphHuman : GraphHuman) {
+	def spawnAPerson(name: String, graphHuman : GraphHuman, environment : GraphEnvironment) {
 		
-		var id = spawnInContextWithID(typeof(Person),graphHuman.uuid,defaultContext,name,graphHuman.x,graphHuman.y)
+		var id = spawnInContextWithID(typeof(Person),graphHuman.uuid,defaultContext,name,graphHuman.x,graphHuman.y,environment)
 		info(name + " spawned")
 		numberOfInfluencesToGet++
 		personIdList.add(id)

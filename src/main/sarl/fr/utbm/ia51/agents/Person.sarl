@@ -12,9 +12,12 @@ import fr.utbm.ia51.agents.motion.KinematicFleeAlgorithm
 import fr.utbm.ia51.environment.ActionToPerson
 import fr.utbm.ia51.environment.Influence
 import fr.utbm.ia51.environment.Perception
+import fr.utbm.ia51.graph.environment.EnvironmentEntity
+import fr.utbm.ia51.graph.environment.GraphEnvironment
 import fr.utbm.ia51.graph.human.ActivityType
 import fr.utbm.ia51.tools.MotionAlgorithmOutput
 import fr.utbm.ia51.tools.Point2f
+import fr.utbm.ia51.tools.Vector2f
 import io.sarl.core.AgentKilled
 import io.sarl.core.AgentSpawned
 import io.sarl.core.ContextJoined
@@ -33,7 +36,8 @@ agent Person {
 	var posX : double = 0
 	var posY : double = 0
 	
-//	var perceptionField = newRectangle 
+	var directionVector : Vector2f
+	//	var perceptionField = newRectangle 
 
 	// the activity that the agent wants to perform
 	var activityType : ActivityType
@@ -44,7 +48,13 @@ agent Person {
 	// the maximum distance between the agent and its target for him to stop moving
 	var maxTargetDistance = 10f
 	
-//	var listPerceivedEnvironmentArtifact : 
+	
+	
+	//the environment in which the agent will live
+	var environment : GraphEnvironment
+	
+//	var listOfAvailableArtifacts = <EnvironmentEntity>newArrayList
+	var listPerceivedtArtifacts = <EnvironmentEntity>newArrayList
 
 	// behaviors
 	var seekBehavior : SeekAlgorithm
@@ -60,13 +70,23 @@ agent Person {
 		
 		posX = occurrence.parameters.get(1) as Double
 		posY = occurrence.parameters.get(2) as Double
+		
+		environment = occurrence.parameters.get(3) as GraphEnvironment 
+		
 		info("The agent was started.")
 
-			this.activityType = ActivityType.FOOTBALL
 
-			this.seekBehavior = new KinematicSeekAlgorithm
-			this.wanderBehavior = new KinematicWanderAlgorithm
-			this.fleeBehavior = new KinematicFleeAlgorithm
+		//TODO à remplacer par le random 
+		this.activityType = ActivityType.SOCCER
+		
+		
+		//Acquisition of target according to 
+		this.target = this.environment.getArtifactToActivity(this.activityType).randomPointInEntity
+
+
+		this.seekBehavior = new KinematicSeekAlgorithm
+		this.wanderBehavior = new KinematicWanderAlgorithm
+		this.fleeBehavior = new KinematicFleeAlgorithm
 		
 			// b = new NormalBehavior(this)
 			// b.registerBehavior

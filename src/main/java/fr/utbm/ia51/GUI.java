@@ -50,7 +50,7 @@ public class GUI extends Application {
     public void start(Stage primaryStage) {
     	
     	
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("High School Playground Simulator");
         Group root = new Group();
         Scene scene = new Scene(root, this.WIDTH, this.HEIGHT, Color.LIGHTGREEN);
         

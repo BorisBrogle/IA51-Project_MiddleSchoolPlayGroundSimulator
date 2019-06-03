@@ -2,6 +2,7 @@ package fr.utbm.ia51.graph.environment;
 
 import java.util.ArrayList;
 
+import fr.utbm.ia51.graph.human.ActivityType;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
@@ -107,5 +108,23 @@ public class GraphEnvironment extends EnvironmentEntity {
 		}
 		return intersectArtifacts;
 		
+	}
+	
+	public EnvironmentEntity getArtifactToActivity(ActivityType activityType) {
+		switch(activityType) {
+			case BASKETBALL: return this.basketCourt;
+			case SOCCER : return this.soccerField;
+			case BENCH : return this.bench;
+			case TOILET : return this.toilet;
+			case FOREST: return this.forest;
+			case CLASSLINE : return this.classline;
+			case LIBRARY : return this.library;
+			case TENNISTABLE : return this.tennisTable;
+		default:
+			return null;
+			
+			
+		}
+
 	}
 }

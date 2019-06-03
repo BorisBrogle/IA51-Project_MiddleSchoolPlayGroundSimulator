@@ -54,7 +54,7 @@ public class ActivityToolTip extends StackPane{
 			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-tennis-table.png");
 			break;
 			
-		case FOOTBALL:
+		case SOCCER:
 			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-football.png");
 			break;
 		
