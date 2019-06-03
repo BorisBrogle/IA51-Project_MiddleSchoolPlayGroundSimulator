@@ -17,21 +17,23 @@ event Perception {
 	val maxLinear : float
 	val currentAngularSpeed : float
 	val maxAngular : float
+	val bellRings : boolean
 
 	// liste des points les plus proches des objets perçus par l'agent (dans son champ de vision)
-	val perceivedObjects = <Point2f>newArrayList
+	var perceivedObjects = <Point2f>newArrayList
 
 	new(position : Point2f, orientation : Vector2f, currentLinearSpeed : float, maxLinear : float,
 		currentAngularSpeed : float,
-		maxAngular : float, perceivedObjects : ArrayList<Point2f>) {
+		maxAngular : float, bellRings: boolean, perceivedObjects : ArrayList<Point2f>) {
 		this.position = position
 		this.orientation = orientation
 		this.currentLinearSpeed = currentLinearSpeed
 		this.maxLinear = maxLinear
 		this.currentAngularSpeed = currentAngularSpeed
 		this.maxAngular = maxAngular
+		this.bellRings = bellRings
+		this.perceivedObjects = perceivedObjects
 	}
-	
 }
 
 // Influence sent to the environment by an agent

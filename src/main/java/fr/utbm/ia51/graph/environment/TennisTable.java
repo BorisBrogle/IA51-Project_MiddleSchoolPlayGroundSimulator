@@ -1,5 +1,6 @@
 package fr.utbm.ia51.graph.environment;
 
+import fr.utbm.ia51.graph.human.ActivityType;
 import fr.utbm.ia51.graph.human.GraphHuman;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -9,6 +10,7 @@ public class TennisTable extends EnvironmentEntity{
 	
 	private ImageView tennisTable;
 	private Image fieldImage;
+	private ActivityType TENNISTABLE;
 		
 	
 	public TennisTable(int width) {
