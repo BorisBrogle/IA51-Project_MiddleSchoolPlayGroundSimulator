@@ -104,7 +104,6 @@ public class EnvironmentEntity extends StackPane {
 
 
 	public Point2f getRandomPointInEntity() {
-		System.out.println("Attributs de bounds " + this.getBoundsInParent());
 		double newX = Globals.randomGenerator.getRandom(this.getBoundsInParent().getMinX(), this.getBoundsInParent().getMaxX());
 		double newY = Globals.randomGenerator.getRandom(this.getBoundsInParent().getMinY(), this.getBoundsInParent().getMaxY());
 
