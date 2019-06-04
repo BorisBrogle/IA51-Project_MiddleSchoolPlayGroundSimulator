@@ -35,7 +35,7 @@ class PseudoRandomGenerator {
 	}
 
 	def getRandom(min : double, max : double) {
-		return (generator.nextFloat() * (max - min)) + min;
+		return (generator.nextDouble() * (max - min)) + min;
 	}
 	
 	def generator() {
