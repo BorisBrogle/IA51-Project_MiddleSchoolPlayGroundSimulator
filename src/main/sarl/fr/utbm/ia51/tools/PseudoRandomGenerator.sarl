@@ -11,7 +11,7 @@ class PseudoRandomGenerator {
 	var generator: Random;
 	
 	new() {
-		this.seed = Math.floor(Math.random() * M) as Long;
+		this.seed = Math.floor(Math.random() * M) as long;
 		generator = new Random(seed);
 		printSeed();
 	}

@@ -102,12 +102,12 @@ agent Environment {
 
 	on Influence {
 		synchronized (this) {
-			info("Got an influence")
+			//info("Got an influence")
 			// this.actions += new MazeChangeQuery(occurrence.source.UUID, occurrence.direction)
 			influenceList.add(occurrence)
 			numberOfInfluencesGot++
 			if (numberOfInfluencesGot > numberOfInfluencesToGet-1) {
-				info("Got all the influences")
+				//info("Got all the influences")
 				numberOfInfluencesGot = 0
 				emit(new RunEndOfStep) // [it == defaultAddress]
 			}
@@ -116,7 +116,7 @@ agent Environment {
 
 	on RunEndOfStep {
 		synchronized (this) {
-			info("The step ends")
+			//info("The step ends")
 			applyInfluences(influenceList)
 			/*
 			// Endogenous behavior: move the pacman from the player's action
@@ -150,7 +150,7 @@ agent Environment {
 
 	on RunBeginingOfStep {
 		synchronized (this) {
-			info("The step begins")
+			//info("The step begins")
 			/*this.actions.clear
 
 			for (e : getPerceptions().entrySet) {
@@ -166,7 +166,7 @@ agent Environment {
 			var maxAngular : float = 0f
 			var perceivedObjects = <Point2f>newArrayList
 			
-			info("Sending a perception")
+			//info("Sending a perception")
 			// Faire une for each qui fait pour tous les graphHumans
 			// .Get des artifacts autours 
 			emit(new Perception(position, orientation, linearSpeed, maxLinear, angularSpeed, maxAngular,true,perceivedObjects))
