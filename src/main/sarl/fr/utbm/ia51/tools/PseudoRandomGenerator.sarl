@@ -31,11 +31,11 @@ class PseudoRandomGenerator {
 	}
 
 	def getRandom(min : float, max : float) {
-		return (generator.nextFloat() % (max - min + 1)) + min;
+		return (generator.nextFloat() * (max - min)) + min;
 	}
 
 	def getRandom(min : double, max : double) {
-		return (generator.nextDouble() % (max - min + 1)) + min;
+		return (generator.nextDouble() * (max - min)) + min;
 	}
 	
 	def generator() {
