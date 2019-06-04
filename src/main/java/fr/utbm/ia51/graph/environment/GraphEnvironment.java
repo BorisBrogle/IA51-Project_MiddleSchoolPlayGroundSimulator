@@ -110,7 +110,7 @@ public class GraphEnvironment extends EnvironmentEntity {
 		
 	}
 	
-	public EnvironmentEntity getArtifactToActivity(ActivityType activityType) {
+	public EnvironmentEntity getArtifactFromActivity(ActivityType activityType) {
 		switch(activityType) {
 			case BASKETBALL: return this.basketCourt;
 			case SOCCER : return this.soccerField;
