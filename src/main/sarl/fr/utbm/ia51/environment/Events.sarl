@@ -7,7 +7,7 @@ import fr.utbm.ia51.agents.Person
 import fr.utbm.ia51.tools.Point2f
 import fr.utbm.ia51.tools.Vector2f
 import java.util.ArrayList
-
+import java.util.UUID
 
 // Perception sent to the agents
 event Perception {
@@ -20,9 +20,9 @@ event Perception {
 	val bellRings : boolean
 
 	// liste des points les plus proches des objets perçus par l'agent (dans son champ de vision)
-	var perceivedObjects = <Point2f>newArrayList
+	val perceivedObjects : ArrayList<Point2f>
 
-	new(position : Point2f, orientation : Vector2f, currentLinearSpeed : float, maxLinear : float,currentAngularSpeed : float,maxAngular : float, bellRings: boolean, perceivedObjects : ArrayList<Point2f>) {
+	new(position : Point2f, orientation : Vector2f, currentLinearSpeed : float, maxLinear : float, currentAngularSpeed : float, maxAngular : float, bellRings: boolean, perceivedObjects : ArrayList<Point2f>) {
 		this.position = position
 		this.orientation = orientation
 		this.currentLinearSpeed = currentLinearSpeed
@@ -38,16 +38,18 @@ event Perception {
 
 // Influence sent to the environment by an agent
 event Influence {
-	val caller : Person
+	val callerID : UUID
 	val time : int
-	val wantedPosX : double
-	val wantedPosY : double
+	val position : Point2f
+	val linear : Vector2f
+	val angular : float
 
-	new(caller : Person, time : int, wantedPosX : double, wantedPosY : double) {
-		this.caller = caller
+	new(callerID : UUID, time : int, position : Point2f, linear : Vector2f, angular : float) {
+		this.callerID = callerID
 		this.time = time
-		this.wantedPosX = wantedPosX
-		this.wantedPosY = wantedPosY
+		this.position = position
+		this.linear = linear
+		this.angular = angular
 	}
 }
 

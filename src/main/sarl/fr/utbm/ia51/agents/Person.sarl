@@ -35,8 +35,7 @@ import io.sarl.core.MemberLeft
 agent Person {
 	uses Logging, DefaultContextInteractions
 	
-	var posX : double = 0
-	var posY : double = 0
+	var position : Point2f
 	
 	var directionVector : Vector2f
 	//	var perceptionField = newRectangle 
@@ -71,8 +70,7 @@ agent Person {
 			// You should put all the initialization statements in this block of code.
 			loggingName = ""+occurrence.parameters.get(0)
 			
-			posX = occurrence.parameters.get(1) as Double
-			posY = occurrence.parameters.get(2) as Double
+			position = new Point2f(occurrence.parameters.get(1) as Double, occurrence.parameters.get(2) as Double)
 			
 			environment = occurrence.parameters.get(3) as GraphEnvironment 
 			
@@ -81,8 +79,8 @@ agent Person {
 			this.activityType = this.activityManager.chooseRandomActivity()
 			info("The agent will do activity "+this.activityType)
 			
-			//Acquisition of target according to 
-			this.target = this.environment.getArtifactToActivity(this.activityType).randomPointInEntity
+			//Acquisition of target according to the Person's activity type
+			this.target = this.environment.getArtifactFromActivity(this.activityType).randomPointInEntity
 	
 	
 			this.seekBehavior = new KinematicSeekAlgorithm
@@ -95,21 +93,21 @@ agent Person {
 		}
 	}
 	
-	//TODO 
 	def updateTarget() {
 		synchronized (this) {
 			this.target = getTarget(this.activityType)
 		}
 	}
 	
-	//TODO
 	def getTarget(at : ActivityType) {
-		new Point2f
+		synchronized (this) {
+			this.environment.getArtifactFromActivity(this.activityType).randomPointInEntity
+		}
 	}
 	
 	def emitInfluence(output: MotionAlgorithmOutput) {
 		synchronized (this) {
-			emit(new Influence(this, 0, this.posX + 0.1, this.posY + 0.1))
+			emit(new Influence(this.ID, 0, this.position, output.linear, output.angular))
 		}
 	}
 	
@@ -122,7 +120,7 @@ agent Person {
 
 			// if the bell rings, setting the target to the classroom position
 			if (occurrence.bellRings) {
-				//TODO
+				//TODO set the right classroom ?
 				this.target.set(0f, 0f)
 			}
 			
@@ -166,21 +164,21 @@ agent Person {
 				targetMotionOutput.linear += fleeMotionOutput.linear
 				
 				// emitting an influence with the wanted motion
-				emitInfluence(targetMotionOutput)
+				this.emitInfluence(targetMotionOutput)
 			} else {
 				// emitting an influence with no motion in case we reached the target
-				emitInfluence(new MotionAlgorithmOutput)
+				this.emitInfluence(new MotionAlgorithmOutput)
 			}
 		}
 	}
 	
 	on ActionToPerson {
 		synchronized (this) {
-			var x = occurrence.newPosX
-			var y = occurrence.newPosY
-			info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", this.posX, this.posY, x, y)
-			this.posX = x
-			this.posY = y
+			var x = occurrence.newPosX as float
+			var y = occurrence.newPosY as float
+			info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", position.x,
+				position.y, x, y)
+			this.position.set(x, y)
 		}
 	}
 
