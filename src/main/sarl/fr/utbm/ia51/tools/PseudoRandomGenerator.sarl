@@ -26,8 +26,19 @@ class PseudoRandomGenerator {
 		println("The random generator seed is: "+this.seed);
 	}
 	
-	def getRandom(min :int, max :int) {
+	def getRandom(min : int, max : int) {
 		return generator.nextInt(max-min+1)+min;
 	}
+
+	def getRandom(min : float, max : float) {
+		return (generator.nextFloat() % (max - min + 1)) + min;
+	}
+
+	def getRandom(min : double, max : double) {
+		return (generator.nextDouble() % (max - min + 1)) + min;
+	}
 	
+	def generator() {
+		return generator;
+	}
 }
