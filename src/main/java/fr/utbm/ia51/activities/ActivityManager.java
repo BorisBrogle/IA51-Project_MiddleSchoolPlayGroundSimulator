@@ -46,7 +46,7 @@ public class ActivityManager {
 	 * Just used to print the different activities and their chances of appearing
 	 */
 	public void printActivitiesAndWeights() {
-		System.out.println("\nPrinting the activity chances:");
+		System.out.println("\n---- Printing the activity chances:");
 		for (HashMap.Entry<ActivityType, Double> entry : activityChances.entrySet()) {
 			ActivityType key = entry.getKey();
 			Double value = entry.getValue();
