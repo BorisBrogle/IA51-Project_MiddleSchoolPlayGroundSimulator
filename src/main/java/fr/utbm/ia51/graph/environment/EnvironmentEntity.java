@@ -1,6 +1,6 @@
 package fr.utbm.ia51.graph.environment;
 
-import fr.utbm.ia51.GUI;
+import fr.utbm.ia51.Globals;
 import fr.utbm.ia51.tools.Point2f;
 import fr.utbm.ia51.tools.Vector2f;
 import javafx.scene.layout.StackPane;
@@ -104,12 +104,10 @@ public class EnvironmentEntity extends StackPane {
 
 
 	public Point2f getRandomPointInEntity() {
-
-		 double newX = Math.random() *((this.getBoundsInLocal().getMaxX()-this.getBoundsInLocal().getMinX())) + this.getBoundsInLocal().getMinX();
-		 double newY = Math.random() *((this.getBoundsInLocal().getMaxY()-this.getBoundsInLocal().getMinY())) + this.getBoundsInLocal().getMinY();
+		double newX = Globals.randomGenerator.getRandom(this.getBoundsInLocal().getMinX(), this.getBoundsInLocal().getMaxX());
+		double newY = Globals.randomGenerator.getRandom(this.getBoundsInLocal().getMinY(), this.getBoundsInLocal().getMaxY());
 
 		return new Point2f(newX,newY);
-
 	}
 
 }
