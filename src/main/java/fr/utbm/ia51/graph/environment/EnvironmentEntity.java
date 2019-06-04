@@ -12,10 +12,10 @@ public class EnvironmentEntity extends StackPane {
 	}
 
 	public Point2f getNearestPointInEntity(Point2f point) {
-		double xmin = this.getBoundsInLocal().getMinX();
-		double ymin = this.getBoundsInLocal().getMinY();
-		double xmax = this.getBoundsInLocal().getMaxX();
-		double ymax = this.getBoundsInLocal().getMaxY();
+		double xmin = this.getBoundsInParent().getMinX();
+		double ymin = this.getBoundsInParent().getMinY();
+		double xmax = this.getBoundsInParent().getMaxX();
+		double ymax = this.getBoundsInParent().getMaxY();
 
 		double x = (double)point.getX();
 		double y = (double)point.getY();
@@ -52,25 +52,25 @@ public class EnvironmentEntity extends StackPane {
 
 		//Cas du coin en haut à gauche
 
-		if(applicationPoint.getX()==this.getBoundsInLocal().getMinX()&&applicationPoint.getY()==this.getBoundsInLocal().getMinY()) {
+		if(applicationPoint.getX()==this.getBoundsInParent().getMinX()&&applicationPoint.getY()==this.getBoundsInParent().getMinY()) {
 			previousPoint = new Point2f(applicationPoint.getX(),applicationPoint.getY()-1);
 			nextPoint = new Point2f(applicationPoint.getX()+1,applicationPoint.getY());
 		}
 		//Cas du coin en haut à droite
 
-		if(applicationPoint.getX()==this.getBoundsInLocal().getMaxX()&&applicationPoint.getY()==this.getBoundsInLocal().getMinY()) {
+		if(applicationPoint.getX()==this.getBoundsInParent().getMaxX()&&applicationPoint.getY()==this.getBoundsInParent().getMinY()) {
 			previousPoint = new Point2f(applicationPoint.getX()-1,applicationPoint.getY());
 			nextPoint = new Point2f(applicationPoint.getX(),applicationPoint.getY()+1);
 		}
 
 		//Cas du coin en bas à droite
-		if(applicationPoint.getX()==this.getBoundsInLocal().getMaxX()&&applicationPoint.getY()==this.getBoundsInLocal().getMaxY()) {
+		if(applicationPoint.getX()==this.getBoundsInParent().getMaxX()&&applicationPoint.getY()==this.getBoundsInParent().getMaxY()) {
 			previousPoint = new Point2f(applicationPoint.getX(),applicationPoint.getY()-1);
 			nextPoint = new Point2f(applicationPoint.getX()-1,applicationPoint.getY());
 		}
 
 		//Cas du coin en bas à gauche
-		if(applicationPoint.getX()==this.getBoundsInLocal().getMinX()&&applicationPoint.getY()==this.getBoundsInLocal().getMaxY()) {
+		if(applicationPoint.getX()==this.getBoundsInParent().getMinX()&&applicationPoint.getY()==this.getBoundsInParent().getMaxY()) {
 			previousPoint = new Point2f(applicationPoint.getX()+1,applicationPoint.getY());
 			nextPoint = new Point2f(applicationPoint.getX(),applicationPoint.getY()-1);
 		}
@@ -80,7 +80,7 @@ public class EnvironmentEntity extends StackPane {
 
 		if(previousPoint.getX()==-1.0) {
 			//Présence du point d'application sur un des côtés verticaux
-			if(applicationPoint.getX()==this.getBoundsInLocal().getMinX() || applicationPoint.getX()==this.getBoundsInLocal().getMaxX()) {
+			if(applicationPoint.getX()==this.getBoundsInParent().getMinX() || applicationPoint.getX()==this.getBoundsInParent().getMaxX()) {
 					previousPoint = new Point2f(applicationPoint.getX(),applicationPoint.getY()+1);
 					nextPoint = new Point2f(applicationPoint.getX(),applicationPoint.getY()-1);
 			}else {
@@ -104,8 +104,9 @@ public class EnvironmentEntity extends StackPane {
 
 
 	public Point2f getRandomPointInEntity() {
-		double newX = Globals.randomGenerator.getRandom(this.getBoundsInLocal().getMinX(), this.getBoundsInLocal().getMaxX());
-		double newY = Globals.randomGenerator.getRandom(this.getBoundsInLocal().getMinY(), this.getBoundsInLocal().getMaxY());
+		System.out.println("Attributs de bounds " + this.getBoundsInParent());
+		double newX = Globals.randomGenerator.getRandom(this.getBoundsInParent().getMinX(), this.getBoundsInParent().getMaxX());
+		double newY = Globals.randomGenerator.getRandom(this.getBoundsInParent().getMinY(), this.getBoundsInParent().getMaxY());
 
 		return new Point2f(newX,newY);
 	}
