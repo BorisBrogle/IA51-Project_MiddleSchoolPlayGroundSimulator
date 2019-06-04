@@ -2,6 +2,8 @@ package fr.utbm.ia51.graph.human;
 
 import java.util.UUID;
 
+import fr.utbm.ia51.activities.ActivityToolTip;
+import fr.utbm.ia51.activities.ActivityType;
 import fr.utbm.ia51.graph.environment.GraphEnvironment;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;

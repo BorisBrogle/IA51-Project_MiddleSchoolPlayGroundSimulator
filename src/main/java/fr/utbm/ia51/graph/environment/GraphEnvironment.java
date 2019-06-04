@@ -2,7 +2,7 @@ package fr.utbm.ia51.graph.environment;
 
 import java.util.ArrayList;
 
-import fr.utbm.ia51.graph.human.ActivityType;
+import fr.utbm.ia51.activities.ActivityType;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;

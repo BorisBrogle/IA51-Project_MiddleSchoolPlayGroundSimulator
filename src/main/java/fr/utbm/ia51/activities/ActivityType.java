@@ -1,4 +1,4 @@
-package fr.utbm.ia51.graph.human;
+package fr.utbm.ia51.activities;
 
 public enum ActivityType {
 	TENNISTABLE,

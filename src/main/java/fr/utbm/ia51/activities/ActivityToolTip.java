@@ -1,4 +1,4 @@
-package fr.utbm.ia51.graph.human;
+package fr.utbm.ia51.activities;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.image.Image;

@@ -4,6 +4,8 @@
 package fr.utbm.ia51.agents
 
 import fr.utbm.ia51.Globals
+import fr.utbm.ia51.activities.ActivityManager
+import fr.utbm.ia51.activities.ActivityType
 import fr.utbm.ia51.agents.behaviors.KinematicSeekAlgorithm
 import fr.utbm.ia51.agents.behaviors.KinematicWanderAlgorithm
 import fr.utbm.ia51.agents.behaviors.SeekAlgorithm
@@ -15,7 +17,6 @@ import fr.utbm.ia51.environment.Influence
 import fr.utbm.ia51.environment.Perception
 import fr.utbm.ia51.graph.environment.EnvironmentEntity
 import fr.utbm.ia51.graph.environment.GraphEnvironment
-import fr.utbm.ia51.graph.human.ActivityType
 import fr.utbm.ia51.tools.MotionAlgorithmOutput
 import fr.utbm.ia51.tools.Point2f
 import fr.utbm.ia51.tools.Vector2f
@@ -42,6 +43,7 @@ agent Person {
 
 	// the activity that the agent wants to perform
 	var activityType : ActivityType
+	var activityManager = new ActivityManager();
 	
 	// his target which depends on the his activity
 	var target : Point2f
@@ -76,8 +78,8 @@ agent Person {
 			
 			info("The agent was started.")
 	
-			this.chooseRandomActivity();
-			info(this.activityType);
+			this.activityType = this.activityManager.chooseRandomActivity()
+			info("The agent will do activity "+this.activityType)
 			
 			//Acquisition of target according to 
 			this.target = this.environment.getArtifactToActivity(this.activityType).randomPointInEntity
@@ -90,15 +92,6 @@ agent Person {
 				// b = new NormalBehavior(this)
 				// b.registerBehavior
 				
-			info(this.activityType);
-		}
-	}
-	
-	def chooseRandomActivity() {
-		synchronized (this) {
-			var enumValues = ActivityType.values()
-			var activity = Globals::randomGenerator.getRandom(0, enumValues.length)
-			this.activityType = enumValues.get(activity);
 		}
 	}
 	
