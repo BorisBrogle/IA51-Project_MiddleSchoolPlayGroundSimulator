@@ -76,7 +76,7 @@ agent Person {
 			
 			info("The agent was started.")
 	
-			this.activityType = this.activityManager.chooseRandomActivity()
+			this.activityType = this.activityManager.chooseActivity()
 			info("The agent will do activity "+this.activityType)
 			
 			//Acquisition of target according to the Person's activity type
@@ -176,8 +176,7 @@ agent Person {
 		synchronized (this) {
 			var x = occurrence.newPosX as float
 			var y = occurrence.newPosY as float
-			info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", position.x,
-				position.y, x, y)
+			// info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", position.x, position.y, x, y)
 			this.position.set(x, y)
 		}
 	}
