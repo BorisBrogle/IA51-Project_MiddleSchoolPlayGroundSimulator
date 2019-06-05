@@ -171,11 +171,11 @@ public class GraphHuman extends StackPane {
 	}
 	
 	public double getX() {
-		return this.getBoundsInParent().getMaxX()/2;
+		return (this.getBoundsInParent().getMaxX() - (this.getBoundsInParent().getMaxX() - this.getBoundsInParent().getMinX())/2);
 	}
 	
 	public double getY() {
-		return this.getBoundsInParent().getMaxY()/2;
+		return (this.getBoundsInParent().getMaxY() - (this.getBoundsInParent().getMaxY() - this.getBoundsInParent().getMinY())/2);
 	}
 	
 	public Rectangle getViewField() {

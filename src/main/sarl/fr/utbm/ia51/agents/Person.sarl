@@ -121,14 +121,15 @@ agent Person {
 			if (occurrence.bellRings) {
 				// TODO set the right classroom ?
 				setActivity(ActivityType.CLASSLINE)
+				info("The agent will go back to the CLASSLINE")
 			}
-			info("this position: " + this.position + ", occurrence position: " + occurrence.position)
-			if (this.position.distance(target) > this.maxTargetDistance) {
+
+			if (occurrence.position.distance(target) > this.maxTargetDistance) {
 				if (this.target !== null) {
 					// run the seek behavior
 					targetMotionOutput = this.seekBehavior.run(
 						 // TODO occurrence.position,
-						this.position,
+						occurrence.position,
 						occurrence.currentLinearSpeed,
 						occurrence.maxLinear,
 						this.target
@@ -137,7 +138,7 @@ agent Person {
 					// run the wander behavior
 				targetMotionOutput = this.wanderBehavior.run(
 						// TODO occurrence.position,
-						this.position,
+						occurrence.position,
 						occurrence.orientation,
 						occurrence.currentLinearSpeed,
 						occurrence.maxLinear,
@@ -150,7 +151,7 @@ agent Person {
 					// run the flee behavior
 				var tmpFleeMotionOutput = this.fleeBehavior.run(
 						// TODO occurrence.position,
-						this.position,
+						occurrence.position,
 						occurrence.currentLinearSpeed,
 						occurrence.maxLinear,
 						object
