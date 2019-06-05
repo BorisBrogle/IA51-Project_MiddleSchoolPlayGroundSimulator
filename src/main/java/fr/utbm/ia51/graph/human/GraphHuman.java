@@ -178,6 +178,10 @@ public class GraphHuman extends StackPane {
 		return this.getBoundsInParent().getMaxY()/2;
 	}
 	
+	public Rectangle getViewField() {
+		return this.viewField; 	
+	}
+	
 	public GraphEnvironment getGraphEnvironment(){
 		return this.environment;
 	}

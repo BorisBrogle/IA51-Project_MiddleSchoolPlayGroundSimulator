@@ -3,7 +3,6 @@
  */
 package fr.utbm.ia51.agents
 
-import fr.utbm.ia51.Globals
 import fr.utbm.ia51.activities.ActivityManager
 import fr.utbm.ia51.activities.ActivityType
 import fr.utbm.ia51.agents.behaviors.KinematicSeekAlgorithm
@@ -15,7 +14,6 @@ import fr.utbm.ia51.agents.motion.KinematicFleeAlgorithm
 import fr.utbm.ia51.environment.ActionToPerson
 import fr.utbm.ia51.environment.Influence
 import fr.utbm.ia51.environment.Perception
-import fr.utbm.ia51.graph.environment.EnvironmentEntity
 import fr.utbm.ia51.graph.environment.GraphEnvironment
 import fr.utbm.ia51.tools.MotionAlgorithmOutput
 import fr.utbm.ia51.tools.Point2f
@@ -56,7 +54,7 @@ agent Person {
 	var environment : GraphEnvironment
 	
 //	var listOfAvailableArtifacts = <EnvironmentEntity>newArrayList
-	var listPerceivedtArtifacts = <EnvironmentEntity>newArrayList
+//	var listPerceivedtArtifacts = <EnvironmentEntity>newArrayList
 
 	// behaviors
 	var seekBehavior : SeekAlgorithm
@@ -124,27 +122,27 @@ agent Person {
 				// TODO set the right classroom ?
 				setActivity(ActivityType.CLASSLINE)
 			}
-			
+			info("this position: " + this.position + ", occurrence position: " + occurrence.position)
 			if (this.position.distance(target) > this.maxTargetDistance) {
 				if (this.target !== null) {
 					// run the seek behavior
 					targetMotionOutput = this.seekBehavior.run(
-						 //TODO occurrence.position,
-						 this.position,
-						 occurrence.currentLinearSpeed,
-						 occurrence.maxLinear,
-						 target
+						 // TODO occurrence.position,
+						this.position,
+						occurrence.currentLinearSpeed,
+						occurrence.maxLinear,
+						this.target
 					)
 				} else {
 					// run the wander behavior
 				targetMotionOutput = this.wanderBehavior.run(
-						//TODO occurrence.position,
-						 this.position,
-						 occurrence.orientation,
-						 occurrence.currentLinearSpeed,
-						 occurrence.maxLinear,
-						 occurrence.currentAngularSpeed,
-						 occurrence.maxAngular
+						// TODO occurrence.position,
+						this.position,
+						occurrence.orientation,
+						occurrence.currentLinearSpeed,
+						occurrence.maxLinear,
+						occurrence.currentAngularSpeed,
+						occurrence.maxAngular
 					)
 				}
 				
@@ -159,7 +157,7 @@ agent Person {
 					)
 					//TODO, check if it's the right way to add all the flee motions
 					// adding every repulsive vector to the flee output
-					fleeMotionOutput.linear += tmpFleeMotionOutput.linear 
+					// fleeMotionOutput.linear += tmpFleeMotionOutput.linear 
 				}
 
 				//TODO, check if it's the right way to add all the motions together

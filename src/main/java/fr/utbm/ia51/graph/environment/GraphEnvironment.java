@@ -11,7 +11,7 @@ public class GraphEnvironment extends EnvironmentEntity {
 	
 	
 	
-	private ArrayList<StackPane> artifacts = new ArrayList<>();
+	private ArrayList<EnvironmentEntity> artifacts = new ArrayList<>();
 	private SoccerField soccerField;
 	private Bench bench;
 	private BasketCourt basketCourt;
@@ -97,12 +97,12 @@ public class GraphEnvironment extends EnvironmentEntity {
 	}
 	
 	
-	public ArrayList<StackPane> getIntersectedArtifacts(Rectangle area) {
+	public ArrayList<EnvironmentEntity> getIntersectedArtifacts(Rectangle area) {
 		
-		ArrayList<StackPane> intersectArtifacts = new ArrayList<>();
-		for(StackPane s : this.artifacts) {
+		ArrayList<EnvironmentEntity> intersectArtifacts = new ArrayList<>();
+		for(EnvironmentEntity s : this.artifacts) {
 			if(s.intersects(area.getBoundsInLocal())) {
-				System.out.println("Intersect with "+s.getClass().getName());
+				// System.out.println("Intersect with "+s.getClass().getName());
 				intersectArtifacts.add(s);
 			}
 		}

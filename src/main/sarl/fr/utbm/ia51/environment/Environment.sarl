@@ -21,8 +21,10 @@ import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
 import io.sarl.core.Schedules
+import java.util.ArrayList
 import java.util.LinkedList
 import java.util.UUID
+import javafx.scene.layout.StackPane
 
 agent Environment {
 	uses Logging, DefaultContextInteractions, Lifecycle, Schedules
@@ -49,10 +51,6 @@ agent Environment {
 			// Event trigger before the agent begin to live or to be used.
 			// You should put all the initialization statements in this block of code.
 			this.listGraphHumans = occurrence.parameters.get(0) as LinkedList<GraphHuman>
-			
-			
-			
-			
 			
 			loggingName = "Environment"
 			info("The environment was started.")
@@ -164,28 +162,38 @@ agent Environment {
 				sendPerception(this.time, e.key.agentId, e.value, e.key.position)
 			}*/
 			influenceList.clear()
-
-			var position : Point2f = new Point2f
-			var orientation : Vector2f = new Vector2f
-			var linearSpeed : float = 0f
-			var maxLinear : float = 3f
-			var angularSpeed : float = 0f
-			var maxAngular : float = 0f
-			var perceivedObjects = <Point2f>newArrayList
+			
 			var bellRings : boolean = false
 
 			// ringing the bell
-			if(time > 1000 && !hasRing) {
+			if (time > 1000 && !hasRing) {
 				bellRings = true
 				hasRing = true
 			}
 			
-			//info("Sending a perception")
-			// Faire une for each qui fait pour tous les graphHumans
-			// .Get des artifacts autours 
-			emit(
-				new Perception(position, orientation, linearSpeed, maxLinear, angularSpeed, maxAngular, bellRings, perceivedObjects))
-
+			for (entry : graphHumans.entrySet) {
+				var graphHuman = entry.value
+				var uuid = entry.key
+				
+				var position : Point2f = new Point2f(graphHuman.x, graphHuman.y)
+				//TODO
+				var orientation : Vector2f = new Vector2f
+				var linearSpeed : float = 0f
+				var maxLinear : float = 3f
+				var angularSpeed : float = 0f
+				var maxAngular : float = 0f
+				var perceivedObjects = <Point2f>newArrayList
+				var intersectedArtifacts = graphHuman.environment.getIntersectedArtifacts(graphHuman.viewField)
+				
+				for(intersectedArtifact : intersectedArtifacts) {
+					perceivedObjects.add(intersectedArtifact.getNearestPointInEntity(position))
+				}
+				
+				// info("Sending a perception")
+				emit(
+					new Perception(position, orientation, linearSpeed, maxLinear, angularSpeed, maxAngular, bellRings,
+						perceivedObjects), [it.UUID == uuid])
+			}
 		}
 	}
 	
