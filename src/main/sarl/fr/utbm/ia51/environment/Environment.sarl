@@ -43,6 +43,8 @@ agent Environment {
 	var numberOfInfluencesGot = 0
 	var numberOfInfluencesToGet = 0
 	
+	var hasRing = false
+	
 	on Initialize {	
 		synchronized (this) {
 			// Event trigger before the agent begin to live or to be used.
@@ -60,6 +62,7 @@ agent Environment {
 			for (g : listGraphHumans) {
 				this.graphHumans.put(g.uuid, g)
 				spawnAPerson("Person"+i,g,g.environment)
+				i++
 				
 			}
 			emit(new RunBeginingOfStep)
@@ -166,6 +169,12 @@ agent Environment {
 			var maxAngular : float = 0f
 			var perceivedObjects = <Point2f>newArrayList
 			var bellRings : boolean = false
+
+			// ringing the bell
+			if(time > 1000 && !hasRing) {
+				bellRings = true
+				hasRing = true
+			}
 			
 			//info("Sending a perception")
 			// Faire une for each qui fait pour tous les graphHumans
