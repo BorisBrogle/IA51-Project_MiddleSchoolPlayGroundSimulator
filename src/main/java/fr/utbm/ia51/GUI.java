@@ -47,9 +47,7 @@ public class GUI extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-    	
-    	
-        primaryStage.setTitle("High School Playground Simulator");
+        primaryStage.setTitle("High School Playground Simulator - seed "+Globals.randomGenerator.getSeed());
         Group root = new Group();
         Scene scene = new Scene(root, this.WIDTH, this.HEIGHT, Color.LIGHTGREEN);
         

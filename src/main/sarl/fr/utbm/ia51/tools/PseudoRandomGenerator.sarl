@@ -38,6 +38,10 @@ class PseudoRandomGenerator {
 		return (generator.nextDouble() * (max - min)) + min;
 	}
 	
+	def getSeed() {
+		return this.seed;
+	}
+	
 	def generator() {
 		return generator;
 	}
