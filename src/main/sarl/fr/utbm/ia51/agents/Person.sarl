@@ -47,8 +47,8 @@ agent Person {
 	// his target which depends on the his activity
 	var target : Point2f
 
-	// the maximum distance between the agent and its target for him to stop moving
-	var maxTargetDistance = 0f
+	// the maximum distance between the agent and its target for him to stop moving (min 2f)
+	var maxTargetDistance = 2f
 	
 	
 	
@@ -125,7 +125,7 @@ agent Person {
 				setActivity(ActivityType.CLASSLINE)
 			}
 			
-			if (occurrence.position.distance(target) > this.maxTargetDistance) {
+			if (this.position.distance(target) > this.maxTargetDistance) {
 				if (this.target !== null) {
 					// run the seek behavior
 					targetMotionOutput = this.seekBehavior.run(

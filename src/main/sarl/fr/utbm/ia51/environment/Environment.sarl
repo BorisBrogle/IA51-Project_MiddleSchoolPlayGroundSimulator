@@ -168,7 +168,7 @@ agent Environment {
 			var position : Point2f = new Point2f
 			var orientation : Vector2f = new Vector2f
 			var linearSpeed : float = 0f
-			var maxLinear : float = 1f
+			var maxLinear : float = 3f
 			var angularSpeed : float = 0f
 			var maxAngular : float = 0f
 			var perceivedObjects = <Point2f>newArrayList
