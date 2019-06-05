@@ -120,8 +120,9 @@ public class GraphEnvironment extends EnvironmentEntity {
 			case CLASSLINE : return this.classline;
 			case LIBRARY : return this.library;
 			case TENNISTABLE : return this.tennisTable;
+			case FIGHT : return this.toilet; //C'EST JUSTE POUR EVITER QUE CA PLANTE FAUDRA BIEN SUR CHANGER
 		default:
-			return null;
+			 return this.toilet;
 			
 			
 		}
