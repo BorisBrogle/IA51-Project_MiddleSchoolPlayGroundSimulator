@@ -3,7 +3,9 @@
  */
 package fr.utbm.ia51.environment
 
+import fr.utbm.ia51.Globals
 import fr.utbm.ia51.agents.Person
+import fr.utbm.ia51.graph.environment.GraphEnvironment
 import fr.utbm.ia51.graph.human.GraphHuman
 import fr.utbm.ia51.tools.Point2f
 import fr.utbm.ia51.tools.Vector2f
@@ -21,7 +23,6 @@ import io.sarl.core.MemberLeft
 import io.sarl.core.Schedules
 import java.util.LinkedList
 import java.util.UUID
-import fr.utbm.ia51.graph.environment.GraphEnvironment
 
 agent Environment {
 	uses Logging, DefaultContextInteractions, Lifecycle, Schedules
@@ -147,12 +148,18 @@ agent Environment {
 			// Move to next step
 			
 			time++
+			
+			var sleepTime = loop_duration - Globals::chrono.getTime()
+			if(sleepTime < 0) sleepTime = 0
+			Thread::sleep(sleepTime) // We sleep before the next step
+			
 			emit(new RunBeginingOfStep)
 		}
 	}
 
 	on RunBeginingOfStep {
 		synchronized (this) {
+			Globals::chrono.reset();
 			//info("The step begins")
 			/*this.actions.clear
 
@@ -195,7 +202,6 @@ agent Environment {
 	
 	def applyInfluences(influenceList: LinkedList<Influence>) {
 		for (var i = 0; i < influenceList.size; i++) {
-			Thread::sleep(loop_duration)
 			var influence = influenceList.get(i)
 			
 			var newPosition : Point2f = influence.position + influence.linear

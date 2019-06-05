@@ -25,8 +25,8 @@ agent Boot {
 //		gui.printBoboLasticot();
 //		
 		info("Booting the application")
-		val loop_duration = 10 //Duration between each steps, in seconds
+		val loop_duration = 10 // Duration between each steps, in milliseconds
 		
-		spawn(typeof(Environment), loop_duration,occurrence.parameters.get(0))
+		spawn(typeof(Environment), loop_duration, occurrence.parameters.get(0))
 	}
 }
