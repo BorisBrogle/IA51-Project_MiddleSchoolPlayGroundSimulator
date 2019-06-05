@@ -53,6 +53,7 @@ public class GraphHuman extends StackPane {
 
 		super();
 		this.setStyle("-fx-border-color : red");
+		this.setManaged(true);
 		
 		
 		this.environment = environment;
@@ -143,28 +144,13 @@ public class GraphHuman extends StackPane {
 	}
 	
 	
-//	public RotateTransition rotateGraph(double angle,double speed) {
-//		RotateTransition rotation = new RotateTransition(Duration.millis(1000/speed));
-//		rotation.setFromAngle(this.head.getRotate());
-//		rotation.setToAngle(angle);
-//		return rotation;
-//	}
-//	
-//	public TranslateTransition translateGraph(double x, double y, double speed) {
-//		
-//		TranslateTransition translation = new TranslateTransition(Duration.millis((3000/speed)));
-//		translation.setFromX(this.head.getCenterX());
-//		translation.setFromY(this.head.getCenterY());
-//		translation.setToX(x);
-//		translation.setToY(y);
-//		
-//		return translation;
-//	}
-	
+
 	
 	public void moveTo(double x,double y, double speed) {
-		this.setTranslateX(x);
-		this.setTranslateY(y);
+//		this.head.setTranslateX(x);
+//		this.head.setTranslateY(y);
+		this.setTranslateX(x-this.viewField.getWidth()/2);
+		this.setTranslateY(y-this.viewField.getHeight()/2);
 		
 		
 		Platform.runLater(()->{
