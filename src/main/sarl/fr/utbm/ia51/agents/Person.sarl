@@ -76,11 +76,11 @@ agent Person {
 			
 			info("The agent was started.")
 	
-			this.setActivity(this.activityManager.chooseActivity())
+			this.activityType = this.activityManager.chooseActivity()
 			info("The agent will do activity "+this.activityType)
 			
 			//Acquisition of target according to the Person's activity type
-			this.target = this.getTarget(this.activityType)
+			this.target = this.environment.getArtifactFromActivity(this.activityType).randomPointInEntity
 	
 	
 			this.seekBehavior = new KinematicSeekAlgorithm
