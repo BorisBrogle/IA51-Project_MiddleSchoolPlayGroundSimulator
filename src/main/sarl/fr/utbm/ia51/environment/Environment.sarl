@@ -30,8 +30,6 @@ agent Environment {
 	// the time/date of the app
 	var time = 0
 	
-	var loop_duration : int = 40
-	
 	var personIdList = <UUID>newLinkedList
 	var influenceList = <Influence>newLinkedList
 	
@@ -50,8 +48,7 @@ agent Environment {
 		synchronized (this) {
 			// Event trigger before the agent begin to live or to be used.
 			// You should put all the initialization statements in this block of code.
-			this.loop_duration = occurrence.parameters.get(0) as Integer
-			this.listGraphHumans = occurrence.parameters.get(1) as LinkedList<GraphHuman>
+			this.listGraphHumans = occurrence.parameters.get(0) as LinkedList<GraphHuman>
 			
 			
 			
@@ -149,7 +146,7 @@ agent Environment {
 			
 			time++
 			
-			var sleepTime = loop_duration - Globals::chrono.getTime()
+			var sleepTime = Globals::LOOP_DURATION - Globals::chrono.getTime()
 			if(sleepTime < 0) sleepTime = 0
 			Thread::sleep(sleepTime) // We sleep before the next step
 			
