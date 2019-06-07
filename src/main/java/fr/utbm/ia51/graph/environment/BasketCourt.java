@@ -27,6 +27,8 @@ public class BasketCourt extends EnvironmentEntity{
       
         this.setMaxSize(this.basketCourt.getFitWidth(), this.basketCourt.getFitHeight());
         
+
+        
         this.getChildren().addAll(basketCourt);
 	}
 	

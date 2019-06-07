@@ -61,6 +61,8 @@ public class GUI extends Application {
         root.getChildren().add(bob);
         this.graphHumans.add(bob);
         this.graphHumans.add(buddy);
+        
+        root.getChildren().add(environment.getRingButton());
        
         primaryStage.setScene(scene);
         primaryStage.show();

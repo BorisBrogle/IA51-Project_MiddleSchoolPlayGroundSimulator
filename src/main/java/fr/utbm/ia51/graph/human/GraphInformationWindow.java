@@ -19,6 +19,8 @@ public class GraphInformationWindow extends VBox{
 		this.getStylesheets().add("file:src/main/resources/css/informationWindow.css");
 		this.getStyleClass().add("information-window");
 		
+		this.setMouseTransparent(true);
+		
 		this.statusLabel.setText("Status : "+status);
 		this.statusLabel.getStyleClass().add("informationLabel");
 		this.nameLabel.setText("Name : "+name);

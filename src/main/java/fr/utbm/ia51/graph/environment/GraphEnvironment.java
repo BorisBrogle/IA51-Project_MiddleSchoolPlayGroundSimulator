@@ -3,8 +3,13 @@ package fr.utbm.ia51.graph.environment;
 import java.util.ArrayList;
 
 import fr.utbm.ia51.activities.ActivityType;
+import fr.utbm.ia51.graph.human.GraphHuman;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.VBox;
 import javafx.scene.transform.Rotate;
 
 public class GraphEnvironment extends EnvironmentEntity {
@@ -22,10 +27,17 @@ public class GraphEnvironment extends EnvironmentEntity {
 	private Courtyard courtyard;
 	private ClassLine classline;
 	
+	
+	private Button ringButton;
+	
 	public GraphEnvironment(double width, double height){
 		super();
 		this.setPrefSize(width, height);
 		this.setStyle("-fx-border-color : blue");
+		
+		
+
+		
 		
 		this.courtyard= new Courtyard(width/3, height);
 		this.courtyard.setTranslateX(-(width/3));
@@ -89,6 +101,24 @@ public class GraphEnvironment extends EnvironmentEntity {
 		this.getChildren().addAll(classline);
 		this.artifacts.add(this.classline);
 		
+		this.ringButton = new Button();
+		ImageView image = new ImageView(new Image("file:src/main/resources/graphism/image/bell.png"));
+		image.setPreserveRatio(false);
+		image.setFitHeight(40);
+		image.setFitWidth(40);
+		this.ringButton.setGraphic(image);
+//		this.ringButton.setTranslateX(-(width/2)+60);
+//		this.ringButton.setTranslateY((height/2)-60);
+		
+				
+//		this.ringButton.setOnMouseClicked(e->{
+//			this.basketCourt.setVisible(false);
+//		});
+
+
+
+		
+		
 	}
 	
 	public void printAllArtifactsPositions() {
@@ -97,12 +127,14 @@ public class GraphEnvironment extends EnvironmentEntity {
 	}
 	
 	
-	public ArrayList<EnvironmentEntity> getIntersectedArtifacts(Rectangle area) {
+	public ArrayList<EnvironmentEntity> getIntersectedArtifacts(GraphHuman graphHuman) {
+		
 		
 		ArrayList<EnvironmentEntity> intersectArtifacts = new ArrayList<>();
 		for(EnvironmentEntity s : this.artifacts) {
-			if(s.intersects(area.getBoundsInLocal())) {
-				System.out.println("Intersect with "+s.getClass().getName());
+			if(s.getBoundsInParent().intersects(graphHuman.getBoundsInParent())) {
+				
+//				System.out.println("Intersect with "+s.getClass().getName());
 				intersectArtifacts.add(s);
 			}
 		}
@@ -128,4 +160,14 @@ public class GraphEnvironment extends EnvironmentEntity {
 		}
 
 	}
+
+	public Button getRingButton() {
+		return ringButton;
+	}
+
+	public void setRingButton(Button ringButton) {
+		this.ringButton = ringButton;
+	}
+	
+	
 }

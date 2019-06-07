@@ -198,14 +198,4 @@ public class GraphHuman extends StackPane {
 	
 	
 	
-	
-//	
-//	
-//	public void move(Point2D originalVect, Point2D newVect) {
-//		if(originalVect.angle(newVect)!=null)
-//			
-//	}
-//	
-	
-
 }
