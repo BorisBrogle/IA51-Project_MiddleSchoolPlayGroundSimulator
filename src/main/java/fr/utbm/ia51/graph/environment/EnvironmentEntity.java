@@ -1,12 +1,15 @@
 package fr.utbm.ia51.graph.environment;
 
 import fr.utbm.ia51.Globals;
+import fr.utbm.ia51.activities.ActivityType;
 import fr.utbm.ia51.tools.Point2f;
 import fr.utbm.ia51.tools.Vector2f;
 import javafx.scene.layout.StackPane;
 
 public class EnvironmentEntity extends StackPane {
 
+	protected ActivityType activityType;
+	
 	public EnvironmentEntity() {
 		super();
 	}
@@ -108,6 +111,10 @@ public class EnvironmentEntity extends StackPane {
 		double newY = Globals.randomGenerator.getRandom(this.getBoundsInParent().getMinY(), this.getBoundsInParent().getMaxY());
 
 		return new Point2f(newX,newY);
+	}
+	
+	public ActivityType getActivityType() {
+		return this.activityType;
 	}
 
 }

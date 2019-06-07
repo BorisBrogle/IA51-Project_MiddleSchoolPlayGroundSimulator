@@ -9,13 +9,12 @@ import javafx.scene.shape.Rectangle;
 public class ClassLine extends EnvironmentEntity{
 	
 	private ImageView classline;
-	private Image fieldImage;
-	private ActivityType CLASSLINE;
-		
+	private Image fieldImage;		
 	
 	public ClassLine(int width) {
 		super();
-				
+		
+		this.activityType = ActivityType.CLASSLINE;
 		this.fieldImage = new Image("file:src/main/resources/graphism/image/class-line.png");
 		this.classline = new ImageView();
         classline.setImage(this.fieldImage);

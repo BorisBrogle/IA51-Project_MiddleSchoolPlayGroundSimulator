@@ -9,13 +9,12 @@ import javafx.scene.shape.Rectangle;
 public class SoccerField extends EnvironmentEntity{
 	
 	private ImageView soccerField;
-	private Image fieldImage;
-	private ActivityType SOCCER;
-		
+	private Image fieldImage;		
 	
 	public SoccerField(int width) {
 		super();
-				
+		
+		this.activityType = ActivityType.SOCCER;
 		this.fieldImage = new Image("file:src/main/resources/graphism/image/footfield-01.png");
 		this.soccerField = new ImageView();
 		soccerField.setImage(this.fieldImage);

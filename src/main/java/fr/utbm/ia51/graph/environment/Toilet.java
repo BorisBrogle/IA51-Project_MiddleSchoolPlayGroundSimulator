@@ -13,12 +13,12 @@ public class Toilet extends EnvironmentEntity{
 	private ImageView toiletIcon;
 	private Image fieldImage;
 	private Rectangle building;
-	private ActivityType TOILET;
 		
 	
 	public Toilet(int width) {
 		super();
-				
+		
+		this.activityType = ActivityType.TOILET;
 		this.fieldImage = new Image("file:src/main/resources/graphism/image/toilet.png");
 		this.toiletIcon = new ImageView();
         toiletIcon.setImage(this.fieldImage);

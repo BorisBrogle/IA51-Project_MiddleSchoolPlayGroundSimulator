@@ -10,13 +10,12 @@ import javafx.scene.shape.Rectangle;
 public class BasketCourt extends EnvironmentEntity{
 	
 	private ImageView basketCourt;
-	private Image fieldImage;
-	private ActivityType BASKETBALL;
-		
+	private Image fieldImage;		
 	
 	public BasketCourt(int width) {
 		super();
 				
+		this.activityType = ActivityType.BASKETBALL;
 		this.fieldImage = new Image("file:src/main/resources/graphism/image/basket-01.png");
 		this.basketCourt = new ImageView();
 		basketCourt.setImage(this.fieldImage);

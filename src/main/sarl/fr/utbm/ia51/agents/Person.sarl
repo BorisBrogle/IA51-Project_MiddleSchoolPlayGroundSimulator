@@ -147,23 +147,28 @@ agent Person {
 					)
 				}
 				
-				for (object : perceivedObjects) {
+				for (entry : perceivedObjects.entrySet) {
 					// run the flee behavior
-				var tmpFleeMotionOutput = this.fleeBehavior.run(
-						// TODO occurrence.position,
-						occurrence.position,
-						occurrence.currentLinearSpeed,
-						occurrence.maxLinear,
-						object
-					)
-					//TODO, check if it's the right way to add all the flee motions
-					// adding every repulsive vector to the flee output
-					// fleeMotionOutput.linear += tmpFleeMotionOutput.linear 
+					// check to no to flee our activity
+					if (entry.key != this.activityType) {
+						var tmpFleeMotionOutput = this.fleeBehavior.run(
+							// TODO occurrence.position,
+							occurrence.position,
+							occurrence.currentLinearSpeed,
+							occurrence.maxLinear,
+							entry.value
+						)
+						// TODO, check if it's the right way to add all the flee motions
+						// adding every repulsive vector to the flee output
+						fleeMotionOutput.linear += tmpFleeMotionOutput.linear
+						fleeMotionOutput.linear.length = occurrence.maxLinear
+					}
 				}
 
 				//TODO, check if it's the right way to add all the motions together
 				// taking the repulsive behavior into account
 				targetMotionOutput.linear += fleeMotionOutput.linear
+				targetMotionOutput.linear.length = occurrence.maxLinear
 				
 				// emitting an influence with the wanted motion
 				this.emitInfluence(targetMotionOutput)

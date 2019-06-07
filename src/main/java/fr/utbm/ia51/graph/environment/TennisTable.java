@@ -9,13 +9,12 @@ import javafx.scene.shape.Rectangle;
 public class TennisTable extends EnvironmentEntity{
 	
 	private ImageView tennisTable;
-	private Image fieldImage;
-	private ActivityType TENNISTABLE;
-		
+	private Image fieldImage;		
 	
 	public TennisTable(int width) {
 		super();
-				
+		
+		this.activityType = ActivityType.TENNISTABLE;
 		this.fieldImage = new Image("file:src/main/resources/graphism/image/table-tennis-01.png");
 		this.tennisTable = new ImageView();
         tennisTable.setImage(this.fieldImage);

@@ -9,13 +9,12 @@ import javafx.scene.shape.Rectangle;
 public class Forest extends EnvironmentEntity{
 	
 	private ImageView forest;
-	private Image fieldImage;
-	private ActivityType FOREST;
-		
+	private Image fieldImage;		
 	
 	public Forest(int width) {
 		super();
-				
+		
+		this.activityType = ActivityType.FOREST;
 		this.fieldImage = new Image("file:src/main/resources/graphism/image/forest-01.png");
 		this.forest = new ImageView();
         forest.setImage(this.fieldImage);

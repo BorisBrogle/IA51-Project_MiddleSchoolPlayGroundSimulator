@@ -102,7 +102,7 @@ public class GraphEnvironment extends EnvironmentEntity {
 		ArrayList<EnvironmentEntity> intersectArtifacts = new ArrayList<>();
 		for(EnvironmentEntity s : this.artifacts) {
 			if(s.intersects(area.getBoundsInLocal())) {
-				// System.out.println("Intersect with "+s.getClass().getName());
+				System.out.println("Intersect with "+s.getClass().getName());
 				intersectArtifacts.add(s);
 			}
 		}

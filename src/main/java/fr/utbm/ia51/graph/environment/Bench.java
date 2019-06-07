@@ -9,13 +9,12 @@ import javafx.scene.shape.Rectangle;
 public class Bench extends EnvironmentEntity{
 	
 	private ImageView bench;
-	private Image fieldImage;
-	private ActivityType BENCH;
-		
+	private Image fieldImage;		
 	
 	public Bench(int width) {
 		super();
-				
+		
+		this.activityType = ActivityType.BENCH;
 		this.fieldImage = new Image("file:src/main/resources/graphism/image/bench.png");
 		this.bench = new ImageView();
         bench.setImage(this.fieldImage);

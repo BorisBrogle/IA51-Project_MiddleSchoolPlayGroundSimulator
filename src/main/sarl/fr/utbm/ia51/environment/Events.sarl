@@ -3,10 +3,11 @@
  */
 package fr.utbm.ia51.environment
 
-import fr.utbm.ia51.agents.Person
+import fr.utbm.ia51.activities.ActivityType
 import fr.utbm.ia51.tools.Point2f
 import fr.utbm.ia51.tools.Vector2f
 import java.util.ArrayList
+import java.util.HashMap
 import java.util.UUID
 
 // Perception sent to the agents
@@ -20,9 +21,12 @@ event Perception {
 	val bellRings : boolean
 
 	// liste des points les plus proches des objets perçus par l'agent (dans son champ de vision)
-	val perceivedObjects : ArrayList<Point2f>
+	val perceivedObjects : HashMap<ActivityType, Point2f>
 
-	new(position : Point2f, orientation : Vector2f, currentLinearSpeed : float, maxLinear : float, currentAngularSpeed : float, maxAngular : float, bellRings: boolean, perceivedObjects : ArrayList<Point2f>) {
+	new(position : Point2f, orientation : Vector2f, currentLinearSpeed : float, maxLinear : float,
+		currentAngularSpeed : float, maxAngular : float, bellRings : boolean,
+		perceivedObjects : HashMap<ActivityType, Point2f>)
+	{
 		this.position = position
 		this.orientation = orientation
 		this.currentLinearSpeed = currentLinearSpeed

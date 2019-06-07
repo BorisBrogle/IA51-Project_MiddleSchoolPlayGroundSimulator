@@ -12,13 +12,12 @@ public class Library extends EnvironmentEntity{
 	
 	private ImageView book;
 	private Image fieldImage;
-	private Rectangle building;
-	private ActivityType LIBRARY;
-		
+	private Rectangle building;		
 	
 	public Library(int width) {
 		super();
-				
+		
+		this.activityType = ActivityType.LIBRARY;
 		this.fieldImage = new Image("file:src/main/resources/graphism/image/book-icon.png");
 		this.book = new ImageView();
         book.setImage(this.fieldImage);

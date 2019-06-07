@@ -4,6 +4,7 @@
 package fr.utbm.ia51.environment
 
 import fr.utbm.ia51.Globals
+import fr.utbm.ia51.activities.ActivityType
 import fr.utbm.ia51.agents.Person
 import fr.utbm.ia51.graph.environment.GraphEnvironment
 import fr.utbm.ia51.graph.human.GraphHuman
@@ -21,10 +22,8 @@ import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
 import io.sarl.core.Schedules
-import java.util.ArrayList
 import java.util.LinkedList
 import java.util.UUID
-import javafx.scene.layout.StackPane
 
 agent Environment {
 	uses Logging, DefaultContextInteractions, Lifecycle, Schedules
@@ -182,11 +181,11 @@ agent Environment {
 				var maxLinear : float = 3f
 				var angularSpeed : float = 0f
 				var maxAngular : float = 0f
-				var perceivedObjects = <Point2f>newArrayList
+				var perceivedObjects = <ActivityType, Point2f>newHashMap
 				var intersectedArtifacts = graphHuman.environment.getIntersectedArtifacts(graphHuman.viewField)
 				
 				for(intersectedArtifact : intersectedArtifacts) {
-					perceivedObjects.add(intersectedArtifact.getNearestPointInEntity(position))
+					perceivedObjects.put(intersectedArtifact.activityType, intersectedArtifact.getNearestPointInEntity(position))
 				}
 				
 				// info("Sending a perception")
