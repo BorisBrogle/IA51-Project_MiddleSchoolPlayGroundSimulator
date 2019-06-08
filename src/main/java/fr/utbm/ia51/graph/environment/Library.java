@@ -10,28 +10,25 @@ import javafx.scene.shape.Rectangle;
 
 public class Library extends EnvironmentEntity{
 	
-	private ImageView book;
+	private ImageView library;
 	private Image fieldImage;
 	private Rectangle building;		
 	
-	public Library(int width) {
+	public Library(double width, double height) {
 		super();
 		
 		this.activityType = ActivityType.LIBRARY;
-		this.fieldImage = new Image("file:src/main/resources/graphism/image/book-icon.png");
-		this.book = new ImageView();
-        book.setImage(this.fieldImage);
+		this.fieldImage = new Image("file:src/main/resources/graphism/image/library.png");
+		this.library = new ImageView();
+		library.setImage(this.fieldImage);
         
-        book.setFitWidth(width/2);
-        book.setPreserveRatio(true);
-        
-        building= new Rectangle(width, width*0.8, Color.WHITE);
+		library.setFitWidth(width);
+		library.setFitHeight(height);
         
 
-        this.setMaxSize(this.building.getWidth(), this.building.getHeight());
-//        this.setStyle("-fx-border-color : pink");
+        this.setMaxSize(this.library.getFitWidth(), this.library.getFitHeight());
         
-        this.getChildren().addAll(building, book);
+        this.getChildren().addAll(library);
 	}
 	
 	public Rectangle getArea() {

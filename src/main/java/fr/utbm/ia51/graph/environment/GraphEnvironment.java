@@ -13,9 +13,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.transform.Rotate;
 
 public class GraphEnvironment extends EnvironmentEntity {
-	
-	
-	
 	private ArrayList<EnvironmentEntity> artifacts = new ArrayList<>();
 	private SoccerField soccerField;
 	private Bench bench;
@@ -27,79 +24,75 @@ public class GraphEnvironment extends EnvironmentEntity {
 	private Courtyard courtyard;
 	private ClassLine classline;
 	
-	
 	private Button ringButton;
 	
-	public GraphEnvironment(double width, double height){
+	private double wFactor;
+	private double hFactor;
+	private double width;
+	private double height;
+	
+	public GraphEnvironment(double width, double height) {
 		super();
 		this.setPrefSize(width, height);
 		this.setStyle("-fx-border-color : blue");
 		
+		// All the environment elements are defined by their 1600:900 coordinates
+		this.wFactor = width/1600; // Width factor to multiply the width coordinate
+		this.hFactor = height/900; // Height factor to multiply the height coordinate
 		
+		this.width = width;
+		this.height = height;
 
 		
-		
-		this.courtyard= new Courtyard(width/3, height);
+		// Seems useless to me to have a courtyard, isn't it? 
+		/*this.courtyard= new Courtyard(width/3, height);
 		this.courtyard.setTranslateX(-(width/3));
 		this.getChildren().addAll(courtyard);
-		this.artifacts.add(this.courtyard);
+		this.artifacts.add(this.courtyard);*/
 		
+		double w, h = 0;
 		
-		this.soccerField = new SoccerField(400);
-		this.soccerField.setTranslateX((width/2)-260);
-		this.soccerField.setTranslateY((height/2)-200);
-		this.getChildren().addAll(soccerField);
-		this.artifacts.add(this.soccerField);
+		w = 572*wFactor;
+		h = 320*hFactor;
+		this.soccerField = new SoccerField(w, h);
+		this.add(this.soccerField, w, h, 1024, 576);
 
+		w = 257*wFactor;
+		h = 369*hFactor;
+		this.basketCourt= new BasketCourt(w, h);
+		this.add(this.basketCourt, w, h, 730, 0);
+
+		w = 549*wFactor;
+		h = 432*hFactor;
+		this.forest= new Forest(w, h);
+		this.add(this.forest, w, h, 1050, 0);
+
+		w = 495*wFactor;
+		h = 220*hFactor;
+		this.library= new Library(w, h);
+		this.add(this.library, w, h, 492, 680);
+
+		w = 218*wFactor;
+		h = 127*hFactor;
+		this.toilet= new Toilet(w, h);
+		this.add(this.toilet, w, h, 280, 0);
+
+		w = 112*wFactor;
+		h = 208*hFactor;
+		this.classline= new ClassLine(w, h);
+		this.add(this.classline, w, h, 27, 422);
+
+		w = 342*wFactor;
+		h = 57*hFactor;
+		this.tennisTable= new TennisTable(w, h);
+		this.add(this.tennisTable, w, h, 106, 803);
+		
 		
 		this.bench = new Bench(30);
 		this.bench.setTranslateX(-30);
-		this.bench.setTranslateY((height/2)-50);
+		this.bench.setTranslateY(0);
 		this.getChildren().addAll(bench);
 		this.artifacts.add(this.bench);
-
-		
-		this.basketCourt= new BasketCourt(200);
-		this.basketCourt.setTranslateX(150);
-		this.basketCourt.setTranslateY(-(height/2)+100);
-		Rotate rotate = new Rotate();  
-		rotate.setAngle(90);
-		this.basketCourt.getTransforms().add(rotate); 
-		this.getChildren().addAll(basketCourt);
-		this.artifacts.add(this.basketCourt);
-
-		
-		this.forest= new Forest(500);
-		this.forest.setTranslateX((width/2)-250);
-		this.forest.setTranslateY(-(height/2)+150);
-		this.getChildren().addAll(forest);
-		this.artifacts.add(this.forest);
-
-		
-		this.tennisTable= new TennisTable(50);
-		this.tennisTable.setTranslateX(-(width/3));
-		this.tennisTable.setTranslateY((height/2)-50);
-		this.getChildren().addAll(tennisTable);
-		this.artifacts.add(this.tennisTable);
-		
-		this.library= new Library(200);
-		this.library.setTranslateX(100);
-		this.library.setTranslateY((height/2)-90);
-		this.getChildren().addAll(library);
-		this.artifacts.add(this.library);
-		
-		this.toilet= new Toilet(200);
-		this.toilet.setTranslateX(-(width/4));
-		this.toilet.setTranslateY(-(height/2)+60);
-		this.getChildren().addAll(toilet);
-		this.artifacts.add(this.toilet);
-
-		
-		this.classline= new ClassLine(200);
-		this.classline.setTranslateX(-(width/4));
-		this.classline.setTranslateY(-(height/2)+250);
-		this.getChildren().addAll(classline);
-		this.artifacts.add(this.classline);
 		
 		this.ringButton = new Button();
 		ImageView image = new ImageView(new Image("file:src/main/resources/graphism/image/bell.png"));
@@ -119,6 +112,16 @@ public class GraphEnvironment extends EnvironmentEntity {
 
 		
 		
+	}
+	
+	public void add(EnvironmentEntity e, double w, double h, double x, double y) {
+		e.setTranslateX(-this.width/2.0 + x*wFactor + w/2.0);
+		e.setTranslateY(-this.height/2.0 + y*hFactor + h/2.0);
+		/*
+		e.setTranslateX((x*wFactor)/2.0);
+		e.setTranslateY((y*hFactor)/2.0);*/
+		this.getChildren().addAll(e);
+		this.artifacts.add(e);
 	}
 	
 	public void printAllArtifactsPositions() {

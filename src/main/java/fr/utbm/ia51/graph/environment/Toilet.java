@@ -15,24 +15,20 @@ public class Toilet extends EnvironmentEntity{
 	private Rectangle building;
 		
 	
-	public Toilet(int width) {
+	public Toilet(double width, double height) {
 		super();
 		
 		this.activityType = ActivityType.TOILET;
-		this.fieldImage = new Image("file:src/main/resources/graphism/image/toilet.png");
+		this.fieldImage = new Image("file:src/main/resources/graphism/image/toilets.png");
 		this.toiletIcon = new ImageView();
         toiletIcon.setImage(this.fieldImage);
         
-        toiletIcon.setFitWidth(width/3);
-        toiletIcon.setPreserveRatio(true);
-        
-        building= new Rectangle(width, width*0.5, Color.GREY);
-        
+        toiletIcon.setFitWidth(width);
+        toiletIcon.setFitHeight(height);        
 
-        this.setMaxSize(this.building.getWidth(), this.building.getHeight());
-//        this.setStyle("-fx-border-color : pink");
+        this.setMaxSize(toiletIcon.getFitWidth(), toiletIcon.getFitHeight());
         
-        this.getChildren().addAll(building, toiletIcon);
+        this.getChildren().addAll( toiletIcon);
 	}
 	
 	public Rectangle getArea() {

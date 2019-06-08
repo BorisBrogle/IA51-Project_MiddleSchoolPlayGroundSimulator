@@ -6,11 +6,18 @@ import java.util.concurrent.CountDownLatch;
 import fr.utbm.ia51.boot.Boot;
 import fr.utbm.ia51.graph.environment.GraphEnvironment;
 import fr.utbm.ia51.graph.human.GraphHuman;
-import fr.utbm.ia51.tools.PseudoRandomGenerator;
 import io.sarl.bootstrap.SRE;
 import javafx.application.Application;
-import javafx.scene.Group;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -48,11 +55,17 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("High School Playground Simulator - seed "+Globals.randomGenerator.getSeed());
-        Group root = new Group();
-        Scene scene = new Scene(root, this.WIDTH, this.HEIGHT, Color.LIGHTGREEN);
+        Pane root = new Pane();
+        Scene scene = new Scene(root, this.WIDTH, this.HEIGHT, Color.TRANSPARENT);
         
-//        root.getChildren().add(new GraphHuman(1000, 300, "", "", 3,""));
-        GraphEnvironment environment = new GraphEnvironment(Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
+        double w = Screen.getPrimary().getVisualBounds().getWidth();
+        double h = Screen.getPrimary().getVisualBounds().getHeight();
+        BackgroundImage bg = new BackgroundImage(
+        						new Image("file:src/main/resources/graphism/image/background.png", w, h, false, true),
+                				BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        root.setBackground(new Background(bg));
+        
+        GraphEnvironment environment = new GraphEnvironment(w, h);
         root.getChildren().add(environment);
 
         GraphHuman buddy = new GraphHuman(300, 300, "", "", 2,null,environment); 
@@ -68,6 +81,8 @@ public class GUI extends Application {
         primaryStage.show();
         primaryStage.setMaximized(true);
         
+        addMouseClickCoords(scene);
+        
         try {
 			SRE.getBootstrap().startAgent(Boot.class, this.graphHumans);
 		} catch (Exception e) {
@@ -75,6 +90,22 @@ public class GUI extends Application {
 			e.printStackTrace();
 		}
     }
+    
+    
+    // If called, this function allows the user to click anywhere in the scene to know its position
+    protected void addMouseClickCoords(Scene scene) {
+    	//Creating the mouse event handler 
+        EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() { 
+           @Override 
+           public void handle(MouseEvent e) { 
+              System.out.println("Clicked at: x="+e.getX()+" y="+e.getY()); 
+           } 
+        };   
+        //Adding event Filter 
+        scene.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+    }
+    
+    
     @Override
     public void stop() throws Exception {
     	

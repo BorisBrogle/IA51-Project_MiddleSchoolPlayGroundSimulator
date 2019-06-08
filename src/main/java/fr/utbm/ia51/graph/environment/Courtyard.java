@@ -7,19 +7,10 @@ import javafx.scene.shape.Rectangle;
 
 public class Courtyard extends EnvironmentEntity{
 	
-	private Rectangle building;
 		
 	
 	public Courtyard(double width, double height) {
 		super();
-        
-        building= new Rectangle(width, height, Color.LIGHTGREY);
-        
-
-        this.setMaxSize(this.building.getWidth(), this.building.getHeight());
-//        this.setStyle("-fx-border-color : pink");
-        
-        this.getChildren().addAll(building);
 	}
 	
 	public Rectangle getArea() {

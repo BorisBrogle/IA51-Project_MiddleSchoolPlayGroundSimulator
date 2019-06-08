@@ -6,23 +6,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 
-public class SoccerField extends EnvironmentEntity{
+public class SoccerField extends EnvironmentEntity {
 	
 	private ImageView soccerField;
 	private Image fieldImage;		
 	
-	public SoccerField(int width) {
+	public SoccerField(double width, double height) {
 		super();
 		
 		this.activityType = ActivityType.SOCCER;
-		this.fieldImage = new Image("file:src/main/resources/graphism/image/footfield-01.png");
+		this.fieldImage = new Image("file:src/main/resources/graphism/image/soccerfield.png");
 		this.soccerField = new ImageView();
 		soccerField.setImage(this.fieldImage);
         
 		soccerField.setFitWidth(width);
-		soccerField.setPreserveRatio(true);
+		soccerField.setFitHeight(height);
        
-//        this.setStyle("-fx-border-color : red");
+		//this.setStyle("-fx-border-color : red");
       
         this.setMaxSize(this.soccerField.getFitWidth(), this.soccerField.getFitHeight());
         

@@ -11,19 +11,18 @@ public class ClassLine extends EnvironmentEntity{
 	private ImageView classline;
 	private Image fieldImage;		
 	
-	public ClassLine(int width) {
+	public ClassLine(double width, double height) {
 		super();
 		
 		this.activityType = ActivityType.CLASSLINE;
-		this.fieldImage = new Image("file:src/main/resources/graphism/image/class-line.png");
+		this.fieldImage = new Image("file:src/main/resources/graphism/image/classline.png");
 		this.classline = new ImageView();
         classline.setImage(this.fieldImage);
         
         classline.setFitWidth(width);
-        classline.setPreserveRatio(true);
+        classline.setFitHeight(height);
 
         this.setMaxSize(this.classline.getFitWidth(), this.classline.getFitHeight());
-        this.setStyle("-fx-border-color : pink");
         
         this.getChildren().addAll(classline);
 	}

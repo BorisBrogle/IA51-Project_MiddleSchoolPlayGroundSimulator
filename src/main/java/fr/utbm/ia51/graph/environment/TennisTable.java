@@ -11,19 +11,18 @@ public class TennisTable extends EnvironmentEntity{
 	private ImageView tennisTable;
 	private Image fieldImage;		
 	
-	public TennisTable(int width) {
+	public TennisTable(double width, double height) {
 		super();
 		
 		this.activityType = ActivityType.TENNISTABLE;
-		this.fieldImage = new Image("file:src/main/resources/graphism/image/table-tennis-01.png");
+		this.fieldImage = new Image("file:src/main/resources/graphism/image/tabletennisarea.png");
 		this.tennisTable = new ImageView();
         tennisTable.setImage(this.fieldImage);
         
         tennisTable.setFitWidth(width);
-        tennisTable.setPreserveRatio(true);
+        tennisTable.setFitHeight(height);
 
         this.setMaxSize(this.tennisTable.getFitWidth(), this.tennisTable.getFitHeight());
-//        this.setStyle("-fx-border-color : pink");
         
         this.getChildren().addAll(tennisTable);
 	}

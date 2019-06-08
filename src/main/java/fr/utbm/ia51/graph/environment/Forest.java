@@ -11,16 +11,16 @@ public class Forest extends EnvironmentEntity{
 	private ImageView forest;
 	private Image fieldImage;		
 	
-	public Forest(int width) {
+	public Forest(double width, double height) {
 		super();
 		
 		this.activityType = ActivityType.FOREST;
-		this.fieldImage = new Image("file:src/main/resources/graphism/image/forest-01.png");
+		this.fieldImage = new Image("file:src/main/resources/graphism/image/forest.png");
 		this.forest = new ImageView();
         forest.setImage(this.fieldImage);
         
         forest.setFitWidth(width);
-        forest.setPreserveRatio(true);
+        forest.setFitHeight(height);
 
         this.setMaxSize(this.forest.getFitWidth(), this.forest.getFitHeight());
 //        this.setStyle("-fx-border-color : pink");
