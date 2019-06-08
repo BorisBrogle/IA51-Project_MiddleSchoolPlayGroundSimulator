@@ -68,11 +68,11 @@ public class GraphEnvironment extends StackPane {
 
 		// Tennis tables
 		this.tennisTable = new TennisTable("file:src/main/resources/graphism/image/tabletennisarea.png");
-		this.add(this.tennisTable, 342, 57, 106, 803);
+		this.add(this.tennisTable, 342, 57, 63, 806);
 
 		// Bench
-		this.bench = new Bench("file:src/main/resources/graphism/image/bench.png");
-		this.add(this.bench, 30, 20, 500, 500);
+		this.bench = new Bench("file:src/main/resources/graphism/image/bencharea.png");
+		this.add(this.bench, 416, 29, 36, 743);
 		
 		
 		
