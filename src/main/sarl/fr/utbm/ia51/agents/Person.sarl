@@ -48,7 +48,7 @@ agent Person {
 	// the maximum distance between the agent and its target for him to stop moving (min 2f)
 	var maxTargetDistance = 2f
 	
-	
+	var isInClass : boolean
 	
 	//the environment in which the agent will live
 	var environment : GraphEnvironment
@@ -80,6 +80,7 @@ agent Person {
 			//Acquisition of target according to the Person's activity type
 			this.target = this.environment.getArtifactFromActivity(this.activityType).randomPointInEntity
 	
+			this.isInClass = false
 	
 			this.seekBehavior = new KinematicSeekAlgorithm
 			this.wanderBehavior = new KinematicWanderAlgorithm
@@ -117,11 +118,15 @@ agent Person {
 			var targetMotionOutput = new MotionAlgorithmOutput
 			var fleeMotionOutput = new MotionAlgorithmOutput
 
-			// if the bell rings, setting the target to the classroom position
-			if (occurrence.bellRings) {
+			if (occurrence.bellRings && !this.isInClass) {
 				// TODO set the right classroom ?
-				setActivity(ActivityType.CLASSLINE)
+				this.setActivity(ActivityType.CLASSLINE)
+				this.isInClass = true
 				info("The agent will go back to the CLASSLINE")
+			} else if (occurrence.bellRings && this.isInClass) {
+				this.setActivity(this.activityManager.chooseActivity())
+				this.isInClass = false
+				info("The agent will do activity " + this.activityType)
 			}
 
 			if (occurrence.position.distance(target) > this.maxTargetDistance) {
