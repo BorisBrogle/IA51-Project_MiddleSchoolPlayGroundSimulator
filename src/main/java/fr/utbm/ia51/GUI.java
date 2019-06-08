@@ -19,7 +19,6 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
@@ -58,18 +57,18 @@ public class GUI extends Application {
         Pane root = new Pane();
         Scene scene = new Scene(root, this.WIDTH, this.HEIGHT, Color.TRANSPARENT);
         
-        double w = Screen.getPrimary().getVisualBounds().getWidth();
-        double h = Screen.getPrimary().getVisualBounds().getHeight();
         BackgroundImage bg = new BackgroundImage(
-        						new Image("file:src/main/resources/graphism/image/background.png", w, h, false, true),
+        						new Image("file:src/main/resources/graphism/image/background.png", this.WIDTH, this.HEIGHT, false, true),
                 				BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         root.setBackground(new Background(bg));
         
-        GraphEnvironment environment = new GraphEnvironment(w, h);
+        
+        GraphEnvironment environment = new GraphEnvironment(this.WIDTH, this.HEIGHT);
         root.getChildren().add(environment);
 
-        GraphHuman buddy = new GraphHuman(300, 300, "", "", 2,null,environment); 
-        GraphHuman bob = new GraphHuman(200,200,"","",2,null,environment);
+        // We add two dummy Persons for our tests
+        GraphHuman buddy = new GraphHuman(300, 300, "", "", 2, null, environment); 
+        GraphHuman bob = new GraphHuman(200, 200, "", "", 2, null, environment);
         root.getChildren().add(buddy);
         root.getChildren().add(bob);
         this.graphHumans.add(bob);
@@ -79,7 +78,8 @@ public class GUI extends Application {
        
         primaryStage.setScene(scene);
         primaryStage.show();
-        primaryStage.setMaximized(true);
+        
+        //primaryStage.setMaximized(true);
         
         addMouseClickCoords(scene);
         
@@ -92,7 +92,9 @@ public class GUI extends Application {
     }
     
     
-    // If called, this function allows the user to click anywhere in the scene to know its position
+    /*
+     * If called, this function allows the user to click anywhere in the scene to know its position
+     */
     protected void addMouseClickCoords(Scene scene) {
     	//Creating the mouse event handler 
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() { 
@@ -107,9 +109,5 @@ public class GUI extends Application {
     
     
     @Override
-    public void stop() throws Exception {
-    	
-    }
-    
-
+    public void stop() throws Exception {}
 }

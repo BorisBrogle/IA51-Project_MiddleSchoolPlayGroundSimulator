@@ -4,15 +4,12 @@ import java.util.ArrayList;
 
 import fr.utbm.ia51.activities.ActivityType;
 import fr.utbm.ia51.graph.human.GraphHuman;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.transform.Rotate;
 
-public class GraphEnvironment extends EnvironmentEntity {
+public class GraphEnvironment extends StackPane {
 	private ArrayList<EnvironmentEntity> artifacts = new ArrayList<>();
 	private SoccerField soccerField;
 	private Bench bench;
@@ -21,7 +18,6 @@ public class GraphEnvironment extends EnvironmentEntity {
 	private TennisTable tennisTable;
 	private Library library;
 	private Toilet toilet;
-	private Courtyard courtyard;
 	private ClassLine classline;
 	
 	private Button ringButton;
@@ -44,55 +40,41 @@ public class GraphEnvironment extends EnvironmentEntity {
 		this.height = height;
 
 		
-		// Seems useless to me to have a courtyard, isn't it? 
-		/*this.courtyard= new Courtyard(width/3, height);
-		this.courtyard.setTranslateX(-(width/3));
-		this.getChildren().addAll(courtyard);
-		this.artifacts.add(this.courtyard);*/
+		// You should use the method add this way => this.add(object, width, height, xPosition, yPosition)
 		
-		double w, h = 0;
-		
-		w = 572*wFactor;
-		h = 320*hFactor;
-		this.soccerField = new SoccerField(w, h);
-		this.add(this.soccerField, w, h, 1024, 576);
+		// Forest 
+		this.forest = new Forest("file:src/main/resources/graphism/image/forest.png");
+		this.add(this.forest, 549, 432, 1050, 0);
 
-		w = 257*wFactor;
-		h = 369*hFactor;
-		this.basketCourt= new BasketCourt(w, h);
-		this.add(this.basketCourt, w, h, 730, 0);
+		// Basket court
+		this.basketCourt = new BasketCourt("file:src/main/resources/graphism/image/basketcourt.png");
+		this.add(this.basketCourt, 257, 369, 730, 0);
 
-		w = 549*wFactor;
-		h = 432*hFactor;
-		this.forest= new Forest(w, h);
-		this.add(this.forest, w, h, 1050, 0);
+		// Soccer field
+		this.soccerField = new SoccerField("file:src/main/resources/graphism/image/soccerfield.png");
+		this.add(this.soccerField, 572, 320, 1024, 576);
 
-		w = 495*wFactor;
-		h = 220*hFactor;
-		this.library= new Library(w, h);
-		this.add(this.library, w, h, 492, 680);
+		// Library
+		this.library = new Library("file:src/main/resources/graphism/image/library.png");
+		this.add(this.library, 495, 220, 492, 680);
 
-		w = 218*wFactor;
-		h = 127*hFactor;
-		this.toilet= new Toilet(w, h);
-		this.add(this.toilet, w, h, 280, 0);
+		// Toilet
+		this.toilet = new Toilet("file:src/main/resources/graphism/image/toilets.png");
+		this.add(this.toilet, 218, 127, 280, 0);
 
-		w = 112*wFactor;
-		h = 208*hFactor;
-		this.classline= new ClassLine(w, h);
-		this.add(this.classline, w, h, 27, 422);
+		// Class lines
+		this.classline = new ClassLine("file:src/main/resources/graphism/image/classline.png");
+		this.add(this.classline, 112, 208, 27, 422);
 
-		w = 342*wFactor;
-		h = 57*hFactor;
-		this.tennisTable= new TennisTable(w, h);
-		this.add(this.tennisTable, w, h, 106, 803);
+		// Tennis tables
+		this.tennisTable = new TennisTable("file:src/main/resources/graphism/image/tabletennisarea.png");
+		this.add(this.tennisTable, 342, 57, 106, 803);
+
+		// Bench
+		this.bench = new Bench("file:src/main/resources/graphism/image/bench.png");
+		this.add(this.bench, 30, 20, 500, 500);
 		
 		
-		this.bench = new Bench(30);
-		this.bench.setTranslateX(-30);
-		this.bench.setTranslateY(0);
-		this.getChildren().addAll(bench);
-		this.artifacts.add(this.bench);
 		
 		this.ringButton = new Button();
 		ImageView image = new ImageView(new Image("file:src/main/resources/graphism/image/bell.png"));
@@ -100,29 +82,23 @@ public class GraphEnvironment extends EnvironmentEntity {
 		image.setFitHeight(40);
 		image.setFitWidth(40);
 		this.ringButton.setGraphic(image);
-//		this.ringButton.setTranslateX(-(width/2)+60);
-//		this.ringButton.setTranslateY((height/2)-60);
-		
-				
-//		this.ringButton.setOnMouseClicked(e->{
-//			this.basketCourt.setVisible(false);
-//		});
-
-
-
-		
-		
 	}
 	
+	
 	public void add(EnvironmentEntity e, double w, double h, double x, double y) {
-		e.setTranslateX(-this.width/2.0 + x*wFactor + w/2.0);
-		e.setTranslateY(-this.height/2.0 + y*hFactor + h/2.0);
-		/*
-		e.setTranslateX((x*wFactor)/2.0);
-		e.setTranslateY((y*hFactor)/2.0);*/
+		w *= wFactor;
+		h *= hFactor;
+		x *= wFactor;
+		y *= hFactor;
+		
+		e.init(w, h);
+		e.setTranslateX(-this.width/2.0 + x + w/2.0);
+		e.setTranslateY(-this.height/2.0 + y + h/2.0);
+		
 		this.getChildren().addAll(e);
 		this.artifacts.add(e);
 	}
+	
 	
 	public void printAllArtifactsPositions() {
 		for(StackPane s : this.artifacts)
@@ -131,19 +107,17 @@ public class GraphEnvironment extends EnvironmentEntity {
 	
 	
 	public ArrayList<EnvironmentEntity> getIntersectedArtifacts(GraphHuman graphHuman) {
-		
-		
 		ArrayList<EnvironmentEntity> intersectArtifacts = new ArrayList<>();
 		for(EnvironmentEntity s : this.artifacts) {
 			if(s.getBoundsInParent().intersects(graphHuman.getBoundsInParent())) {
-				
-//				System.out.println("Intersect with "+s.getClass().getName());
+				//System.out.println("Intersect with "+s.getClass().getName());
 				intersectArtifacts.add(s);
 			}
 		}
 		return intersectArtifacts;
 		
 	}
+	
 	
 	public EnvironmentEntity getArtifactFromActivity(ActivityType activityType) {
 		switch(activityType) {
@@ -158,19 +132,16 @@ public class GraphEnvironment extends EnvironmentEntity {
 			case FIGHT : return this.toilet; //C'EST JUSTE POUR EVITER QUE CA PLANTE FAUDRA BIEN SUR CHANGER
 		default:
 			 return this.toilet;
-			
-			
 		}
-
 	}
 
+	
 	public Button getRingButton() {
 		return ringButton;
 	}
 
+	
 	public void setRingButton(Button ringButton) {
 		this.ringButton = ringButton;
 	}
-	
-	
 }
