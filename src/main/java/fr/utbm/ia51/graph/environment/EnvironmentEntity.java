@@ -2,11 +2,13 @@ package fr.utbm.ia51.graph.environment;
 
 import fr.utbm.ia51.Globals;
 import fr.utbm.ia51.activities.ActivityType;
+import fr.utbm.ia51.graph.human.GraphHuman;
 import fr.utbm.ia51.tools.Point2f;
 import fr.utbm.ia51.tools.Vector2f;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 
 public class EnvironmentEntity extends StackPane {
 	protected ActivityType activityType;
@@ -14,6 +16,18 @@ public class EnvironmentEntity extends StackPane {
 
 	public EnvironmentEntity(String imagePath) {
 		this.imagePath = imagePath;
+	}
+	
+	
+	public Rectangle getArea() {
+		return new Rectangle(this.getTranslateX(), this.getTranslateY(), this.getWidth(), this.getHeight());
+	}
+	
+	
+	public boolean intersect(GraphHuman g) {
+		if(this.getArea().intersects(g.getLayoutBounds()))
+			return true;
+		return false;
 	}
 	
 	

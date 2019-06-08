@@ -5,19 +5,10 @@ import java.util.UUID;
 import fr.utbm.ia51.activities.ActivityToolTip;
 import fr.utbm.ia51.activities.ActivityType;
 import fr.utbm.ia51.graph.environment.GraphEnvironment;
-import javafx.animation.RotateTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.EventType;
-import javafx.geometry.Point2D;
-import javafx.scene.control.Button;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -26,15 +17,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.transform.Translate;
-import javafx.util.Duration;
 
 public class GraphHuman extends StackPane {
 	
 	
 	private GraphEnvironment environment;
 	private StackPane humanBody;
-//	private Rectangle arms;
+	//private Rectangle arms;
 	private Circle head = new Circle();
 	private Circle selectionCircle = new Circle();
 	private Circle lefteye, righteye;
