@@ -82,7 +82,7 @@ public class GUI extends Application {
         primaryStage.show();
         //primaryStage.setMaximized(true);
         
-        addMouseClickCoords(scene);
+        //addMouseClickCoords(scene);
         
         try {
 			SRE.getBootstrap().startAgent(Boot.class, this.graphHumans);

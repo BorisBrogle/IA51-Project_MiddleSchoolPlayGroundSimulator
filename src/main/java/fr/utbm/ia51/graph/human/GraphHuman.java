@@ -2,6 +2,7 @@ package fr.utbm.ia51.graph.human;
 
 import java.util.UUID;
 
+import fr.utbm.ia51.Globals;
 import fr.utbm.ia51.activities.ActivityToolTip;
 import fr.utbm.ia51.activities.ActivityType;
 import fr.utbm.ia51.graph.environment.GraphEnvironment;
@@ -17,10 +18,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import tools.Arrow;
 
 public class GraphHuman extends StackPane {
-	
-	
 	private GraphEnvironment environment;
 	private StackPane humanBody;
 	//private Rectangle arms;
@@ -33,17 +33,15 @@ public class GraphHuman extends StackPane {
 	private UUID uuid;
 	private ActivityToolTip activityDesired;
 	private Rectangle viewField;
+	private Arrow forceArrow;
 	
 	//Add position 
 	
 	
-	
 	public GraphHuman (int x,int y, String headStyle, String armStyle, double sizeRatioHead,String name, GraphEnvironment environment) {
-
 		super();
 		this.setStyle("-fx-border-color : red");
 		this.setManaged(true);
-		
 		
 		this.environment = environment;
 		this.setTranslateX(x);
@@ -54,19 +52,15 @@ public class GraphHuman extends StackPane {
 		this.head.setFill(Color.NAVAJOWHITE);
 		this.uuid = UUID.randomUUID();
 		
-		
 		this.lefteye = new Circle(sizeRatioHead);
 		this.righteye = new Circle(sizeRatioHead);
-		
 		
 		// Binding of eye's position according to the head position
 		this.lefteye.translateXProperty().bind(head.translateXProperty().subtract(3*sizeRatioHead));
 		this.righteye.translateXProperty().bind(head.translateXProperty().add(3*sizeRatioHead));
 		this.lefteye.translateYProperty().bind(head.translateYProperty().add(3*sizeRatioHead));
 		this.righteye.translateYProperty().bind(head.translateXProperty().add(3*sizeRatioHead));
-		
 			
-		
 		this.viewField = new Rectangle(head.getRadius()*8, head.getRadius()*8);
 		this.viewField.setFill(new Color(0,1,0,0.50));
 //		this.arms = new Rectangle(x-4,y-4,18*sizeRatioHead,6*sizeRatioHead);
@@ -91,7 +85,6 @@ public class GraphHuman extends StackPane {
 		this.selectionCircle.setVisible(false);
 		
 		
-		
 		HBox infoBox = new HBox();
 		infoBox.setAlignment(Pos.BOTTOM_LEFT);
 		infoBox.getChildren().add(this.infoWindow);
@@ -99,10 +92,6 @@ public class GraphHuman extends StackPane {
 		this.selectionCircle.visibleProperty().bind(isSelected);
 		this.environment.getChildren().add(infoBox);
 
-
-
-		
-		
 		this.head.setOnMouseClicked(e->{
 			if(this.isSelected.getValue() == true) 
 				this.isSelected.set(false);
@@ -123,10 +112,22 @@ public class GraphHuman extends StackPane {
 		this.activityDesired.setVisible(false);
 		
 		
+		// Arrow representing the force vector of the agent
+		this.forceArrow = new Arrow();
+
+		this.forceArrow.setStartX(x);
+		this.forceArrow.setStartY(y);
+		this.forceArrow.setEndX(x+25);
+		this.forceArrow.setEndY(y+25);
+		if(!Globals.SHOW_FORCE_VECTOR) {
+			this.forceArrow.setVisible(false);
+		}
+		
+		
 		this.humanBody = new StackPane();
 //		this.humanBody.getChildren().addAll(arms,selectionCircle,head,lefteye,righteye);
 		this.humanBody.getChildren().addAll(selectionCircle,head,lefteye,righteye);
-		this.getChildren().addAll(this.viewField,this.coordinatesLabel,this.humanBody, activityDesired);
+		this.getChildren().addAll(this.viewField,this.coordinatesLabel, this.humanBody, activityDesired, this.forceArrow);
 //		this.setStyle("-fx-border-color : blue");
 		//this.environment.getChildren().add(activityDesired);
 		
@@ -135,7 +136,7 @@ public class GraphHuman extends StackPane {
 	
 
 	
-	public void moveTo(double x,double y, double speed) {
+	public void moveTo(double x, double y, double speed) {
 //		this.head.setTranslateX(x);
 //		this.head.setTranslateY(y);
 		this.setTranslateX(x-this.viewField.getWidth()/2);
@@ -145,8 +146,19 @@ public class GraphHuman extends StackPane {
 		Platform.runLater(()->{
 			this.coordinatesLabel.setText("x="+(int)this.getTranslateX()+"y="+(int)this.getTranslateY());
 		});
-
-		
+	}
+	
+	
+	/*
+	 * Used to show the force arrow of the agent, representing the direction it is following.
+	 */
+	public void showForce(double endX, double endY) {
+		double x = this.getX();
+		double y = this.getY();
+		this.forceArrow.setStartX(x);
+		this.forceArrow.setStartY(y);
+		this.forceArrow.setEndX(x+endX*20);
+		this.forceArrow.setEndY(y+endY*20);
 	}
 
 

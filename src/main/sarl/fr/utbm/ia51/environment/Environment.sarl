@@ -212,6 +212,9 @@ agent Environment {
 			var newPosition : Point2f = influence.position + influence.linear
 			
 			this.graphHumans.get(influence.callerID).moveTo(newPosition.x, newPosition.y, 2)
+			if (Globals::SHOW_FORCE_VECTOR) {
+				this.graphHumans.get(influence.callerID).showForce(influence.linear.x, influence.linear.y)
+			}
 			
 			emit(new ActionToPerson(newPosition.x, newPosition.y), [it.UUID == influence.callerID])
 			// influence.caller.posX

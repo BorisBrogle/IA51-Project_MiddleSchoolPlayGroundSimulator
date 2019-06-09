@@ -8,4 +8,5 @@ public class Globals {
 	public static Chrono chrono = new Chrono();
 	
 	public static long LOOP_DURATION = 100; // Duration between each steps, in milliseconds
+	public static boolean SHOW_FORCE_VECTOR = true; // If we should print the force vector of the agents
 }
