@@ -4,6 +4,7 @@
 package fr.utbm.ia51.boot
 
 import fr.utbm.ia51.environment.Environment
+import fr.utbm.ia51.environment.ShutDown
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
@@ -12,20 +13,11 @@ agent Boot {
 	uses Logging, Lifecycle
 
 	on Initialize {
-		//		Thread thread = new Thread(){
-//			@Override
-//			 void run(){
-//				Application.launch(GUI.class);
-//			}
-//		}
-//		
-//		thread.start();
-//		
-//		GUI gui = GUI.waitForGUIStart();
-//		gui.printBoboLasticot();
-//		
 		info("Booting the application")
-		
 		spawn(typeof(Environment), occurrence.parameters.get(0))
+	}
+
+	on ShutDown {
+		killMe()
 	}
 }

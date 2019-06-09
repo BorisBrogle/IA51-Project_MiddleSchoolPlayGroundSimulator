@@ -110,5 +110,8 @@ public class GUI extends Application {
     
     
     @Override
-    public void stop() throws Exception {}
+    public void stop() throws Exception {
+    	System.out.println("--> Shutting down the application");
+    	Globals.SHUT_DOWN_SIGNAL = true;
+    }
 }

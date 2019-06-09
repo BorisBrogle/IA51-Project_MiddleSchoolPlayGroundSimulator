@@ -155,8 +155,16 @@ agent Environment {
 			if(sleepTime < 0) sleepTime = 0
 			Thread::sleep(sleepTime) // We sleep before the next step
 			
-			emit(new RunBeginingOfStep)
+			if (Globals::SHUT_DOWN_SIGNAL) {
+				emit(new ShutDown)
+			} else {
+				emit(new RunBeginingOfStep)
+			}
 		}
+	}
+	
+	on ShutDown {
+		killMe()
 	}
 
 	on RunBeginingOfStep {

@@ -72,3 +72,6 @@ event RunBeginingOfStep
 
 // When the loop ends
 event RunEndOfStep
+
+// When the GUI is closed
+event ShutDown

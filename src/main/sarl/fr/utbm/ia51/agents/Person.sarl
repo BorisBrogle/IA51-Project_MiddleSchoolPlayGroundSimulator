@@ -14,6 +14,7 @@ import fr.utbm.ia51.agents.motion.KinematicFleeAlgorithm
 import fr.utbm.ia51.environment.ActionToPerson
 import fr.utbm.ia51.environment.Influence
 import fr.utbm.ia51.environment.Perception
+import fr.utbm.ia51.environment.ShutDown
 import fr.utbm.ia51.graph.environment.GraphEnvironment
 import fr.utbm.ia51.tools.MotionAlgorithmOutput
 import fr.utbm.ia51.tools.Point2f
@@ -25,13 +26,14 @@ import io.sarl.core.ContextLeft
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
 
 // Person = corps, behavior = tete en gros
 agent Person {
-	uses Logging, DefaultContextInteractions
+	uses Logging, DefaultContextInteractions, Lifecycle
 	
 	var position : Point2f
 	
@@ -191,6 +193,10 @@ agent Person {
 			// info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", position.x, position.y, x, y)
 			this.position.set(x, y)
 		}
+	}
+
+	on ShutDown {
+		killMe();
 	}
 
 	on Destroy {
