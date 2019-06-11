@@ -3,6 +3,7 @@
  */
 package fr.utbm.ia51.agents
 
+import fr.utbm.ia51.Globals
 import fr.utbm.ia51.activities.ActivityManager
 import fr.utbm.ia51.activities.ActivityType
 import fr.utbm.ia51.agents.behaviors.KinematicSeekAlgorithm
@@ -15,6 +16,7 @@ import fr.utbm.ia51.environment.ActionToPerson
 import fr.utbm.ia51.environment.Influence
 import fr.utbm.ia51.environment.Perception
 import fr.utbm.ia51.environment.ShutDown
+import fr.utbm.ia51.environment.UpdatedActivity
 import fr.utbm.ia51.graph.environment.GraphEnvironment
 import fr.utbm.ia51.tools.MotionAlgorithmOutput
 import fr.utbm.ia51.tools.Point2f
@@ -30,7 +32,7 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
-import fr.utbm.ia51.environment.UpdatedActivity
+import tools.Chrono
 
 // Person = corps, behavior = tete en gros
 agent Person {
@@ -43,7 +45,8 @@ agent Person {
 
 	// the activity that the agent wants to perform
 	var activityType : ActivityType
-	var activityManager = new ActivityManager();
+	var activityManager = new ActivityManager()
+	var activityChrono = new Chrono()
 	
 	// his target which depends on the his activity
 	var target : Point2f
@@ -194,7 +197,17 @@ agent Person {
 			var y = occurrence.newPosY as float
 //			 info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", position.x, position.y, x, y)
 			this.position.set(x, y)
+			this.updateActivity()
 		}
+	}
+	
+	def updateActivity() {
+		var timePassed = this.activityChrono.getTime()
+		var randomValue = Globals::randomGenerator.getRandom(0, Globals::ACTIVITY_CHANGE_FREQUENCY*1000)
+		if(timePassed > randomValue) {
+			this.activity = activityManager.chooseActivity
+		}
+		this.activityChrono.reset()
 	}
 
 	on ShutDown {
