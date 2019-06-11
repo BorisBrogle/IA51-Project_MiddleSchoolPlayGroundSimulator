@@ -67,6 +67,16 @@ event ActionToPerson {
 	}
 }
 
+event UpdatedActivity{
+	val callerID : UUID
+	val activity : ActivityType
+	
+	new(callerID : UUID, activity : ActivityType){
+		this.callerID = callerID
+		this.activity = activity
+	}
+}
+
 // When the loop starts
 event RunBeginingOfStep
 

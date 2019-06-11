@@ -111,7 +111,7 @@ public class GraphHuman extends StackPane {
 		this.activityDesired.rotateProperty().bind(this.rotateProperty().multiply(-1));
 		this.activityDesired.setTranslateX(5);
 		this.activityDesired.setTranslateY(-30);
-		this.activityDesired.setVisible(false);
+		this.activityDesired.setVisible(true);
 		
 		
 		// Arrow representing the force vector of the agent
@@ -176,6 +176,12 @@ public class GraphHuman extends StackPane {
 			
 		}
 	}
+	
+	
+	public void setActivity(ActivityType activity) {
+		System.out.println("Changement d'activité");
+		this.activityDesired.changeDesire(activity);
+	}
 
 
 	public UUID getUuid() {
@@ -211,6 +217,20 @@ public class GraphHuman extends StackPane {
 
 	public void setEnvironment(GraphEnvironment environment) {
 		this.environment = environment;
+	}
+
+
+
+
+	public ActivityToolTip getActivityDesired() {
+		return activityDesired;
+	}
+
+
+
+
+	public void setActivityDesired(ActivityToolTip activityDesired) {
+		this.activityDesired = activityDesired;
 	}
 	
 	
