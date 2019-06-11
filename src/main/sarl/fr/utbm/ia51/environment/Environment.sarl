@@ -213,6 +213,14 @@ agent Environment {
 		}
 	}
 	
+	on UpdatedActivity {
+
+		synchronized(this){		
+		this.graphHumans.get(occurrence.callerID).activityDesired.visible=true
+		this.graphHumans.get(occurrence.callerID).activity = occurrence.activity
+		}
+	}
+	
 	def spawnAPerson(name: String, graphHuman : GraphHuman, environment : GraphEnvironment) {
 		
 		var id = spawnInContextWithID(typeof(Person),graphHuman.uuid,defaultContext,name,graphHuman.x,graphHuman.y,environment)
@@ -231,6 +239,9 @@ agent Environment {
 			if (Globals::SHOW_FORCE_VECTOR) {
 				this.graphHumans.get(influence.callerID).showForce(influence.linear.x, influence.linear.y)
 			}
+			
+			
+			
 			if(this.graphHumans.get(influence.callerID).environment.isInCoveredArea(newPosition))
 				this.graphHumans.get(influence.callerID).sethideInCoveredArea(true)
 			else
