@@ -48,6 +48,9 @@ agent Person {
 	var activityManager = new ActivityManager()
 	var activityChrono = new Chrono()
 	
+	var motionlessChrono : Chrono = new Chrono()
+	var wasMotionless = false
+	
 	// his target which depends on the his activity
 	var target : Point2f
 
@@ -84,7 +87,7 @@ agent Person {
 			info("The agent will do activity "+this.activityType)
 			
 			//Acquisition of target according to the Person's activity type
-			this.target = this.environment.getArtifactFromActivity(this.activityType).randomPointInEntity
+			this.target = this.getNewTarget
 	
 			this.isInClass = false
 	
@@ -101,12 +104,17 @@ agent Person {
 	def setActivity(act : ActivityType) : void {
 		synchronized (this) {
 			this.activityType = act
-			this.target = getTarget(activityType)
+			this.target = getNewTarget(activityType)
 			emit(new UpdatedActivity(this.ID,this.activityType))
 		}
 	}
 	
-	def getTarget(at : ActivityType) : Point2f {
+	def getNewTarget(at : ActivityType) : Point2f {
+		synchronized (this) {
+			this.environment.getArtifactFromActivity(at).randomPointInEntity
+		}
+	}
+	def getNewTarget() : Point2f {
 		synchronized (this) {
 			this.environment.getArtifactFromActivity(this.activityType).randomPointInEntity
 		}
@@ -195,11 +203,37 @@ agent Person {
 		synchronized (this) {
 			var x = occurrence.newPosX as float
 			var y = occurrence.newPosY as float
-//			 info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", position.x, position.y, x, y)
+			
+			//info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", position.x, position.y, x, y)
+
+			if(position.x == x && position.y == y) { //The person hasn't moved this loop
+				this.stayMotionlessOrNot
+			} else {
+				this.motionlessChrono.reset()
+				wasMotionless = false
+			}
+			
 			this.position.set(x, y)
 			this.updateActivity()
 		}
 	}
+	
+	
+	def stayMotionlessOrNot() {
+		synchronized (this) {
+			if (this.wasMotionless) {
+				var timePassed = this.motionlessChrono.getTime()
+				var randomValue = Globals::randomGenerator.getRandom(0, Globals::IMMOBILITY_TIME * 1000)
+				if (timePassed > randomValue) {
+					this.target = this.getNewTarget
+				}
+				this.motionlessChrono.reset()
+			} else {
+				this.wasMotionless = true
+			}
+		}
+	}
+	
 	
 	def updateActivity() {
 		var timePassed = this.activityChrono.getTime()
