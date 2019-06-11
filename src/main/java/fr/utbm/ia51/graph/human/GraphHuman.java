@@ -50,6 +50,8 @@ public class GraphHuman extends StackPane {
 		this.head.setCenterY(y);
 		this.head.setRadius(6*sizeRatioHead);
 		this.head.setFill(Color.NAVAJOWHITE);
+		
+		
 		this.uuid = UUID.randomUUID();
 		
 		this.lefteye = new Circle(sizeRatioHead);
@@ -159,6 +161,20 @@ public class GraphHuman extends StackPane {
 		this.forceArrow.setStartY(y);
 		this.forceArrow.setEndX(x+endX*20);
 		this.forceArrow.setEndY(y+endY*20);
+	}
+	
+	
+	public void sethideInCoveredArea(boolean hide) {
+		if(hide) {
+			this.lefteye.setVisible(false);
+			this.righteye.setVisible(false);
+			this.head.setStyle("-fx-fill : transparent ;-fx-stroke : yellow;  -fx-stroke-dash-array: 5; -fx-stroke-width : 2 ");			
+		}else {
+			this.lefteye.setVisible(true);
+			this.righteye.setVisible(true);
+			this.head.setStyle("-fx-fill : NAVAJOWHITE ;-fx-stroke : yellow;  -fx-stroke-dash-array: 5; -fx-stroke-width : 0 ");	
+			
+		}
 	}
 
 

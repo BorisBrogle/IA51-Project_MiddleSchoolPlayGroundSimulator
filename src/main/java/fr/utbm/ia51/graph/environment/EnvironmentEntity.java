@@ -13,6 +13,7 @@ import javafx.scene.shape.Rectangle;
 public class EnvironmentEntity extends StackPane {
 	protected ActivityType activityType;
 	private String imagePath;
+	protected boolean isCovering = false;
 
 	public EnvironmentEntity(String imagePath) {
 		this.imagePath = imagePath;
