@@ -1,0 +1,73 @@
+/** 
+ * 
+ */
+package fr.utbm.ia51.agents.behaviors
+
+import fr.utbm.ia51.Globals
+import fr.utbm.ia51.tools.MotionAlgorithmOutput
+import fr.utbm.ia51.tools.Point2f
+import fr.utbm.ia51.tools.Vector2f
+
+/** 
+ * Seek Behavior.
+ * 
+ * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
+ * @version $Name$ $Revision$ $Date$
+ */
+interface AvoidAlgorithm {
+
+			/** 
+		 * @param position is the current position of the entity.
+		 * @param linearSpeed is the current linear speed of the entity.
+		 * @param maxLinear is the maximal linear speed or acceleration (depending on getType()) of the entity.
+		 * @param target is the point to flee.
+		 * @return the behaviour output.
+		 */
+	def run(position : Point2f, linearSpeed : float, maxLinear : float, target : Point2f) : MotionAlgorithmOutput
+
+}
+
+/** 
+ * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
+ * @version $Name$ $Revision$ $Date$
+ */
+class KinematicAvoidAlgorithm implements AvoidAlgorithm {
+	override run(position : Point2f, linearSpeed : float, maxLinear : float, target : Point2f) : MotionAlgorithmOutput {
+		var output = new MotionAlgorithmOutput()
+
+		var direction = target - position
+		var normalDirection = new Vector2f(direction.y, -direction.x)
+		
+		// top-left or bottom-left part of the map
+		if((position.x < Globals.WIDTH/2 && position.y < Globals.HEIGHT/2) || (position.x > Globals.WIDTH/2 && position.y > Globals.HEIGHT/2)) {
+			if(direction.x > 0) {
+				if (direction.y > 0) {
+					normalDirection = new Vector2f(direction.y, -direction.x)
+				} else {
+					normalDirection = new Vector2f(-direction.y, direction.x)
+				}
+			} else {
+				if (direction.y > 0) {
+					normalDirection = new Vector2f(-direction.y, direction.x)
+				} else {
+					normalDirection = new Vector2f(direction.y, -direction.x)
+				}
+			}
+			println("direction: " + direction + " normalDirection: " + normalDirection)
+		} else {
+			if (direction.x > 0) {
+				normalDirection = new Vector2f(direction.y, -direction.x)
+			} else {
+				normalDirection = new Vector2f(-direction.y, direction.x)
+			}
+			println("direction: " + direction + " normalDirection: " + normalDirection)
+		}
+
+		normalDirection.length = maxLinear
+
+		output.linear = normalDirection
+
+		return output
+	}
+
+}

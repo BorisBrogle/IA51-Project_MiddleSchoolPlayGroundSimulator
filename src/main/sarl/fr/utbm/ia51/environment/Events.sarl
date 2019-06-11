@@ -21,11 +21,11 @@ event Perception {
 	val bellRings : boolean
 
 	// liste des points les plus proches des objets perçus par l'agent (dans son champ de vision)
-	val perceivedObjects : HashMap<ActivityType, Point2f>
+	val perceivedObjects : HashMap<ActivityType, ArrayList<Point2f>>
 
 	new(position : Point2f, orientation : Vector2f, currentLinearSpeed : float, maxLinear : float,
 		currentAngularSpeed : float, maxAngular : float, bellRings : boolean,
-		perceivedObjects : HashMap<ActivityType, Point2f>)
+		perceivedObjects : HashMap<ActivityType, ArrayList<Point2f>>)
 	{
 		this.position = position
 		this.orientation = orientation

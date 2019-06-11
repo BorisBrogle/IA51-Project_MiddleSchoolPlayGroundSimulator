@@ -73,6 +73,15 @@ public class EnvironmentEntity extends StackPane {
 			return projete(x,y,xmin,ymin,xmax,ymin);
 		return projete(x,y,xmin,ymax,xmax,ymax);
 	}
+	
+	public Point2f getCenterPoint() {
+		double xmin = this.getBoundsInParent().getMinX();
+		double ymin = this.getBoundsInParent().getMinY();
+		double xmax = this.getBoundsInParent().getMaxX();
+		double ymax = this.getBoundsInParent().getMaxY();
+		
+		return new Point2f((xmax+xmin)/2.0,(ymax+ymin)/2.0);
+	}
 
 
 	public Vector2f getNormalVectorAtPoint(Point2f applicationPoint) {
