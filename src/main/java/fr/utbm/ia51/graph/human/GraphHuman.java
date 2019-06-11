@@ -38,7 +38,7 @@ public class GraphHuman extends StackPane {
 	//Add position 
 	
 	
-	public GraphHuman (int x,int y, String headStyle, String armStyle, double sizeRatioHead,String name, GraphEnvironment environment) {
+	public GraphHuman (int x,int y, String headStyle, String armStyle, double sizeRatioHead, String name, GraphEnvironment environment) {
 		super();
 		this.setStyle("-fx-border-color : red");
 		this.setManaged(true);

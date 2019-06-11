@@ -28,8 +28,8 @@ public class GUI extends Application {
 	public static GUI gui = null;
 	public LinkedList<GraphHuman> graphHumans = new LinkedList<>();
 	
-	final int WIDTH = 1280;
-	final int HEIGHT = 720;
+	final int WIDTH = Globals.WIDTH;
+	final int HEIGHT = Globals.HEIGHT;
 
     public static void main(String[] args) {
         Application.launch(GUI.class, args);
