@@ -223,7 +223,11 @@ agent Environment {
 			if (Globals::SHOW_FORCE_VECTOR) {
 				this.graphHumans.get(influence.callerID).showForce(influence.linear.x, influence.linear.y)
 			}
-			
+			if(this.graphHumans.get(influence.callerID).environment.isInCoveredArea(newPosition))
+				this.graphHumans.get(influence.callerID).sethideInCoveredArea(true)
+			else
+				this.graphHumans.get(influence.callerID).sethideInCoveredArea(false)
+					
 			emit(new ActionToPerson(newPosition.x, newPosition.y), [it.UUID == influence.callerID])
 			// influence.caller.posX
 		}

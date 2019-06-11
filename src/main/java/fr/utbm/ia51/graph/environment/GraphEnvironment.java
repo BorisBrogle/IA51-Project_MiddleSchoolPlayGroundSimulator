@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import fr.utbm.ia51.activities.ActivityType;
 import fr.utbm.ia51.graph.human.GraphHuman;
+import fr.utbm.ia51.tools.Point2f;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,6 +13,10 @@ import javafx.scene.layout.StackPane;
 
 public class GraphEnvironment extends StackPane {
 	private ArrayList<EnvironmentEntity> artifacts = new ArrayList<>();
+	private ArrayList<EnvironmentEntity> coveredAreas = new ArrayList<>();
+	
+	
+	
 	private SoccerField soccerField;
 	private Bench bench;
 	private BasketCourt basketCourt;
@@ -97,6 +103,8 @@ public class GraphEnvironment extends StackPane {
 		
 		this.getChildren().addAll(e);
 		this.artifacts.add(e);
+		if(e.isCovering)
+			this.coveredAreas.add(e);
 	}
 	
 	
@@ -133,6 +141,14 @@ public class GraphEnvironment extends StackPane {
 		default:
 			 return this.toilet;
 		}
+	}
+	
+	
+	public boolean isInCoveredArea(Point2f position) {
+		for(EnvironmentEntity e : this.coveredAreas)
+			if(e.getBoundsInParent().contains(new Point2D(position.getX(),position.getY())))
+				return true;
+		return false;
 	}
 
 	
