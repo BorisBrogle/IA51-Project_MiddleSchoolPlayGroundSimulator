@@ -53,16 +53,15 @@ class KinematicAvoidAlgorithm implements AvoidAlgorithm {
 					normalDirection = new Vector2f(direction.y, -direction.x)
 				}
 			}
-			println("direction: " + direction + " normalDirection: " + normalDirection)
 		} else {
 			if (direction.x > 0) {
 				normalDirection = new Vector2f(direction.y, -direction.x)
 			} else {
 				normalDirection = new Vector2f(-direction.y, direction.x)
 			}
-			println("direction: " + direction + " normalDirection: " + normalDirection)
 		}
-
+		
+		// println("direction: " + direction + " normalDirection: " + normalDirection)
 		normalDirection.length = maxLinear
 
 		output.linear = normalDirection
