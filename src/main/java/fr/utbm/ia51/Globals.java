@@ -20,7 +20,4 @@ public class Globals {
 	public static boolean SHUT_DOWN_SIGNAL = false; // Will be set to true when the GUI is closed, kills all the agents
 	
 	public static boolean NIUT_NIUT_LES_CHECKBOX = true;
-	
-	public static final int WIDTH = 1280;
-	public static final int HEIGHT = 720;
 }
