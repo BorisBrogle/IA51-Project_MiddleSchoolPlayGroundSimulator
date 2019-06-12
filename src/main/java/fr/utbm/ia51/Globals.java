@@ -4,7 +4,7 @@ import fr.utbm.ia51.tools.PseudoRandomGenerator;
 import tools.Chrono;
 
 public class Globals {
-	public static PseudoRandomGenerator randomGenerator = new PseudoRandomGenerator();
+	public static PseudoRandomGenerator randomGenerator = new PseudoRandomGenerator(34253076);
 	public static Chrono chrono = new Chrono();
 	
 	public static final int WIDTH = 1280; // Height of our map, and of our base window
@@ -15,9 +15,12 @@ public class Globals {
 	public static long ACTIVITY_CHANGE_FREQUENCY = 3600; // All the agents will change activity every x seconds on average
 	public static long IMMOBILITY_TIME = 5; // The agents will stay motionless for 5 seconds max on average
 	
-	public static boolean SHOW_FORCE_VECTOR = true; // If we should print the force vector of the agents
+	public static long AGENT_RADIUS = 10; // Radius of the agents
 	
 	public static boolean SHUT_DOWN_SIGNAL = false; // Will be set to true when the GUI is closed, kills all the agents
 	
-	public static boolean NIUT_NIUT_LES_CHECKBOX = true;
+	public static boolean SHOW_FORCE_VECTOR = true; // If we should show the force vector of the agents
+	public static boolean SHOW_VIEW_FIELD = false; // If we should show the view field of the agents
+	public static boolean SHOW_AGENTS_COORDINATES = false; // If we should show the x;y coordinates of the agents
+	public static boolean SHOW_ACTIVITY_TOOLTIP = false; // If we should show the activities of the agents
 }

@@ -236,7 +236,7 @@ agent Environment {
 	on UpdatedActivity {
 
 		synchronized(this){		
-		this.graphHumans.get(occurrence.callerID).graphHuman.activityDesired.visible=true
+//		this.graphHumans.get(occurrence.callerID).graphHuman.activityDesired.visible=true
 		this.graphHumans.get(occurrence.callerID).graphHuman.activity = occurrence.activity
 		}
 	}

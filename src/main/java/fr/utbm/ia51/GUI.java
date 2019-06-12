@@ -40,6 +40,7 @@ public class GUI extends Application {
 	private CheckBox coordCheckBox = new CheckBox();
 	private CheckBox vectorCheckBox = new CheckBox();
 	private CheckBox viewfieldCheckBox = new CheckBox();
+	private CheckBox tooltipCheckBox = new CheckBox();
 	
     public static void main(String[] args) {
         Application.launch(GUI.class, args);
@@ -79,8 +80,8 @@ public class GUI extends Application {
         root.getChildren().add(environment);
 
         // We add two dummy Persons for our tests
-        GraphHuman buddy = new GraphHuman(300, 300, "", "", 2, null, environment); 
-        GraphHuman bob = new GraphHuman(200, 200, "", "", 2, null, environment);
+        GraphHuman buddy = new GraphHuman(300, 300, "", "", Globals.AGENT_RADIUS, null, environment); 
+        GraphHuman bob = new GraphHuman(200, 200, "", "", Globals.AGENT_RADIUS, null, environment);
         root.getChildren().add(buddy);
         root.getChildren().add(bob);
         this.graphHumans.add(bob);
@@ -103,8 +104,8 @@ public class GUI extends Application {
         			g.getCoordinatesLabel().setVisible(false);
         	}
         });
-        coordCheckBox.setSelected(Globals.NIUT_NIUT_LES_CHECKBOX);
-        Label coordLabel = new Label("coordinates");
+        coordCheckBox.setSelected(Globals.SHOW_AGENTS_COORDINATES);
+        Label coordLabel = new Label("Coordinates");
         coordLabel.setTextFill(Color.WHITE);
         coordVBox.getChildren().addAll(coordLabel,coordCheckBox);
         
@@ -121,10 +122,27 @@ public class GUI extends Application {
         	}
         	
         });
-        vectorCheckBox.setSelected(Globals.NIUT_NIUT_LES_CHECKBOX);
-        Label vectorLabel = new Label("vector_direction");
+        vectorCheckBox.setSelected(Globals.SHOW_FORCE_VECTOR);
+        Label vectorLabel = new Label("Vector direction");
         vectorLabel.setTextFill(Color.WHITE);
         vectVBox.getChildren().addAll(vectorLabel,vectorCheckBox);
+        
+        
+        VBox tooltipVBox = new VBox();
+        tooltipVBox.setAlignment(Pos.CENTER);
+        tooltipCheckBox.selectedProperty().addListener((obs,old,val)->{
+        	for(GraphHuman g : this.graphHumans) {
+        		if(val)
+        			g.getActivityDesired().setVisible(true);
+        		else
+        			g.getActivityDesired().setVisible(false);
+        	}
+        	
+        });
+        tooltipCheckBox.setSelected(Globals.SHOW_ACTIVITY_TOOLTIP);
+        Label tooltipLabel = new Label("Activity tooltip");
+        tooltipLabel.setTextFill(Color.WHITE);
+        tooltipVBox.getChildren().addAll(tooltipLabel,tooltipCheckBox);
 
         
         VBox viewfieldVBox = new VBox();
@@ -137,18 +155,14 @@ public class GUI extends Application {
         			g.getViewField().setVisible(false);
         	}
         });
-        viewfieldCheckBox.setSelected(Globals.NIUT_NIUT_LES_CHECKBOX);
-        Label viewfieldLabel = new Label("viewfield");
+        viewfieldCheckBox.setSelected(Globals.SHOW_VIEW_FIELD);
+        Label viewfieldLabel = new Label("Viewfield");
         viewfieldLabel.setTextFill(Color.WHITE);
         viewfieldVBox.getChildren().addAll(viewfieldLabel,viewfieldCheckBox);
         
         
         
-        
-        
-        
-        
-        controlVBox.getChildren().addAll(coordVBox,vectVBox,viewfieldVBox);
+        controlVBox.getChildren().addAll(coordVBox, vectVBox, viewfieldVBox, tooltipVBox);
         
         
         
