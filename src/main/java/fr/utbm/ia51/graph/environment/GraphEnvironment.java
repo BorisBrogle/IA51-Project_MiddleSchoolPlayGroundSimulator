@@ -7,6 +7,7 @@ import fr.utbm.ia51.graph.human.GraphHuman;
 import fr.utbm.ia51.tools.Point2f;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -27,6 +28,7 @@ public class GraphEnvironment extends StackPane {
 	private ClassLine classline;
 	
 	private Button ringButton;
+
 	
 	private double wFactor;
 	private double hFactor;
@@ -88,6 +90,8 @@ public class GraphEnvironment extends StackPane {
 		image.setFitHeight(40);
 		image.setFitWidth(40);
 		this.ringButton.setGraphic(image);
+		
+
 	}
 	
 	

@@ -67,6 +67,8 @@ public class GraphHuman extends StackPane {
 		this.viewField.setFill(new Color(0,1,0,0.50));
 //		this.arms = new Rectangle(x-4,y-4,18*sizeRatioHead,6*sizeRatioHead);
 //		this.arms.setFill(Color.GREEN);
+		this.viewField.setVisible(false);
+		
 		
 		this.coordinatesLabel=new Label();
 		
@@ -74,6 +76,7 @@ public class GraphHuman extends StackPane {
 //				()->"x="+this.boundsInParentProperty().getValue().getMaxX()/2+" y="+this.boundsInParentProperty().getValue().getMaxY()/2,this.boundsInParentProperty(),this.boundsInParentProperty()));
 		this.coordinatesLabel.setFont(new Font(sizeRatioHead*5));
 		this.coordinatesLabel.setTranslateY(this.head.getRadius()*-2);
+		this.coordinatesLabel.setVisible(false);
 	
 		
 		//Management of information view when clicking on the human head
@@ -95,6 +98,7 @@ public class GraphHuman extends StackPane {
 		this.environment.getChildren().add(infoBox);
 
 		this.head.setOnMouseClicked(e->{
+			System.out.println();
 			if(this.isSelected.getValue() == true) 
 				this.isSelected.set(false);
 			else 
@@ -121,6 +125,8 @@ public class GraphHuman extends StackPane {
 		this.forceArrow.setStartY(y);
 		this.forceArrow.setEndX(x+25);
 		this.forceArrow.setEndY(y+25);
+		
+		this.forceArrow.setVisible(false);
 		if(!Globals.SHOW_FORCE_VECTOR) {
 			this.forceArrow.setVisible(false);
 		}
@@ -231,6 +237,20 @@ public class GraphHuman extends StackPane {
 
 	public void setActivityDesired(ActivityToolTip activityDesired) {
 		this.activityDesired = activityDesired;
+	}
+
+
+
+
+	public Label getCoordinatesLabel() {
+		return coordinatesLabel;
+	}
+
+
+
+
+	public Arrow getForceArrow() {
+		return forceArrow;
 	}
 	
 	
