@@ -138,8 +138,19 @@ public class EnvironmentEntity extends StackPane {
 	
 
 	public Point2f getRandomPointInEntity() {
-		double newX = Globals.randomGenerator.getRandom(this.getBoundsInParent().getMinX(), this.getBoundsInParent().getMaxX());
-		double newY = Globals.randomGenerator.getRandom(this.getBoundsInParent().getMinY(), this.getBoundsInParent().getMaxY());
+		// We make sure that the entity is wide and tall enough for the agents
+		double xMax = this.getBoundsInParent().getMaxX()-2.0*Globals.AGENT_RADIUS;
+		if(xMax < 1) {
+			xMax = 1;
+		}
+		double yMax = this.getBoundsInParent().getMaxY()-2.0*Globals.AGENT_RADIUS;
+		if(yMax < 1) {
+			yMax = 1;
+		}
+		
+		
+		double newX = Globals.randomGenerator.getRandom(this.getBoundsInParent().getMinX(), xMax);
+		double newY = Globals.randomGenerator.getRandom(this.getBoundsInParent().getMinY(), yMax);
 
 		return new Point2f(newX,newY);
 	}

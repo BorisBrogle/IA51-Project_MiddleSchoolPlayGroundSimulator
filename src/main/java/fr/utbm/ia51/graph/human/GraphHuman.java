@@ -38,7 +38,7 @@ public class GraphHuman extends StackPane {
 	//Add position 
 	
 	
-	public GraphHuman (int x,int y, String headStyle, String armStyle, double sizeRatioHead, String name, GraphEnvironment environment) {
+	public GraphHuman (int x,int y, String headStyle, String armStyle, double radius, String name, GraphEnvironment environment) {
 		super();
 		this.setManaged(true);
 		
@@ -47,20 +47,21 @@ public class GraphHuman extends StackPane {
 		this.setTranslateY(y);
 		this.head.setCenterX(x);
 		this.head.setCenterY(y);
-		this.head.setRadius(6*sizeRatioHead);
+		this.head.setRadius(radius);
 		this.head.setFill(Color.NAVAJOWHITE);
 		
 		
 		this.uuid = UUID.randomUUID();
-		
-		this.lefteye = new Circle(sizeRatioHead);
-		this.righteye = new Circle(sizeRatioHead);
+
+		double eyeRadius = (1.0/6.0)*radius;
+		this.lefteye = new Circle(eyeRadius);
+		this.righteye = new Circle(eyeRadius);
 		
 		// Binding of eye's position according to the head position
-		this.lefteye.translateXProperty().bind(head.translateXProperty().subtract(3*sizeRatioHead));
-		this.righteye.translateXProperty().bind(head.translateXProperty().add(3*sizeRatioHead));
-		this.lefteye.translateYProperty().bind(head.translateYProperty().add(3*sizeRatioHead));
-		this.righteye.translateYProperty().bind(head.translateXProperty().add(3*sizeRatioHead));
+		this.lefteye.translateXProperty().bind(head.translateXProperty().subtract(3*eyeRadius));
+		this.righteye.translateXProperty().bind(head.translateXProperty().add(3*eyeRadius));
+		this.lefteye.translateYProperty().bind(head.translateYProperty().add(3*eyeRadius));
+		this.righteye.translateYProperty().bind(head.translateXProperty().add(3*eyeRadius));
 			
 		this.viewField = new Rectangle(head.getRadius()*8, head.getRadius()*8);
 		this.viewField.setFill(new Color(0,1,0,0.50));
@@ -73,7 +74,7 @@ public class GraphHuman extends StackPane {
 		
 //		this.coordinatesLabel.textProperty().bind(Bindings.createStringBinding(
 //				()->"x="+this.boundsInParentProperty().getValue().getMaxX()/2+" y="+this.boundsInParentProperty().getValue().getMaxY()/2,this.boundsInParentProperty(),this.boundsInParentProperty()));
-		this.coordinatesLabel.setFont(new Font(sizeRatioHead*5));
+		this.coordinatesLabel.setFont(new Font(radius*0.8));
 		this.coordinatesLabel.setTranslateY(this.head.getRadius()*-2);
 		this.coordinatesLabel.setVisible(false);
 	
@@ -114,7 +115,7 @@ public class GraphHuman extends StackPane {
 		this.activityDesired.rotateProperty().bind(this.rotateProperty().multiply(-1));
 		this.activityDesired.setTranslateX(5);
 		this.activityDesired.setTranslateY(-30);
-		this.activityDesired.setVisible(true);
+		this.activityDesired.setVisible(false);
 		
 		
 		// Arrow representing the force vector of the agent
@@ -130,7 +131,7 @@ public class GraphHuman extends StackPane {
 		this.humanBody = new StackPane();
 //		this.humanBody.getChildren().addAll(arms,selectionCircle,head,lefteye,righteye);
 		this.humanBody.getChildren().addAll(selectionCircle,head,lefteye,righteye);
-		this.getChildren().addAll(this.viewField,this.coordinatesLabel, this.humanBody, activityDesired, this.forceArrow);
+		this.getChildren().addAll(this.viewField, this.coordinatesLabel, this.humanBody, this.activityDesired, this.forceArrow);
 //		this.setStyle("-fx-border-color : blue");
 		//this.environment.getChildren().add(activityDesired);
 		
