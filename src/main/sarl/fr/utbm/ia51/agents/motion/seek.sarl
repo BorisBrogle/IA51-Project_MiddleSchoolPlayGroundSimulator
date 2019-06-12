@@ -1,7 +1,7 @@
 /** 
  * 
  */
-package fr.utbm.ia51.agents.behaviors
+package fr.utbm.ia51.agents.motion
 
 import fr.utbm.ia51.tools.MotionAlgorithmOutput
 import fr.utbm.ia51.tools.Point2f
