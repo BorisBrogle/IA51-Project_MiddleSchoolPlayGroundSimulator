@@ -36,10 +36,15 @@ class KinematicAvoidAlgorithm implements AvoidAlgorithm {
 		var output = new MotionAlgorithmOutput()
 
 		var direction = target - position
-		var normalDirection = new Vector2f(direction.y, -direction.x)
+		var normalDirection = new Vector2f(-direction.y, direction.x)
+		var sizeOfExcludedZone = 5.0
+		var minDemiWidth = Globals.WIDTH / 2 - sizeOfExcludedZone
+		var minDemiHeight = Globals.HEIGHT / 2 - sizeOfExcludedZone
+		var maxDemiWidth = Globals.WIDTH / 2 + sizeOfExcludedZone
+		var maxDemiHeight = Globals.HEIGHT / 2 + sizeOfExcludedZone
 		
 		// top-left or bottom-left part of the map
-		if((position.x < Globals.WIDTH/2 && position.y < Globals.HEIGHT/2) || (position.x > Globals.WIDTH/2 && position.y > Globals.HEIGHT/2)) {
+		if((position.x < minDemiWidth && position.y < minDemiHeight) || (position.x > maxDemiWidth && position.y > maxDemiHeight)) {
 			if(direction.x > 0) {
 				if (direction.y > 0) {
 					normalDirection = new Vector2f(direction.y, -direction.x)
@@ -53,7 +58,8 @@ class KinematicAvoidAlgorithm implements AvoidAlgorithm {
 					normalDirection = new Vector2f(direction.y, -direction.x)
 				}
 			}
-		} else {
+		} else if ((position.x < minDemiWidth && position.y > maxDemiHeight) ||
+			(position.x > maxDemiWidth && position.y < minDemiHeight)) {
 			if (direction.x > 0) {
 				normalDirection = new Vector2f(direction.y, -direction.x)
 			} else {
