@@ -68,7 +68,7 @@ public class GraphEnvironment extends StackPane {
 
 		// Toilet
 		this.toilet = new Toilet("file:src/main/resources/graphism/image/toilets.png");
-		this.add(this.toilet, 218, 127, 280, 0);
+		this.add(this.toilet, 218, 127, 53, 0);
 
 		// Class lines
 		this.classline = new ClassLine("file:src/main/resources/graphism/image/classline.png");
@@ -80,7 +80,7 @@ public class GraphEnvironment extends StackPane {
 
 		// Bench
 		this.bench = new Bench("file:src/main/resources/graphism/image/bencharea.png");
-		this.add(this.bench, 416, 29, 36, 743);
+		this.add(this.bench, 305, 26, 353, 17);
 		
 		
 		
