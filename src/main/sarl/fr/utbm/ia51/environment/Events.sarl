@@ -4,6 +4,7 @@
 package fr.utbm.ia51.environment
 
 import fr.utbm.ia51.activities.ActivityType
+import fr.utbm.ia51.graph.human.GraphHuman
 import fr.utbm.ia51.tools.Point2f
 import fr.utbm.ia51.tools.Vector2f
 import java.util.ArrayList
@@ -20,12 +21,18 @@ event Perception {
 	val maxAngular : float
 	val bellRings : boolean
 
-	// liste des points les plus proches des objets perçus par l'agent (dans son champ de vision)
+	// HashMap of perceived activities & people with their activity type, the nearest point (0) and the center point (1)
 	val perceivedObjects : HashMap<ActivityType, ArrayList<Point2f>>
+	
+	// list of person perceived within the field of view
+	val perceivedPeople : ArrayList<GraphHuman>
+	
+	// target's linear motion vector if agent wants to fight and found a target, (0,0) otherwise
+	val targetLinearMotion : Vector2f
 
 	new(position : Point2f, orientation : Vector2f, currentLinearSpeed : float, maxLinear : float,
 		currentAngularSpeed : float, maxAngular : float, bellRings : boolean,
-		perceivedObjects : HashMap<ActivityType, ArrayList<Point2f>>)
+		perceivedObjects : HashMap<ActivityType, ArrayList<Point2f>>, perceivedPeople : ArrayList<GraphHuman>, targetLinearMotion: Vector2f)
 	{
 		this.position = position
 		this.orientation = orientation
@@ -35,6 +42,8 @@ event Perception {
 		this.maxAngular = maxAngular
 		this.bellRings = bellRings
 		this.perceivedObjects = perceivedObjects
+		this.perceivedPeople = perceivedPeople
+		this.targetLinearMotion = targetLinearMotion
 	}
 	
 	
@@ -74,6 +83,16 @@ event UpdatedActivity{
 	new(callerID : UUID, activity : ActivityType){
 		this.callerID = callerID
 		this.activity = activity
+	}
+}
+
+event UpdatedFightTarget {
+	val callerID : UUID
+	val fightTarget : GraphHuman
+	
+	new(callerID : UUID, fightTarget : GraphHuman) {
+		this.callerID = callerID
+		this.fightTarget = fightTarget
 	}
 }
 

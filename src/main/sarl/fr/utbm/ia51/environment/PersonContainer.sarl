@@ -15,10 +15,12 @@ class PersonContainer extends Object {
 	protected var graphHuman : GraphHuman
 	protected var activityType : ActivityType
 	protected var linearMotion : Vector2f
+	protected var fightTarget : GraphHuman
 	
-	new (graphHuman : GraphHuman, activityType : ActivityType, linearMotion : Vector2f) {
+	new (graphHuman : GraphHuman, activityType : ActivityType, linearMotion : Vector2f, fightTarget : GraphHuman) {
 		this.graphHuman = graphHuman
 		this.activityType = activityType
 		this.linearMotion = linearMotion
+		this.fightTarget = fightTarget
 	}
 }

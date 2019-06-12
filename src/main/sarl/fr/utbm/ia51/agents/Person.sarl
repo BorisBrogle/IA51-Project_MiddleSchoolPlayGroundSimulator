@@ -35,6 +35,7 @@ import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
 import tools.Chrono
+import fr.utbm.ia51.environment.UpdatedFightTarget
 
 // Person = corps, behavior = tete en gros
 agent Person {
@@ -150,7 +151,11 @@ agent Person {
 			}
 
 			if (this.activityType == ActivityType.FIGHT) {
-				
+				// checks if target exists
+				if(occurrence.targetLinearMotion.length <= 0.0) {
+					//TODO get a random perceivedHuman
+					//emit(new UpdatedFightTarget(this.UUID, occurrence.perceivedHuman(0)))
+				}
 			} else if (occurrence.position.distance(target) > this.maxTargetDistance) {
 				if (this.target !== null) {
 					// run the seek behavior

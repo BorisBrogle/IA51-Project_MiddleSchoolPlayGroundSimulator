@@ -64,7 +64,7 @@ agent Environment {
 			info("The environment was started.")
 			var i= 0
 			for (g : listGraphHumans) {
-				var personContainer = new PersonContainer(g, ActivityType.TOILET, new Vector2f())
+				var personContainer = new PersonContainer(g, ActivityType.TOILET, new Vector2f(), g)
 				this.graphHumans.put(g.uuid, personContainer)
 				spawnAPerson("Person"+i,g,g.environment)
 				i++
@@ -182,6 +182,8 @@ agent Environment {
 			
 			for (entry : graphHumans.entrySet) {
 				var graphHuman = entry.value.graphHuman
+				var activityType = entry.value.activityType
+				var targetLinearMotion = new Vector2f()
 				var uuid = entry.key
 				
 				var position : Point2f = new Point2f(graphHuman.x, graphHuman.y)
@@ -194,6 +196,18 @@ agent Environment {
 				var perceivedObjects = <ActivityType, ArrayList<Point2f>>newHashMap
 				var intersectedArtifacts = graphHuman.environment.getIntersectedArtifacts(graphHuman)
 				
+				// TODO get target, something like:
+				var intersectedPeople = <GraphHuman>newArrayList
+				// graphHuman.environment.getIntersectedHumans(graphHuman)
+				if (activityType == ActivityType.FIGHT) {
+					var fightTarget = entry.value.fightTarget
+					// if the target has changed (default one is ourself
+					if (fightTarget !== graphHuman) {
+						var targetUUID = fightTarget.uuid
+						targetLinearMotion = graphHumans.get(targetUUID).linearMotion
+					}
+				}
+				
 				for(intersectedArtifact : intersectedArtifacts) {
 					var intersectedPoint = intersectedArtifact.getNearestPointInEntity(position)
 					var centerPoint = intersectedArtifact.getCenterPoint()
@@ -203,12 +217,17 @@ agent Environment {
 					points.add(centerPoint)
 					
 					perceivedObjects.put(intersectedArtifact.activityType, points)
+					
+					// creating the list of intersected GraphHuman
+					if(intersectedArtifact instanceof GraphHuman) {
+						intersectedPeople.add(intersectedArtifact)
+					}
 				}
 				
 				// info("Sending a perception")
 				emit(
 					new Perception(position, orientation, linearSpeed, maxLinear, angularSpeed, maxAngular, this.bellRings,
-						perceivedObjects), [it.UUID == uuid])
+						perceivedObjects, intersectedPeople, targetLinearMotion), [it.UUID == uuid])
 			}
 			this.bellRings = false
 		}
@@ -219,6 +238,13 @@ agent Environment {
 		synchronized(this){		
 		this.graphHumans.get(occurrence.callerID).graphHuman.activityDesired.visible=true
 		this.graphHumans.get(occurrence.callerID).graphHuman.activity = occurrence.activity
+		}
+	}
+	
+	on UpdatedFightTarget {
+		synchronized (this) {
+			// TODO CHECK IF IT actually UPDATES IN HASHMAP
+			this.graphHumans.get(occurrence.callerID).fightTarget = occurrence.fightTarget
 		}
 	}
 	
