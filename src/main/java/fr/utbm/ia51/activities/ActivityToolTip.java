@@ -16,6 +16,9 @@ public class ActivityToolTip extends StackPane{
 	public ActivityToolTip(ActivityType type) {
 		super();
 		
+		
+		this.setMouseTransparent(true);
+		
 		//ActivityType type = ActivityType.BASKETBALL;		
 		this.tooltip = new ImageView();
 		

@@ -33,6 +33,7 @@ public class EnvironmentEntity extends StackPane {
 	
 	
 	public void init(double width, double height) {
+		if(this.imagePath!=null) {
 		Image image = new Image(this.imagePath);
 		ImageView imageView = new ImageView();
 		
@@ -42,6 +43,7 @@ public class EnvironmentEntity extends StackPane {
 
         this.setMaxSize(imageView.getFitWidth(), imageView.getFitHeight());
         this.getChildren().addAll(imageView);
+		}
 	}
 	
 

@@ -5,7 +5,9 @@ import java.util.UUID;
 import fr.utbm.ia51.Globals;
 import fr.utbm.ia51.activities.ActivityToolTip;
 import fr.utbm.ia51.activities.ActivityType;
+import fr.utbm.ia51.graph.environment.EnvironmentEntity;
 import fr.utbm.ia51.graph.environment.GraphEnvironment;
+import fr.utbm.ia51.tools.Point2f;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
@@ -20,7 +22,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import tools.Arrow;
 
-public class GraphHuman extends StackPane {
+public class GraphHuman extends EnvironmentEntity {
 	private GraphEnvironment environment;
 	private StackPane humanBody;
 	//private Rectangle arms;
@@ -33,13 +35,17 @@ public class GraphHuman extends StackPane {
 	private UUID uuid;
 	private ActivityToolTip activityDesired;
 	private Rectangle viewField;
+	private Rectangle collisionBox;
+	
+	
+	
 	private Arrow forceArrow;
 	
 	//Add position 
 	
 	
 	public GraphHuman (int x,int y, String headStyle, String armStyle, double radius, String name, GraphEnvironment environment) {
-		super();
+		super(null);
 		this.setManaged(true);
 		
 		this.environment = environment;
@@ -68,6 +74,15 @@ public class GraphHuman extends StackPane {
 //		this.arms = new Rectangle(x-4,y-4,18*sizeRatioHead,6*sizeRatioHead);
 //		this.arms.setFill(Color.GREEN);
 		this.viewField.setVisible(false);
+		
+		
+		this.collisionBox = new Rectangle(radius*2, radius*2);
+		this.collisionBox.setMouseTransparent(true);
+		this.collisionBox.setFill(Color.TRANSPARENT);
+		this.collisionBox.setStyle("-fx-border-color : blue");
+		
+		
+		
 		
 		
 		this.coordinatesLabel=new Label();
@@ -110,7 +125,6 @@ public class GraphHuman extends StackPane {
 				isSelected.set(false);
 		});
 		
-		//Infobox above the child
 		activityDesired = new ActivityToolTip(ActivityType.BASKETBALL);
 		this.activityDesired.rotateProperty().bind(this.rotateProperty().multiply(-1));
 		this.activityDesired.setTranslateX(5);
@@ -129,16 +143,15 @@ public class GraphHuman extends StackPane {
 		
 		
 		this.humanBody = new StackPane();
-//		this.humanBody.getChildren().addAll(arms,selectionCircle,head,lefteye,righteye);
+		
 		this.humanBody.getChildren().addAll(selectionCircle,head,lefteye,righteye);
-		this.getChildren().addAll(this.viewField, this.coordinatesLabel, this.humanBody, this.activityDesired, this.forceArrow);
-//		this.setStyle("-fx-border-color : blue");
-		//this.environment.getChildren().add(activityDesired);
+		this.getChildren().addAll(this.viewField, this.coordinatesLabel,this.collisionBox, this.humanBody, this.activityDesired, this.forceArrow);
 		
 	}
 	
 	
 
+	
 	
 	public void moveTo(double x, double y, double speed) {
 //		this.head.setTranslateX(x);
@@ -181,9 +194,43 @@ public class GraphHuman extends StackPane {
 	
 	
 	public void setActivity(ActivityType activity) {
-		System.out.println("Changement d'activité");
 		this.activityDesired.changeDesire(activity);
 	}
+	
+	
+	
+	
+	@Override
+	public Point2f getNearestPointInEntity(Point2f point) {
+		double xmin = this.getBoundsInParent().getMinX()+(this.collisionBox.getBoundsInParent().getMinX()-this.getBoundsInParent().getMinX());
+		double ymin = this.getBoundsInParent().getMinY()+(this.collisionBox.getBoundsInParent().getMinY()-this.getBoundsInParent().getMinY());;
+		double xmax = this.getBoundsInParent().getMaxX()+(this.collisionBox.getBoundsInParent().getMaxX()-this.getBoundsInParent().getMaxX());;
+		double ymax = this.getBoundsInParent().getMaxY()+(this.collisionBox.getBoundsInParent().getMaxY()-this.getBoundsInParent().getMaxY());;
+
+		double x = (double)point.getX();
+		double y = (double)point.getY();
+
+		if(x<=xmin) {
+			if(y<=ymin)
+				return new Point2f(xmin,ymin);
+			if(y>=ymax)
+				return new Point2f(xmin,ymax);
+			return projete(x,y,xmin,ymin,xmin,ymax);
+		}
+		if(x>=xmax) {
+			if(y<=ymin)
+				return new Point2f(xmax,ymin);
+			if(y>=ymax)
+				return new Point2f(xmax,ymax);
+			return projete(x,y,xmax,ymin,xmax,ymax);
+
+		}
+		if(y<=ymin)
+			return projete(x,y,xmin,ymin,xmax,ymin);
+		return projete(x,y,xmin,ymax,xmax,ymax);
+				
+	}
+	
 
 
 	public UUID getUuid() {

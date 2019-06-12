@@ -121,7 +121,7 @@ public class GraphEnvironment extends StackPane {
 	public ArrayList<EnvironmentEntity> getIntersectedArtifacts(GraphHuman graphHuman) {
 		ArrayList<EnvironmentEntity> intersectArtifacts = new ArrayList<>();
 		for(EnvironmentEntity s : this.artifacts) {
-			if(s.getBoundsInParent().intersects(graphHuman.getBoundsInParent())) {
+			if(s.getBoundsInParent().intersects(graphHuman.getBoundsInParent())||!s.contains(new Point2D(graphHuman.getCenterPoint().getX(),graphHuman.getCenterPoint().getY()))) {
 				//System.out.println("Intersect with "+s.getClass().getName());
 				intersectArtifacts.add(s);
 			}
