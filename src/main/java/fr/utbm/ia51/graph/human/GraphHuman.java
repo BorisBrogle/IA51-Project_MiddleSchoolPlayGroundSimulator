@@ -40,7 +40,6 @@ public class GraphHuman extends StackPane {
 	
 	public GraphHuman (int x,int y, String headStyle, String armStyle, double sizeRatioHead, String name, GraphEnvironment environment) {
 		super();
-		this.setStyle("-fx-border-color : red");
 		this.setManaged(true);
 		
 		this.environment = environment;
@@ -125,11 +124,7 @@ public class GraphHuman extends StackPane {
 		this.forceArrow.setStartY(y);
 		this.forceArrow.setEndX(x+25);
 		this.forceArrow.setEndY(y+25);
-		
 		this.forceArrow.setVisible(false);
-		if(!Globals.SHOW_FORCE_VECTOR) {
-			this.forceArrow.setVisible(false);
-		}
 		
 		
 		this.humanBody = new StackPane();

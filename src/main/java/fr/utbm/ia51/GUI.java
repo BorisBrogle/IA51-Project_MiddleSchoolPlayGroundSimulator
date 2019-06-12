@@ -103,7 +103,7 @@ public class GUI extends Application {
         			g.getCoordinatesLabel().setVisible(false);
         	}
         });
-        coordCheckBox.setSelected(Globals.NIUT_NIUT_LES_CHECKBOX);
+        coordCheckBox.setSelected(Globals.SHOW_AGENTS_COORDINATES);
         Label coordLabel = new Label("coordinates");
         coordLabel.setTextFill(Color.WHITE);
         coordVBox.getChildren().addAll(coordLabel,coordCheckBox);
@@ -121,7 +121,7 @@ public class GUI extends Application {
         	}
         	
         });
-        vectorCheckBox.setSelected(Globals.NIUT_NIUT_LES_CHECKBOX);
+        vectorCheckBox.setSelected(Globals.SHOW_FORCE_VECTOR);
         Label vectorLabel = new Label("vector_direction");
         vectorLabel.setTextFill(Color.WHITE);
         vectVBox.getChildren().addAll(vectorLabel,vectorCheckBox);
@@ -137,14 +137,10 @@ public class GUI extends Application {
         			g.getViewField().setVisible(false);
         	}
         });
-        viewfieldCheckBox.setSelected(Globals.NIUT_NIUT_LES_CHECKBOX);
+        viewfieldCheckBox.setSelected(Globals.SHOW_VIEW_FIELD);
         Label viewfieldLabel = new Label("viewfield");
         viewfieldLabel.setTextFill(Color.WHITE);
         viewfieldVBox.getChildren().addAll(viewfieldLabel,viewfieldCheckBox);
-        
-        
-        
-        
         
         
         
