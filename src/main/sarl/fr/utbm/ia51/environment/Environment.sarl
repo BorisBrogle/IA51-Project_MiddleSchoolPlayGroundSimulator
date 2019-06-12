@@ -39,7 +39,7 @@ agent Environment {
 	
 	
 	var listGraphHumans = <GraphHuman>newLinkedList
-	var graphHumans  = <UUID,GraphHuman>newHashMap
+	var graphHumans  = <UUID, PersonContainer>newHashMap
 	var ringButton : Button 
 	
 
@@ -64,7 +64,8 @@ agent Environment {
 			info("The environment was started.")
 			var i= 0
 			for (g : listGraphHumans) {
-				this.graphHumans.put(g.uuid, g)
+				var personContainer = new PersonContainer(g, ActivityType.TOILET, new Vector2f())
+				this.graphHumans.put(g.uuid, personContainer)
 				spawnAPerson("Person"+i,g,g.environment)
 				i++
 				
@@ -180,7 +181,7 @@ agent Environment {
 			influenceList.clear()
 			
 			for (entry : graphHumans.entrySet) {
-				var graphHuman = entry.value
+				var graphHuman = entry.value.graphHuman
 				var uuid = entry.key
 				
 				var position : Point2f = new Point2f(graphHuman.x, graphHuman.y)
@@ -216,8 +217,8 @@ agent Environment {
 	on UpdatedActivity {
 
 		synchronized(this){		
-		this.graphHumans.get(occurrence.callerID).activityDesired.visible=true
-		this.graphHumans.get(occurrence.callerID).activity = occurrence.activity
+		this.graphHumans.get(occurrence.callerID).graphHuman.activityDesired.visible=true
+		this.graphHumans.get(occurrence.callerID).graphHuman.activity = occurrence.activity
 		}
 	}
 	
@@ -235,17 +236,17 @@ agent Environment {
 			
 			var newPosition : Point2f = influence.position + influence.linear
 			
-			this.graphHumans.get(influence.callerID).moveTo(newPosition.x, newPosition.y, 2)
+			this.graphHumans.get(influence.callerID).graphHuman.moveTo(newPosition.x, newPosition.y, 2)
 			if (Globals::SHOW_FORCE_VECTOR) {
-				this.graphHumans.get(influence.callerID).showForce(influence.linear.x, influence.linear.y)
+				this.graphHumans.get(influence.callerID).graphHuman.showForce(influence.linear.x, influence.linear.y)
 			}
 			
 			
 			
-			if(this.graphHumans.get(influence.callerID).environment.isInCoveredArea(newPosition))
-				this.graphHumans.get(influence.callerID).sethideInCoveredArea(true)
+			if (this.graphHumans.get(influence.callerID).graphHuman.environment.isInCoveredArea(newPosition))
+				this.graphHumans.get(influence.callerID).graphHuman.sethideInCoveredArea(true)
 			else
-				this.graphHumans.get(influence.callerID).sethideInCoveredArea(false)
+				this.graphHumans.get(influence.callerID).graphHuman.sethideInCoveredArea(false)
 					
 			emit(new ActionToPerson(newPosition.x, newPosition.y), [it.UUID == influence.callerID])
 			// influence.caller.posX

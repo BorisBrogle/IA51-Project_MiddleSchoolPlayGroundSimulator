@@ -1,0 +1,24 @@
+/** 
+ * 
+ */
+package fr.utbm.ia51.environment
+
+import fr.utbm.ia51.activities.ActivityType
+import fr.utbm.ia51.graph.human.GraphHuman
+import fr.utbm.ia51.tools.Vector2f
+
+/** 
+ * @author Yann
+ * 
+ */
+class PersonContainer extends Object {
+	protected var graphHuman : GraphHuman
+	protected var activityType : ActivityType
+	protected var linearMotion : Vector2f
+	
+	new (graphHuman : GraphHuman, activityType : ActivityType, linearMotion : Vector2f) {
+		this.graphHuman = graphHuman
+		this.activityType = activityType
+		this.linearMotion = linearMotion
+	}
+}

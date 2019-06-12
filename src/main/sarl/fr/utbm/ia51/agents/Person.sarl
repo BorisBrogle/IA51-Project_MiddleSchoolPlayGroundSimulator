@@ -149,7 +149,9 @@ agent Person {
 				info("The agent will do activity " + this.activityType)
 			}
 
-			if (occurrence.position.distance(target) > this.maxTargetDistance) {
+			if (this.activityType == ActivityType.FIGHT) {
+				
+			} else if (occurrence.position.distance(target) > this.maxTargetDistance) {
 				if (this.target !== null) {
 					// run the seek behavior
 					targetMotionOutput = this.seekBehavior.run(
