@@ -22,6 +22,7 @@ import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
 import io.sarl.core.Schedules
+import java.util.ArrayList
 import java.util.LinkedList
 import java.util.UUID
 import javafx.^event.ActionEvent
@@ -189,11 +190,18 @@ agent Environment {
 				var maxLinear : float = 3f
 				var angularSpeed : float = 0f
 				var maxAngular : float = 0f
-				var perceivedObjects = <ActivityType, Point2f>newHashMap
+				var perceivedObjects = <ActivityType, ArrayList<Point2f>>newHashMap
 				var intersectedArtifacts = graphHuman.environment.getIntersectedArtifacts(graphHuman)
 				
 				for(intersectedArtifact : intersectedArtifacts) {
-					perceivedObjects.put(intersectedArtifact.activityType, intersectedArtifact.getNearestPointInEntity(position))
+					var intersectedPoint = intersectedArtifact.getNearestPointInEntity(position)
+					var centerPoint = intersectedArtifact.getCenterPoint()
+					
+					var points = <Point2f>newArrayList
+					points.add(intersectedPoint)
+					points.add(centerPoint)
+					
+					perceivedObjects.put(intersectedArtifact.activityType, points)
 				}
 				
 				// info("Sending a perception")

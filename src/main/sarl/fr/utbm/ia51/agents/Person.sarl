@@ -3,8 +3,11 @@
  */
 package fr.utbm.ia51.agents
 
+import fr.utbm.ia51.Globals
 import fr.utbm.ia51.activities.ActivityManager
 import fr.utbm.ia51.activities.ActivityType
+import fr.utbm.ia51.agents.behaviors.AvoidAlgorithm
+import fr.utbm.ia51.agents.behaviors.KinematicAvoidAlgorithm
 import fr.utbm.ia51.agents.behaviors.KinematicSeekAlgorithm
 import fr.utbm.ia51.agents.behaviors.KinematicWanderAlgorithm
 import fr.utbm.ia51.agents.behaviors.SeekAlgorithm
@@ -15,6 +18,7 @@ import fr.utbm.ia51.environment.ActionToPerson
 import fr.utbm.ia51.environment.Influence
 import fr.utbm.ia51.environment.Perception
 import fr.utbm.ia51.environment.ShutDown
+import fr.utbm.ia51.environment.UpdatedActivity
 import fr.utbm.ia51.graph.environment.GraphEnvironment
 import fr.utbm.ia51.tools.MotionAlgorithmOutput
 import fr.utbm.ia51.tools.Point2f
@@ -30,7 +34,7 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
-import fr.utbm.ia51.environment.UpdatedActivity
+import tools.Chrono
 
 // Person = corps, behavior = tete en gros
 agent Person {
@@ -43,7 +47,11 @@ agent Person {
 
 	// the activity that the agent wants to perform
 	var activityType : ActivityType
-	var activityManager = new ActivityManager();
+	var activityManager = new ActivityManager()
+	var activityChrono = new Chrono()
+	
+	var motionlessChrono : Chrono = new Chrono()
+	var wasMotionless = false
 	
 	// his target which depends on the his activity
 	var target : Point2f
@@ -63,6 +71,7 @@ agent Person {
 	var seekBehavior : SeekAlgorithm
 	var wanderBehavior : WanderAlgorithm
 	var fleeBehavior : FleeAlgorithm
+	var avoidBehavior : AvoidAlgorithm
 	// var b : Behavior
 	
 	on Initialize {
@@ -81,13 +90,14 @@ agent Person {
 			info("The agent will do activity "+this.activityType)
 			
 			//Acquisition of target according to the Person's activity type
-			this.target = this.environment.getArtifactFromActivity(this.activityType).randomPointInEntity
+			this.target = this.getNewTarget
 	
 			this.isInClass = false
 	
 			this.seekBehavior = new KinematicSeekAlgorithm
 			this.wanderBehavior = new KinematicWanderAlgorithm
 			this.fleeBehavior = new KinematicFleeAlgorithm
+			this.avoidBehavior = new KinematicAvoidAlgorithm
 			
 				// b = new NormalBehavior(this)
 				// b.registerBehavior
@@ -98,12 +108,17 @@ agent Person {
 	def setActivity(act : ActivityType) : void {
 		synchronized (this) {
 			this.activityType = act
-			this.target = getTarget(activityType)
+			this.target = getNewTarget(activityType)
 			emit(new UpdatedActivity(this.ID,this.activityType))
 		}
 	}
 	
-	def getTarget(at : ActivityType) : Point2f {
+	def getNewTarget(at : ActivityType) : Point2f {
+		synchronized (this) {
+			this.environment.getArtifactFromActivity(at).randomPointInEntity
+		}
+	}
+	def getNewTarget() : Point2f {
 		synchronized (this) {
 			this.environment.getArtifactFromActivity(this.activityType).randomPointInEntity
 		}
@@ -121,6 +136,7 @@ agent Person {
 
 			var targetMotionOutput = new MotionAlgorithmOutput
 			var fleeMotionOutput = new MotionAlgorithmOutput
+			var avoidMotionOutput = new MotionAlgorithmOutput
 
 			if (occurrence.bellRings && !this.isInClass) {
 				// TODO set the right classroom ?
@@ -146,7 +162,6 @@ agent Person {
 				} else {
 					// run the wander behavior
 				targetMotionOutput = this.wanderBehavior.run(
-						// TODO occurrence.position,
 						occurrence.position,
 						occurrence.orientation,
 						occurrence.currentLinearSpeed,
@@ -161,22 +176,42 @@ agent Person {
 					// check to no to flee our activity
 					if (entry.key != this.activityType) {
 						var tmpFleeMotionOutput = this.fleeBehavior.run(
-							// TODO occurrence.position,
 							occurrence.position,
 							occurrence.currentLinearSpeed,
 							occurrence.maxLinear,
-							entry.value
+							// nearest point
+							entry.value.get(0)
 						)
 						// TODO, check if it's the right way to add all the flee motions
 						// adding every repulsive vector to the flee output
 						fleeMotionOutput.linear += tmpFleeMotionOutput.linear
-						fleeMotionOutput.linear.length = occurrence.maxLinear
+						
+						var tmpAvoidMotionOutput = this.avoidBehavior.run(
+							occurrence.position,
+							occurrence.currentLinearSpeed,
+							occurrence.maxLinear,
+							// center point
+							entry.value.get(0)
+						)
+
+						avoidMotionOutput.linear += tmpAvoidMotionOutput.linear
 					}
 				}
+				// setting the flee and avoir vectors to the right length
+				if (fleeMotionOutput.linear.length > 0) {
+					fleeMotionOutput.linear.length = occurrence.maxLinear
+				}
+				if (avoidMotionOutput.linear.length > 0) {
+					avoidMotionOutput.linear.length = occurrence.maxLinear
+				}
 
-				//TODO, check if it's the right way to add all the motions together
 				// taking the repulsive behavior into account
 				targetMotionOutput.linear += fleeMotionOutput.linear
+				
+				// taking the avoiding behavior into account
+				targetMotionOutput.linear += avoidMotionOutput.linear
+				
+				// setting the resulting vector to the right length
 				targetMotionOutput.linear.length = occurrence.maxLinear
 				
 				// emitting an influence with the wanted motion
@@ -192,9 +227,45 @@ agent Person {
 		synchronized (this) {
 			var x = occurrence.newPosX as float
 			var y = occurrence.newPosY as float
-//			 info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", position.x, position.y, x, y)
+			
+			//info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", position.x, position.y, x, y)
+
+			if(position.x == x && position.y == y) { //The person hasn't moved this loop
+				this.stayMotionlessOrNot
+			} else {
+				this.motionlessChrono.reset()
+				wasMotionless = false
+			}
+			
 			this.position.set(x, y)
+			this.updateActivity()
 		}
+	}
+	
+	
+	def stayMotionlessOrNot() {
+		synchronized (this) {
+			if (this.wasMotionless) {
+				var timePassed = this.motionlessChrono.getTime()
+				var randomValue = Globals::randomGenerator.getRandom(0, Globals::IMMOBILITY_TIME * 1000)
+				if (timePassed > randomValue) {
+					this.target = this.getNewTarget
+				}
+				this.motionlessChrono.reset()
+			} else {
+				this.wasMotionless = true
+			}
+		}
+	}
+	
+	
+	def updateActivity() {
+		var timePassed = this.activityChrono.getTime()
+		var randomValue = Globals::randomGenerator.getRandom(0, Globals::ACTIVITY_CHANGE_FREQUENCY*1000)
+		if(timePassed > randomValue) {
+			this.activity = activityManager.chooseActivity
+		}
+		this.activityChrono.reset()
 	}
 
 	on ShutDown {
