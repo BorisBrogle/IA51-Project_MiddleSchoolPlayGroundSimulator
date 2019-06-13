@@ -20,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import sun.misc.GC;
 import tools.Arrow;
 
 public class GraphHuman extends EnvironmentEntity {
@@ -156,14 +157,28 @@ public class GraphHuman extends EnvironmentEntity {
 	public void moveTo(double x, double y, double speed) {
 //		this.head.setTranslateX(x);
 //		this.head.setTranslateY(y);
+//		this.setTranslateX(x-this.viewField.getWidth()/2);
+//		this.setTranslateY(y-this.viewField.getHeight()/2);
+//		
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.setTranslateX(x-this.viewField.getWidth()/2);
 		this.setTranslateY(y-this.viewField.getHeight()/2);
-		
-		
 		Platform.runLater(()->{
+
 			this.coordinatesLabel.setText("x="+(int)this.getTranslateX()+"y="+(int)this.getTranslateY());
 		});
+		
+		
+		
+		
 	}
+	
+	
 	
 	
 	/*
