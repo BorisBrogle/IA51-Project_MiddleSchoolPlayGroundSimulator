@@ -170,10 +170,11 @@ public class GraphHuman extends EnvironmentEntity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.setTranslateX(x-this.viewField.getWidth()/2);
-		this.setTranslateY(y-this.viewField.getHeight()/2);
+//		this.setTranslateX(x-this.viewField.getWidth()/2);
+//		this.setTranslateY(y-this.viewField.getHeight()/2);
 		Platform.runLater(()->{
-
+			this.setTranslateX(x-this.viewField.getWidth()/2);
+			this.setTranslateY(y-this.viewField.getHeight()/2);
 			this.coordinatesLabel.setText("x="+(int)this.getTranslateX()+"y="+(int)this.getTranslateY());
 		});
 		
