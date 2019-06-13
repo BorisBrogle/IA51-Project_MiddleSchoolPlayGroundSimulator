@@ -13,6 +13,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 public class GraphEnvironment extends StackPane {
+	
+	
 	private ArrayList<EnvironmentEntity> artifacts = new ArrayList<>();
 	private ArrayList<EnvironmentEntity> coveredAreas = new ArrayList<>();
 	
