@@ -219,22 +219,23 @@ public class GraphHuman extends EnvironmentEntity {
 	
 	@Override
 	public double getMinX() {
+		System.out.println("CollisionMinX :"+this.collisionBox.getBoundsInParent().getMinX());
 		return this.getBoundsInParent().getMinX()+(this.collisionBox.getBoundsInParent().getMinX()-this.getBoundsInParent().getMinX());
 	}
 	
 	@Override
 	public double getMinY() {
-		return this.getBoundsInParent().getMinY()+(this.collisionBox.getBoundsInParent().getMinY()-this.getBoundsInParent().getMinY());
+		return this.getBoundsInParent().getMinY()+this.collisionBox.getBoundsInParent().getMinY();
 	}
 	
 	@Override
 	public double getMaxX(){
-		return this.getBoundsInParent().getMaxX()+(this.collisionBox.getBoundsInParent().getMaxX()-this.getBoundsInParent().getMaxX());
+		return this.getBoundsInParent().getMaxX()-this.collisionBox.getBoundsInParent().getMaxX();
 	}
 	
 	@Override
 	public double getMaxY() {
-		return this.getBoundsInParent().getMaxY()+(this.collisionBox.getBoundsInParent().getMaxY()-this.getBoundsInParent().getMaxY());
+		return this.getBoundsInParent().getMaxY()-this.collisionBox.getBoundsInParent().getMaxY();
 	}
 	
 	@Override
