@@ -81,13 +81,17 @@ public class GUI extends Application {
 
         // We add two dummy Persons for our tests
         
-//        for(int i=0;i<Globals.)
-        GraphHuman buddy = new GraphHuman(300, 300, "", "", Globals.AGENT_RADIUS, null, environment); 
-        GraphHuman bob = new GraphHuman(200, 200, "", "", Globals.AGENT_RADIUS, null, environment);
-        root.getChildren().add(buddy);
-        root.getChildren().add(bob);
-        this.graphHumans.add(bob);
-        this.graphHumans.add(buddy);
+        for(int i=0;i<Globals.NB_AGENTS;i++) {
+        	GraphHuman g = new GraphHuman(Globals.START_POS_X, Globals.START_POS_Y, "", "", Globals.AGENT_RADIUS, null, environment);
+        	root.getChildren().add(g);
+        	this.graphHumans.add(g);
+        }
+//        GraphHuman buddy = new GraphHuman(300, 300, "", "", Globals.AGENT_RADIUS, null, environment); 
+//        GraphHuman bob = new GraphHuman(200, 200, "", "", Globals.AGENT_RADIUS, null, environment);
+//        root.getChildren().add(buddy);
+//        root.getChildren().add(bob);
+//        this.graphHumans.add(bob);
+//        this.graphHumans.add(buddy);
         
         
         VBox controlVBox = new VBox();

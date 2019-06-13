@@ -83,7 +83,7 @@ public class EnvironmentEntity extends StackPane {
 		double xmax = this.getBoundsInParent().getMaxX();
 		double ymax = this.getBoundsInParent().getMaxY();
 		
-		return new Point2f((xmax+xmin)/2.0,(ymax+ymin)/2.0);
+		return new Point2f(xmin+((xmax-xmin)/2),ymin+((ymax-ymin)/2));
 	}
 
 
