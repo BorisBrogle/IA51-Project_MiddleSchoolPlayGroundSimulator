@@ -164,4 +164,10 @@ public class GraphEnvironment extends StackPane {
 	public void setRingButton(Button ringButton) {
 		this.ringButton = ringButton;
 	}
+
+
+	public ArrayList<EnvironmentEntity> getArtifacts() {
+		return artifacts;
+	}
+	
 }

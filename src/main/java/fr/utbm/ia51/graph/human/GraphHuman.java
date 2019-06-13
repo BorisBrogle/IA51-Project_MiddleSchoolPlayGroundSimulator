@@ -111,7 +111,8 @@ public class GraphHuman extends EnvironmentEntity {
 		this.infoWindow.visibleProperty().bind(isSelected);
 		this.selectionCircle.visibleProperty().bind(isSelected);
 		this.environment.getChildren().add(infoBox);
-
+		this.environment.getArtifacts().add(this);
+		
 		this.head.setOnMouseClicked(e->{
 			System.out.println();
 			if(this.isSelected.getValue() == true) 
