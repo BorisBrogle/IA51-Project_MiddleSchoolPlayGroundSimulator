@@ -80,6 +80,8 @@ public class GUI extends Application {
         root.getChildren().add(environment);
 
         // We add two dummy Persons for our tests
+        
+//        for(int i=0;i<Globals.)
         GraphHuman buddy = new GraphHuman(300, 300, "", "", Globals.AGENT_RADIUS, null, environment); 
         GraphHuman bob = new GraphHuman(200, 200, "", "", Globals.AGENT_RADIUS, null, environment);
         root.getChildren().add(buddy);
