@@ -4,8 +4,11 @@ import fr.utbm.ia51.tools.PseudoRandomGenerator;
 import tools.Chrono;
 
 public class Globals {
-	public static PseudoRandomGenerator randomGenerator = new PseudoRandomGenerator(34253076);
+	public static PseudoRandomGenerator randomGenerator = new PseudoRandomGenerator();
 	public static Chrono chrono = new Chrono();
+	
+	
+	public static final int NB_AGENTS = 5;
 	
 	public static final int WIDTH = 1280; // Height of our map, and of our base window
 	public static final int HEIGHT = 720; // Width of our map, and of our base window
