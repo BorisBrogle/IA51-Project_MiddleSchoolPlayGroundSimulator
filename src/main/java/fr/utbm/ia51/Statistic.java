@@ -195,5 +195,9 @@ public class Statistic {
 			break;
 		}
 	}
+	
+	public static float averageDistance() {
+		return ((float)Globals.TOT_WALKED_DISTANCE / Globals.NB_AGENTS) / 20 ;
+	}
 
 }

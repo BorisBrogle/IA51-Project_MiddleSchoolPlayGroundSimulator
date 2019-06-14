@@ -251,7 +251,7 @@ agent Person {
 			
 			var nextPos = new Point2f(x, y)
 			var distanceVec = this.position-nextPos
-			walkedDistance += distanceVec.length
+			Globals::TOT_WALKED_DISTANCE += distanceVec.length
 			
 			//info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", position.x, position.y, x, y)
 
