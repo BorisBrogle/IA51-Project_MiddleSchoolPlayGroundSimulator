@@ -8,14 +8,16 @@ public class Globals {
 	public static Chrono chrono = new Chrono();
 	
 	
-	public static final int NB_AGENTS = 1;
+	public static final int NB_AGENTS = 2;
 	
 	public static final int WIDTH = 1280; // Height of our map, and of our base window
 	public static final int HEIGHT = 720; // Width of our map, and of our base window
 	
 	public static final int START_POS_X = 200;
 	public static final int START_POS_Y = 200;
-	public static long LOOP_DURATION = 100; // Duration between each steps, in milliseconds
+	public static long LOOP_DURATION = 10; // Duration between each steps, in milliseconds
+
+	public static int LOOP_COUNTER =0;
 	
 	public static long ACTIVITY_CHANGE_FREQUENCY = 3600; // All the agents will change activity every x seconds on average
 	public static long IMMOBILITY_TIME = 5; // The agents will stay motionless for 5 seconds max on average

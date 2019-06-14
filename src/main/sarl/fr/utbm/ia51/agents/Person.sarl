@@ -54,6 +54,8 @@ agent Person {
 	var activityManager = new ActivityManager()
 	var activityChrono = new Chrono()
 	
+	var loopBeforeStart : int 
+	
 	var motionlessChrono : Chrono = new Chrono()
 	var wasMotionless = false
 	
@@ -94,6 +96,8 @@ agent Person {
 			position = new Point2f(occurrence.parameters.get(1) as Double, occurrence.parameters.get(2) as Double)
 			
 			environment = occurrence.parameters.get(3) as GraphEnvironment 
+			
+			loopBeforeStart = occurrence.parameters.get(4) as Integer 
 			
 			info("The agent was started.")
 	
@@ -162,7 +166,7 @@ agent Person {
 				info("The agent will do activity " + this.activityType)
 			}
 
-			if (occurrence.position.distance(target) > this.maxTargetDistance) {
+			if (occurrence.position.distance(target) > this.maxTargetDistance && loopBeforeStart<Globals::LOOP_COUNTER) {
 				if (this.target !== null) {
 					// run the seek behavior
 					targetMotionOutput = this.seekBehavior.run(
