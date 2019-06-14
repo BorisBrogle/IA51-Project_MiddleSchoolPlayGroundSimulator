@@ -37,7 +37,7 @@ public class GraphHuman extends EnvironmentEntity {
 	private Rectangle viewField;
 	private Rectangle collisionBox;
 	
-	
+
 	
 	private Arrow forceArrow;
 	
@@ -47,7 +47,9 @@ public class GraphHuman extends EnvironmentEntity {
 	public GraphHuman (int x,int y, String headStyle, String armStyle, double radius, String name, GraphEnvironment environment) {
 		super(null);
 		this.setManaged(true);
-		
+
+		this.setStyle("-fx-border-color : red");
+
 		this.environment = environment;
 		this.setTranslateX(x);
 		this.setTranslateY(y);
@@ -298,4 +300,21 @@ public class GraphHuman extends EnvironmentEntity {
 	
 	
 	
+	/*public double getDistance() {
+		return this.distance;
+	}
+	
+	public void setDistance(double d) {
+		this.distance = d;
+	}*/
+//	
+//	
+//	public void move(Point2D originalVect, Point2D newVect) {
+//		if(originalVect.angle(newVect)!=null)
+//			
+//	}
+//	
+	
+
+
 }

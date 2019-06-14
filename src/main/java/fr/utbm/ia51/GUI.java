@@ -10,9 +10,11 @@ import fr.utbm.ia51.graph.environment.GraphEnvironment;
 import fr.utbm.ia51.graph.human.GraphHuman;
 import io.sarl.bootstrap.SRE;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -24,6 +26,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -41,6 +44,7 @@ public class GUI extends Application {
 	private CheckBox vectorCheckBox = new CheckBox();
 	private CheckBox viewfieldCheckBox = new CheckBox();
 	private CheckBox tooltipCheckBox = new CheckBox();
+	private CheckBox StatCheckBox = new CheckBox();
 	
     public static void main(String[] args) {
         Application.launch(GUI.class, args);
@@ -161,8 +165,35 @@ public class GUI extends Application {
         viewfieldVBox.getChildren().addAll(viewfieldLabel,viewfieldCheckBox);
         
         
+        Button statButton = new Button();
+        statButton.setAlignment(Pos.CENTER);
+        statButton.setText("Statistic");
+        statButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+ 
+                Label statTarget = new Label("Number of target set : " + Globals.TOT_SET_TARGET + "\nNumber of target reached : " + Globals.TOT_REACHED_TARGET + "\nPercentage reached : " + Statistic.statActivityReached() + "%");
+ 
+                StackPane secondaryLayout = new StackPane();
+                secondaryLayout.getChildren().add(statTarget);
+ 
+                Scene secondScene = new Scene(secondaryLayout, 230, 100);
+ 
+                // New window (Stage)
+                Stage newWindow = new Stage();
+                newWindow.setTitle("Statistics");
+                newWindow.setScene(secondScene);
+ 
+                // Set position of second window, related to primary window.
+                newWindow.setX(primaryStage.getX() + 200);
+                newWindow.setY(primaryStage.getY() + 100);
+ 
+                newWindow.show();
+            }
+        });       
         
-        controlVBox.getChildren().addAll(coordVBox, vectVBox, viewfieldVBox, tooltipVBox);
+        
+        controlVBox.getChildren().addAll(coordVBox, vectVBox, viewfieldVBox, tooltipVBox, statButton);
         
         
         
