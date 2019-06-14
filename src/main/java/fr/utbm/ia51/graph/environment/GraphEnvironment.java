@@ -124,11 +124,23 @@ public class GraphEnvironment extends StackPane {
 		for(EnvironmentEntity s : this.artifacts) {
 			
 			
+			if(s instanceof GraphHuman && !graphHuman.toString().equals(s.toString())) {
+				
+				if(graphHuman.getBoundsInParent().intersects(((GraphHuman)s).getMinX(),((GraphHuman)s).getMinY(),((GraphHuman)s).getEnvironmentEntityWidth(),((GraphHuman)s).getEnvironmentEntityHeight())) {
+//					System.out.println("Cas GraphHuman "+graphHuman.getUuid()+" GraphHumanBounds"+graphHuman.getBoundsInParent().toString()+" perceived.getMinX "+s.getMinX()+"perceived.getMinY"+s.getMinY());
+//					System.out.println("Cas GraphHuman "+graphHuman.getBoundsInParent()+ "Detected Graphhuman" + s.getBoundsInParent());
+
+					intersectArtifacts.add(s);
+				}
+				
+			}else {
+			
 			
 			if(graphHuman.getBoundsInParent().intersects(s.getMinX(), s.getMinY(), s.getWidth(), s.getHeight())&& !s.getBoundsInParent().contains(new Point2D(graphHuman.getCenterPoint().getX(),graphHuman.getCenterPoint().getY()))) {
 //			if(s.getBoundsInParent().intersects(graphHuman.getBoundsInParent()) && !s.contains(new Point2D(graphHuman.getCenterPoint().getX(),graphHuman.getCenterPoint().getY()))) {
 				//System.out.println("Intersect with "+s.getClass().getName());
 				intersectArtifacts.add(s);
+			}
 			}
 		}
 		return intersectArtifacts;

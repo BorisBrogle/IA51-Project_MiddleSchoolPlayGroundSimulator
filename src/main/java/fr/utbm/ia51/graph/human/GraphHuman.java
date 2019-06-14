@@ -86,8 +86,11 @@ public class GraphHuman extends EnvironmentEntity {
 		
 		this.collisionBox = new Rectangle(radius*2, radius*2);
 		this.collisionBox.setMouseTransparent(true);
-		this.collisionBox.setFill(Color.TRANSPARENT);
-		this.collisionBox.setStyle("-fx-border-color : blue");
+		this.collisionBox.setFill(Color.RED);
+		
+//		this.collisionBox.setTranslateX(-30);
+//		this.collisionBox.setTranslateY(-30);
+//		this.collisionBox.setStyle("-fx-border-color : blue");
 		
 		
 		
@@ -179,7 +182,7 @@ public class GraphHuman extends EnvironmentEntity {
 		Platform.runLater(()->{
 			this.setTranslateX(x-this.viewField.getWidth()/2);
 			this.setTranslateY(y-this.viewField.getHeight()/2);
-			this.coordinatesLabel.setText("x="+(int)this.getTranslateX()+"y="+(int)this.getTranslateY());
+			this.coordinatesLabel.setText("x="+(int)this.getTranslateX()+"y="+(int)this.getTranslateY()+"collisionXmin"+(int)(this.getBoundsInParent().getMinX()+this.collisionBox.getBoundsInParent().getMinX())+"collisionYmin"+(int)(this.getBoundsInParent().getMinY()+this.collisionBox.getBoundsInParent().getMinY()));
 		});
 		
 		
@@ -222,9 +225,12 @@ public class GraphHuman extends EnvironmentEntity {
 	}
 	
 	
+	
+	
 	@Override
 	public double getMinX() {
-		return this.getBoundsInParent().getMinX()+(this.collisionBox.getBoundsInParent().getMinX()-this.getBoundsInParent().getMinX());
+
+		return this.getBoundsInParent().getMinX()+this.collisionBox.getBoundsInParent().getMinX();
 	}
 	
 	@Override
@@ -255,10 +261,12 @@ public class GraphHuman extends EnvironmentEntity {
 	
 	@Override
 	public Point2f getNearestPointInEntity(Point2f point) {
-		double xmin = this.getBoundsInParent().getMinX()+(this.collisionBox.getBoundsInParent().getMinX()-this.getBoundsInParent().getMinX());
-		double ymin = this.getBoundsInParent().getMinY()+(this.collisionBox.getBoundsInParent().getMinY()-this.getBoundsInParent().getMinY());
-		double xmax = this.getBoundsInParent().getMaxX()+(this.collisionBox.getBoundsInParent().getMaxX()-this.getBoundsInParent().getMaxX());
-		double ymax = this.getBoundsInParent().getMaxY()+(this.collisionBox.getBoundsInParent().getMaxY()-this.getBoundsInParent().getMaxY());
+		double xmin = this.getBoundsInParent().getMinX()+this.collisionBox.getBoundsInParent().getMinX();
+		double ymin = this.getBoundsInParent().getMinY()+this.collisionBox.getBoundsInParent().getMinY();
+		
+		
+		double xmax = this.getBoundsInParent().getMaxX()-this.collisionBox.getBoundsInParent().getMaxX();
+		double ymax = this.getBoundsInParent().getMaxY()-this.collisionBox.getBoundsInParent().getMaxY();
 
 		double x = (double)point.getX();
 		double y = (double)point.getY();
@@ -348,6 +356,22 @@ public class GraphHuman extends EnvironmentEntity {
 
 	public Arrow getForceArrow() {
 		return forceArrow;
+	}
+
+
+
+
+
+	public String getName() {
+		return name;
+	}
+
+
+
+
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	

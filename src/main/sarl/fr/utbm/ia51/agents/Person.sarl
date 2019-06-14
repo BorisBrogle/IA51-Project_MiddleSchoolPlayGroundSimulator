@@ -167,7 +167,7 @@ agent Person {
 				info("The agent will do activity " + this.activityType)
 			}
 
-			if (occurrence.position.distance(target) > this.maxTargetDistance && loopBeforeStart<Globals::LOOP_COUNTER) {
+			if (occurrence.position.distance(target) > this.maxTargetDistance && loopBeforeStart<Globals::LOOP_COUNTER && Globals::LOOP_COUNTER<50) {
 				if (this.target !== null) {
 					// run the seek behavior
 					targetMotionOutput = this.seekBehavior.run(

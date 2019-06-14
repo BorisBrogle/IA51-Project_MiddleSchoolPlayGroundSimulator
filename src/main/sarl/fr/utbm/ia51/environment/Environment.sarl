@@ -27,6 +27,7 @@ import java.util.LinkedList
 import java.util.UUID
 import javafx.^event.ActionEvent
 import javafx.scene.control.Button
+import javafx.scene.shape.Circle
 
 agent Environment {
 	uses Logging, DefaultContextInteractions, Lifecycle, Schedules
@@ -201,7 +202,10 @@ agent Environment {
 					var intersectedPoint = intersectedArtifact.getNearestPointInEntity(position)
 					
 					if (intersectedArtifact instanceof GraphHuman) {
+						if(graphHuman.name=="Person0")
 						error("got a graphHuman")
+//						info("MinX intersected artifacts " + intersectedArtifact.minX);
+						
 					} else {
 						perceivedObjects.put(intersectedArtifact.activityType, intersectedPoint)
 						//error(intersectedArtifact.activityType)
