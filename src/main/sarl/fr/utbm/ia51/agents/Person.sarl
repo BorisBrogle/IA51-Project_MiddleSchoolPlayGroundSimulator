@@ -149,81 +149,83 @@ agent Person {
 	
 	on Perception {
 		synchronized (this) {
-			var perceivedObjects = occurrence.perceivedObjects
+			// we wait some loops before starting moving
+			if (Globals::LOOP_COUNTER > loopBeforeStart) {
+				var perceivedObjects = occurrence.perceivedObjects
 
-			var targetMotionOutput = new MotionAlgorithmOutput
-			var objectsFleeMotionOutput = new MotionAlgorithmOutput
-			var peopleFleeMotionOutput = new MotionAlgorithmOutput
-			var avoidMotionOutput = new MotionAlgorithmOutput
+				var targetMotionOutput = new MotionAlgorithmOutput
+				var objectsFleeMotionOutput = new MotionAlgorithmOutput
+				var peopleFleeMotionOutput = new MotionAlgorithmOutput
+				var avoidMotionOutput = new MotionAlgorithmOutput
 
-			if (occurrence.bellRings && !this.isInClass) {
-				// TODO set the right classroom ?
-				this.setActivity(ActivityType.CLASSLINE)
-				this.isInClass = true
-				info("The agent will go back to the CLASSLINE")
-			} else if (occurrence.bellRings && this.isInClass) {
-				this.setActivity(this.activityManager.chooseActivity())
-				this.isInClass = false
-				info("The agent will do activity " + this.activityType)
-			}
-
-			if (occurrence.position.distance(target) > this.maxTargetDistance && loopBeforeStart<Globals::LOOP_COUNTER) {
-				if (this.target !== null) {
-					// run the seek behavior
-					targetMotionOutput = this.seekBehavior.run(
-						occurrence.position,
-						occurrence.currentLinearSpeed,
-						occurrence.maxLinear,
-						this.target
-					)
-				} else {
-					// run the wander behavior
-				targetMotionOutput = this.wanderBehavior.run(
-						occurrence.position,
-						occurrence.orientation,
-						occurrence.currentLinearSpeed,
-						occurrence.maxLinear,
-						occurrence.currentAngularSpeed,
-						occurrence.maxAngular
-					)
+				if (occurrence.bellRings && !this.isInClass) {
+					// TODO set the right classroom ?
+					this.setActivity(ActivityType.CLASSLINE)
+					this.isInClass = true
+					info("The agent will go back to the CLASSLINE")
+				} else if (occurrence.bellRings && this.isInClass) {
+					this.setActivity(this.activityManager.chooseActivity())
+					this.isInClass = false
+					info("The agent will do activity " + this.activityType)
 				}
-				
-				for (entry : perceivedObjects.entrySet) {
-					// run the flee behavior
-					// check to no to flee our activity
-					if (entry.key != this.activityType) {
-						var tmpFleeMotionOutput = this.fleeBehavior.run(
-							occurrence.position,
-							occurrence.currentLinearSpeed,
-							occurrence.maxLinear,
-							// nearest object's to flee point
-							entry.value
-						)
-						// adding every repulsive vector to the flee output
-						objectsFleeMotionOutput.linear += tmpFleeMotionOutput.linear
-						
-						var tmpAvoidMotionOutput = this.avoidBehavior.run(
-							occurrence.position,
-							occurrence.currentLinearSpeed,
-							occurrence.maxLinear,
-							this.target,
-							// nearest object's to flee point
-							entry.value
-						)
 
-						avoidMotionOutput.linear += tmpAvoidMotionOutput.linear
+				if (occurrence.position.distance(target) > this.maxTargetDistance) {
+					if (this.target !== null) {
+						// run the seek behavior
+						targetMotionOutput = this.seekBehavior.run(
+							occurrence.position,
+							occurrence.currentLinearSpeed,
+							occurrence.maxLinear,
+							this.target
+						)
+					} else {
+						// run the wander behavior
+						targetMotionOutput = this.wanderBehavior.run(
+							occurrence.position,
+							occurrence.orientation,
+							occurrence.currentLinearSpeed,
+							occurrence.maxLinear,
+							occurrence.currentAngularSpeed,
+							occurrence.maxAngular
+						)
 					}
-				}
-				// setting the flee and avoid vectors to the right length
-				if (objectsFleeMotionOutput.linear.length > 0) {
-					objectsFleeMotionOutput.linear.length = occurrence.maxLinear
-				}
-				if (avoidMotionOutput.linear.length > 0) {
-					avoidMotionOutput.linear.length = occurrence.maxLinear / avoidanceDivFactor
-				}
 
-				// taking the repulsive behavior into account
-				targetMotionOutput.linear += objectsFleeMotionOutput.linear
+					for (entry : perceivedObjects.entrySet) {
+						// run the flee behavior
+						// check to no to flee our activity
+						if (entry.key != this.activityType) {
+							var tmpFleeMotionOutput = this.fleeBehavior.run(
+								occurrence.position,
+								occurrence.currentLinearSpeed,
+								occurrence.maxLinear,
+								// nearest object's to flee point
+							entry.value
+							)
+							// adding every repulsive vector to the flee output
+							objectsFleeMotionOutput.linear += tmpFleeMotionOutput.linear
+
+							var tmpAvoidMotionOutput = this.avoidBehavior.run(
+								occurrence.position,
+								occurrence.currentLinearSpeed,
+								occurrence.maxLinear,
+								this.target,
+								// nearest object's to flee point
+								entry.value
+							)
+
+							avoidMotionOutput.linear += tmpAvoidMotionOutput.linear
+						}
+					}
+					// setting the flee and avoid vectors to the right length
+					if (objectsFleeMotionOutput.linear.length > 0) {
+						objectsFleeMotionOutput.linear.length = occurrence.maxLinear
+					}
+					if (avoidMotionOutput.linear.length > 0) {
+						avoidMotionOutput.linear.length = occurrence.maxLinear / avoidanceDivFactor
+					}
+
+					// taking the repulsive behavior into account
+					targetMotionOutput.linear += objectsFleeMotionOutput.linear
 				
 				// taking the avoiding behavior into account
 				targetMotionOutput.linear += avoidMotionOutput.linear
@@ -240,37 +242,40 @@ agent Person {
 					info(this.walkedChrono.getTime())
 					
 				}
-			}
 			
 			// taking care of repulsion between agents
-			for (perceivedPerson : occurrence.perceivedPeople) {
-				var tmpFleeMotionOutput = this.fleeBehavior.run(
-					occurrence.position,
-					occurrence.currentLinearSpeed,
-					occurrence.maxLinear,
-					// nearest person's to flee point
-					perceivedPerson
-				)
+				for (perceivedPerson : occurrence.perceivedPeople) {
+					var tmpFleeMotionOutput = this.fleeBehavior.run(
+						occurrence.position,
+						occurrence.currentLinearSpeed,
+						occurrence.maxLinear,
+						// nearest person's to flee point
+						perceivedPerson
+					)
 				
 				// adding every repulsive vector to the flee output
-				peopleFleeMotionOutput.linear += tmpFleeMotionOutput.linear
+					peopleFleeMotionOutput.linear += tmpFleeMotionOutput.linear
+				}
+
+				if (peopleFleeMotionOutput.linear.length > 0) {
+					peopleFleeMotionOutput.linear.length = occurrence.maxLinear
+					// info("fleeing a person: " + peopleFleeMotionOutput.linear.length)
+				}
+
+				// taking the repulsive behavior into account
+				targetMotionOutput.linear += peopleFleeMotionOutput.linear
+
+				// setting the resulting vector to the right length
+				if (targetMotionOutput.linear.length > 0) {
+					targetMotionOutput.linear.length = occurrence.maxLinear
+				}
+
+				// emitting an influence with the wanted motion
+				this.emitInfluence(targetMotionOutput)
+			} else {
+				// if we are not moving yet, we emit an influence with an empty motion output
+				this.emitInfluence(new MotionAlgorithmOutput)
 			}
-
-			if (peopleFleeMotionOutput.linear.length > 0) {
-				peopleFleeMotionOutput.linear.length = occurrence.maxLinear
-				// info("fleeing a person: " + peopleFleeMotionOutput.linear.length)
-			}
-
-			// taking the repulsive behavior into account
-			targetMotionOutput.linear += peopleFleeMotionOutput.linear
-
-			// setting the resulting vector to the right length
-			if (targetMotionOutput.linear.length > 0) {
-				targetMotionOutput.linear.length = occurrence.maxLinear
-			}
-
-			// emitting an influence with the wanted motion
-			this.emitInfluence(targetMotionOutput)
 		}
 	}
 	

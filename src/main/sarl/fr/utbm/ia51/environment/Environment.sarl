@@ -27,6 +27,7 @@ import java.util.LinkedList
 import java.util.UUID
 import javafx.^event.ActionEvent
 import javafx.scene.control.Button
+import javafx.scene.shape.Circle
 
 agent Environment {
 	uses Logging, DefaultContextInteractions, Lifecycle, Schedules
@@ -129,30 +130,6 @@ agent Environment {
 		synchronized (this) {
 //			info("The step ends")
 			applyInfluences(influenceList)
-			/*
-			// Endogenous behavior: move the pacman from the player's action
-			var avatarDirection = this.player.direction
-			var avatarAction = new MazeChangeQuery(this.player.bodyId, avatarDirection)
-			this.actions += avatarAction
-
-			// Endogenous behavior: decrease the super power of Pacman
-			getSuperPowerAccessor(this.player.bodyId).decreaseSuperPower
-
-			// Change the state of the universe
-			if (applyActions(this.actions)) {
-				// Pacman is dead.
-				emit(new PacManIsDead)
-				fireGameOver
-				killMe
-			}
-
-			// Increase time
-			this.time++
-
-			// Notify about environment's changes
-			fireEnvironmentChange
-			*/
-			// Move to next step
 			
 			Globals::LOOP_COUNTER++
 			
@@ -163,6 +140,7 @@ agent Environment {
 			if (Globals::SHUT_DOWN_SIGNAL) {
 				emit(new ShutDown)
 			} else {
+				// Move to next step
 				emit(new RunBeginingOfStep)
 			}
 		}
@@ -176,11 +154,7 @@ agent Environment {
 		synchronized (this) {
 			Globals::chrono.reset();
 			//info("The step begins")
-			/*this.actions.clear
 
-			for (e : getPerceptions().entrySet) {
-				sendPerception(this.time, e.key.agentId, e.value, e.key.position)
-			}*/
 			influenceList.clear()
 			
 			for (entry : graphHumans.entrySet) {
@@ -202,8 +176,10 @@ agent Environment {
 					var intersectedPoint = intersectedArtifact.getNearestPointInEntity(position)
 					
 					if (intersectedArtifact instanceof GraphHuman) {
-						perceivedPeople.add(intersectedPoint)
-						//info("got a graphHuman, intersectedPoint: " + intersectedPoint + ", our point: (" + intersectedArtifact.x + "," + intersectedArtifact.y + ")")
+						if(graphHuman.name=="Person0")
+						error("got a graphHuman")
+//						info("MinX intersected artifacts " + intersectedArtifact.minX);
+						
 					} else {
 						perceivedObjects.put(intersectedArtifact.activityType, intersectedPoint)
 						//info(intersectedArtifact.activityType)
