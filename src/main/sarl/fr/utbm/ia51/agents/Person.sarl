@@ -38,7 +38,7 @@ import io.sarl.core.MemberLeft
 import tools.Chrono
 
 import fr.utbm.ia51.tools.Vector2f
-
+import fr.utbm.ia51.Statistic
 
 // Person = corps, behavior = tete en gros
 agent Person {
@@ -50,6 +50,8 @@ agent Person {
 	var activityType : ActivityType
 	var activityManager = new ActivityManager()
 	var activityChrono = new Chrono()
+	
+	var loopBeforeStart : int 
 	
 	var motionlessChrono : Chrono = new Chrono()
 	var wasMotionless = false
@@ -95,6 +97,8 @@ agent Person {
 			
 			environment = occurrence.parameters.get(3) as GraphEnvironment 
 			
+			loopBeforeStart = occurrence.parameters.get(4) as Integer 
+			
 			info("The agent was started.")
 	
 			this.setActivity(this.activityManager.chooseActivity())
@@ -122,6 +126,7 @@ agent Person {
 			this.target = getNewTarget(activityType)
 			emit(new UpdatedActivity(this.ID, this.activityType))
 			this.hasReachedActivity = false
+			Statistic::countActivityTypeSet(this.activityType)
 			Globals::TOT_SET_TARGET++
 		}
 	}
@@ -163,7 +168,7 @@ agent Person {
 				info("The agent will do activity " + this.activityType)
 			}
 
-			if (occurrence.position.distance(target) > this.maxTargetDistance) {
+			if (occurrence.position.distance(target) > this.maxTargetDistance && loopBeforeStart<Globals::LOOP_COUNTER) {
 				if (this.target !== null) {
 					// run the seek behavior
 					targetMotionOutput = this.seekBehavior.run(
@@ -229,6 +234,7 @@ agent Person {
 				targetMotionOutput.linear.length = 0
 				
 				if (!this.hasReachedActivity) {
+					Statistic::countActivityTypeReached(this.activityType)
 					Globals::TOT_REACHED_TARGET++
 					this.hasReachedActivity = true
 				}

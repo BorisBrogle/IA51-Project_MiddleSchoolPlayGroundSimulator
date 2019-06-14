@@ -173,22 +173,35 @@ public class GUI extends Application {
         
         Button statButton = new Button();
         statButton.setAlignment(Pos.CENTER);
-        statButton.setText("Statistic");
+        statButton.setText("Statistics");
         statButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
  
-                Label statTarget = new Label("Number of target set : " + Globals.TOT_SET_TARGET + "\nNumber of target reached : " + Globals.TOT_REACHED_TARGET + "\nPercentage reached : " + Statistic.statActivityReached() + "%");
+                Label statTarget = new Label("Number of target set : " + Globals.TOT_SET_TARGET + 
+                							"\nNumber of target reached : " + Globals.TOT_REACHED_TARGET + 
+                							"\nPercentage reached : " + Statistic.statActivityReached() + "%" + 
+                							"\n\nPercentage Activity :\n" +
+                							"Tennis Table : " + Statistic.statTennisTableReached() + "% reached (" + Statistic.statTennisTablePart() + "%)\n" +
+                							"Soccer : " + Statistic.statSoccerReached() + "% reached (" + Statistic.statSoccerPart() + "%)\n" +
+                							"BasketBall : " + Statistic.statBasketReached() + "% reached (" + Statistic.statBasketPart() + "%)\n" +
+                							"Bench : " + Statistic.statBenchReached() + "% reached (" + Statistic.statBenchPart() + "%)\n" +
+                							"Library : " + Statistic.statLibraryReached() + "% reached (" + Statistic.statLibraryPart() + "%)\n" +
+                							"ClassLine : " + Statistic.statClassLineReached() + "% reached (" + Statistic.statClassLinePart() + "%)\n" +
+                							"Forest : " + Statistic.statForestReached() + "% reached (" + Statistic.statForestPart() + "%)\n" +
+                							"Toilet : " + Statistic.statToiletReached() + "% reached (" + Statistic.statToiletPart() + "%)\n" +
+                							"Fight : " + Statistic.statFightReached() + "% reached (" + Statistic.statFightPart() + "%)\n"
+                							);
+                
+                StackPane statLayout = new StackPane();
+                statLayout.getChildren().addAll(statTarget);
  
-                StackPane secondaryLayout = new StackPane();
-                secondaryLayout.getChildren().add(statTarget);
- 
-                Scene secondScene = new Scene(secondaryLayout, 230, 100);
+                Scene statScene = new Scene(statLayout, 230, 300);
  
                 // New window (Stage)
                 Stage newWindow = new Stage();
                 newWindow.setTitle("Statistics");
-                newWindow.setScene(secondScene);
+                newWindow.setScene(statScene);
  
                 // Set position of second window, related to primary window.
                 newWindow.setX(primaryStage.getX() + 200);
