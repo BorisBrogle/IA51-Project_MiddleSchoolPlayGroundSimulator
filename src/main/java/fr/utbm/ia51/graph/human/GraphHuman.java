@@ -52,8 +52,6 @@ public class GraphHuman extends EnvironmentEntity {
 		super(null);
 		this.setManaged(true);
 
-		this.setStyle("-fx-border-color : red");
-
 		this.environment = environment;
 		this.setTranslateX(x);
 		this.setTranslateY(y);
