@@ -45,9 +45,6 @@ agent Person {
 	uses Logging, DefaultContextInteractions, Lifecycle
 	
 	var position : Point2f
-	
-	var directionVector : Vector2f
-	//	var perceptionField = newRectangle 
 
 	// the activity that the agent wants to perform
 	var activityType : ActivityType
@@ -62,6 +59,9 @@ agent Person {
 
 	// the maximum distance between the agent and its target for him to stop moving (min 2f)
 	var maxTargetDistance = 2f
+	
+	// a factor to reduce the avoidance's vector length compared to the other vector's length
+	var avoidanceDivFactor : float = 1.4f
 	
 	//STATISTIC the distance walked by the agent, its time, etc
 	var walkedDistance = 0f
@@ -148,7 +148,8 @@ agent Person {
 			var perceivedObjects = occurrence.perceivedObjects
 
 			var targetMotionOutput = new MotionAlgorithmOutput
-			var fleeMotionOutput = new MotionAlgorithmOutput
+			var objectsFleeMotionOutput = new MotionAlgorithmOutput
+			var peopleFleeMotionOutput = new MotionAlgorithmOutput
 			var avoidMotionOutput = new MotionAlgorithmOutput
 
 			if (occurrence.bellRings && !this.isInClass) {
@@ -166,7 +167,6 @@ agent Person {
 				if (this.target !== null) {
 					// run the seek behavior
 					targetMotionOutput = this.seekBehavior.run(
-						 // TODO occurrence.position,
 						occurrence.position,
 						occurrence.currentLinearSpeed,
 						occurrence.maxLinear,
@@ -195,9 +195,8 @@ agent Person {
 							// nearest object's to flee point
 							entry.value
 						)
-						// TODO, check if it's the right way to add all the flee motions
 						// adding every repulsive vector to the flee output
-						fleeMotionOutput.linear += tmpFleeMotionOutput.linear
+						objectsFleeMotionOutput.linear += tmpFleeMotionOutput.linear
 						
 						var tmpAvoidMotionOutput = this.avoidBehavior.run(
 							occurrence.position,
@@ -212,33 +211,58 @@ agent Person {
 					}
 				}
 				// setting the flee and avoid vectors to the right length
-				if (fleeMotionOutput.linear.length > 0) {
-					fleeMotionOutput.linear.length = occurrence.maxLinear
+				if (objectsFleeMotionOutput.linear.length > 0) {
+					objectsFleeMotionOutput.linear.length = occurrence.maxLinear
 				}
 				if (avoidMotionOutput.linear.length > 0) {
-					avoidMotionOutput.linear.length = occurrence.maxLinear
+					avoidMotionOutput.linear.length = occurrence.maxLinear / avoidanceDivFactor
 				}
 
 				// taking the repulsive behavior into account
-				targetMotionOutput.linear += fleeMotionOutput.linear
+				targetMotionOutput.linear += objectsFleeMotionOutput.linear
 				
 				// taking the avoiding behavior into account
 				targetMotionOutput.linear += avoidMotionOutput.linear
 				
-				// setting the resulting vector to the right length
-				targetMotionOutput.linear.length = occurrence.maxLinear
-				
-				// emitting an influence with the wanted motion
-				this.emitInfluence(targetMotionOutput)
 			} else {
-				// emitting an influence with no motion in case we reached the target
-				this.emitInfluence(new MotionAlgorithmOutput)
+				// setting the movement to 0 because we reached our target
+				targetMotionOutput.linear.length = 0
 				
 				if (!this.hasReachedActivity) {
 					Globals::TOT_REACHED_TARGET++
 					this.hasReachedActivity = true
 				}
 			}
+			
+			// taking care of repulsion between agents
+			for (perceivedPerson : occurrence.perceivedPeople) {
+				var tmpFleeMotionOutput = this.fleeBehavior.run(
+					occurrence.position,
+					occurrence.currentLinearSpeed,
+					occurrence.maxLinear,
+					// nearest person's to flee point
+					perceivedPerson
+				)
+				
+				// adding every repulsive vector to the flee output
+				peopleFleeMotionOutput.linear += tmpFleeMotionOutput.linear
+			}
+
+			if (peopleFleeMotionOutput.linear.length > 0) {
+				peopleFleeMotionOutput.linear.length = occurrence.maxLinear
+				// info("fleeing a person: " + peopleFleeMotionOutput.linear.length)
+			}
+
+			// taking the repulsive behavior into account
+			targetMotionOutput.linear += peopleFleeMotionOutput.linear
+
+			// setting the resulting vector to the right length
+			if (targetMotionOutput.linear.length > 0) {
+				targetMotionOutput.linear.length = occurrence.maxLinear
+			}
+
+			// emitting an influence with the wanted motion
+			this.emitInfluence(targetMotionOutput)
 		}
 	}
 	
