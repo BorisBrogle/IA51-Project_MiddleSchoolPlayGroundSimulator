@@ -56,4 +56,5 @@ public class Globals {
 	public static float TOT_WALKED_DISTANCE = 0;
 	
 	public static long WALKING_TIME = 0;
+	public static long ACTIVITY_TIME = 0;
 }

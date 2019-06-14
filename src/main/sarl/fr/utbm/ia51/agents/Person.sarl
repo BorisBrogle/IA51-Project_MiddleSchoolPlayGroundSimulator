@@ -67,6 +67,7 @@ agent Person {
 	
 	//STATISTIC the distance walked by the agent, its time, etc
 	var walkedChrono = new Chrono()
+	var inActivityChrono = new Chrono()
 	var hasReachedActivity : boolean = false
 	
 	var isInClass : boolean
@@ -126,6 +127,7 @@ agent Person {
 			Statistic::countActivityTypeSet(this.activityType)
 			Globals::TOT_SET_TARGET++
 			this.walkedChrono.reset()
+			Globals::ACTIVITY_TIME += this.inActivityChrono.getTime()
 			
 		}
 	}
@@ -238,10 +240,10 @@ agent Person {
 					Statistic::countActivityTypeReached(this.activityType)
 					Globals::TOT_REACHED_TARGET++
 					this.hasReachedActivity = true
-					Globals::WALKING_TIME += this.walkedChrono.getTime()
-					info(this.walkedChrono.getTime())
-					
-				}
+					Globals::WALKING_TIME += this.walkedChrono.getTime()	
+					this.inActivityChrono.reset()			
+				}	
+			}
 			
 			// taking care of repulsion between agents
 				for (perceivedPerson : occurrence.perceivedPeople) {

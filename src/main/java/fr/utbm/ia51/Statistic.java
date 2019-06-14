@@ -184,5 +184,13 @@ public class Statistic {
 	public static float averageDistance() {
 		return ((float)Globals.TOT_WALKED_DISTANCE / Globals.NB_AGENTS) / 20 ;
 	}
+	
+	public static float averageWalkingTimePerAct() {
+		return ((float)Globals.WALKING_TIME / Globals.TOT_REACHED_TARGET)/ 1000;
+	}
+	
+	public static float averageTimePerAct() {
+		return ((float)Globals.ACTIVITY_TIME / Globals.TOT_REACHED_TARGET)/ 1000;
+	}
 
 }
