@@ -15,7 +15,7 @@ public class Globals {
 	
 	public static final int START_POS_X = 200;
 	public static final int START_POS_Y = 200;
-	public static long LOOP_DURATION = 10; // Duration between each steps, in milliseconds
+	public static long LOOP_DURATION = 100; // Duration between each steps, in milliseconds
 
 	public static int LOOP_COUNTER =0;
 	

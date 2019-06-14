@@ -171,7 +171,7 @@ public class GraphHuman extends EnvironmentEntity {
 //		this.setTranslateY(y-this.viewField.getHeight()/2);
 //		
 		try {
-			Thread.sleep(10);
+			Thread.sleep(20);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

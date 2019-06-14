@@ -32,7 +32,7 @@ agent Environment {
 	uses Logging, DefaultContextInteractions, Lifecycle, Schedules
 		
 	// the time/date of the app
-	var time = 0
+//	var time = 0
 
 	
 	var personIdList = <UUID>newLinkedList
@@ -66,7 +66,6 @@ agent Environment {
 			info("The environment was started.")
 			var i= 0
 			for (g : listGraphHumans) {
-				
 				
 				this.graphHumans.put(g.uuid, g)
 				g.visible=true;
