@@ -178,12 +178,12 @@ public class GUI extends Application {
             @Override
             public void handle(ActionEvent event) {
  
-                Label statTarget = new Label("Number of target set : " + Globals.TOT_SET_TARGET + 
-                							"\nNumber of target reached : " + Globals.TOT_REACHED_TARGET + 
+                Label statTarget = new Label("Number of target set : " + Statistic.TOT_SET_TARGET + 
+                							"\nNumber of target reached : " + Statistic.TOT_REACHED_TARGET + 
                 							"\nPercentage reached : " + Statistic.statActivityReached() + "%" + 
-                							"\nTotal walked distance : " + Globals.TOT_WALKED_DISTANCE/20 + "m ( " + Statistic.averageDistance() + "m per student in average)" +
-                							"\nTotal walking time : " + (float)Globals.WALKING_TIME/1000 + "sec (" + Statistic.averageWalkingTimePerAct() + "sec per activity )" +
-                							"\nTotal activity time : " + (float)Globals.ACTIVITY_TIME/1000 + "sec (" + Statistic.averageTimePerAct() + "sec per activity )" +
+                							"\nTotal walked distance : " + Statistic.TOT_WALKED_DISTANCE/20 + "m ( " + Statistic.averageDistance() + "m per student in average)" +
+                							"\nTotal walking time : " + (float)Statistic.WALKING_TIME/1000 + "sec (" + Statistic.averageWalkingTimePerAct() + "sec per activity )" +
+                							"\nTotal activity time : " + (float)Statistic.ACTIVITY_TIME/1000 + "sec (" + Statistic.averageTimePerAct() + "sec per activity )" +
                 							"\nAverage speed : " + Statistic.averageSpeed() + "m/sec" +
                 							"\n\nPercentage Activity :\n" +
                 							"Tennis Table : " + Statistic.statTennisTableReached() + "% reached (" + Statistic.statTennisTablePart() + "%)\n" +

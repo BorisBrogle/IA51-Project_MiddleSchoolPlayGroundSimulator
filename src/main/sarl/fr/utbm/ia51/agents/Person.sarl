@@ -125,9 +125,9 @@ agent Person {
 			emit(new UpdatedActivity(this.ID, this.activityType))
 			this.hasReachedActivity = false
 			Statistic::countActivityTypeSet(this.activityType)
-			Globals::TOT_SET_TARGET++
+			Statistic::TOT_SET_TARGET++
 			this.walkedChrono.reset()
-			Globals::ACTIVITY_TIME += this.inActivityChrono.getTime()
+			Statistic::ACTIVITY_TIME += this.inActivityChrono.getTime()
 			
 		}
 	}
@@ -238,9 +238,9 @@ agent Person {
 				
 				if (!this.hasReachedActivity) {
 					Statistic::countActivityTypeReached(this.activityType)
-					Globals::TOT_REACHED_TARGET++
+					Statistic::TOT_REACHED_TARGET++
 					this.hasReachedActivity = true
-					Globals::WALKING_TIME += this.walkedChrono.getTime()	
+					Statistic::WALKING_TIME += this.walkedChrono.getTime()	
 					this.inActivityChrono.reset()			
 				}	
 			}
@@ -288,7 +288,7 @@ agent Person {
 			
 			var nextPos = new Point2f(x, y)
 			var distanceVec = this.position-nextPos
-			Globals::TOT_WALKED_DISTANCE += distanceVec.length
+			Statistic::TOT_WALKED_DISTANCE += distanceVec.length
 			
 			//info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", position.x, position.y, x, y)
 

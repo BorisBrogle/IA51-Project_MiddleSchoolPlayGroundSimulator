@@ -1,6 +1,6 @@
 package fr.utbm.ia51;
 
-import fr.utbm.ia51.Globals;
+import fr.utbm.ia51.Statistic;
 import fr.utbm.ia51.activities.ActivityType;
 
 import java.util.LinkedList;
@@ -8,10 +8,36 @@ import fr.utbm.ia51.graph.human.GraphHuman;
 import javafx.scene.image.Image;
 
 public class Statistic {
+	public static int TOT_SET_TARGET = 0;
+	public static int TOT_REACHED_TARGET = 0;
+	
+	//STAT FOR EACH ACTIVITIES
+	public static int NB_SET_BASKETBALL = 0;
+	public static int NB_REACHED_BASKETBALL = 0;
+	public static int NB_SET_TENNISTABLE = 0;
+	public static int NB_REACHED_TENNISTABLE = 0;
+	public static int NB_SET_SOCCER = 0;
+	public static int NB_REACHED_SOCCER = 0;
+	public static int NB_SET_BENCH = 0;
+	public static int NB_REACHED_BENCH = 0;
+	public static int NB_SET_LIBRARY = 0;
+	public static int NB_REACHED_LIBRARY = 0;
+	public static int NB_SET_CLASSLINE = 0;
+	public static int NB_REACHED_CLASSLINE = 0;
+	public static int NB_SET_FOREST = 0;
+	public static int NB_REACHED_FOREST = 0;
+	public static int NB_SET_TOILET = 0;
+	public static int NB_REACHED_TOILET = 0;
+	
+	public static float TOT_WALKED_DISTANCE = 0;
+	
+	public static long WALKING_TIME = 0;
+	public static long ACTIVITY_TIME = 0;
+	
 	
 	private float averageGlobalDistance;
 	private float averageGlobalTime;
-	private float averageGlobalSpeed;
+	private float averageStatisticpeed;
 	
 	private int numberActivitySet;
 	private int numberActivityReached;
@@ -23,7 +49,7 @@ public class Statistic {
 	public Statistic() {
 		averageGlobalDistance = 0;
 		averageGlobalTime = 0;
-		averageGlobalSpeed = 0;
+		averageStatisticpeed = 0;
 		
 		//numberActivityReached=0;
 		//numberActivitySet = 0;
@@ -43,8 +69,8 @@ public class Statistic {
 		*/
 	}
 	
-	public static void setAverageGlobalSpeed(/*liste des vitesse, student number*/) {
-		//averageGlobalSpeed = 0;
+	public static void setAverageStatisticpeed(/*liste des vitesse, student number*/) {
+		//averageStatisticpeed = 0;
 		/*for
 		
 		*/
@@ -52,98 +78,98 @@ public class Statistic {
 	
 	//percentage of reached activities
 	public static float statActivityReached() {
-		return ((float) Globals.TOT_REACHED_TARGET / Globals.TOT_SET_TARGET)*100;
+		return ((float) Statistic.TOT_REACHED_TARGET / Statistic.TOT_SET_TARGET)*100;
 	}
 	
 	//TennisTable
 	public static float statTennisTableReached() {
-		return ((float) Globals.NB_REACHED_TENNISTABLE / Globals.NB_SET_TENNISTABLE)*100;
+		return ((float) Statistic.NB_REACHED_TENNISTABLE / Statistic.NB_SET_TENNISTABLE)*100;
 	}
 	public static float statTennisTablePart() {
-		return ((float) Globals.NB_REACHED_TENNISTABLE / Globals.TOT_REACHED_TARGET)*100;
+		return ((float) Statistic.NB_REACHED_TENNISTABLE / Statistic.TOT_REACHED_TARGET)*100;
 	}
 	
 	//Soccer
 	public static float statSoccerReached() {
-		return ((float) Globals.NB_REACHED_SOCCER / Globals.NB_SET_SOCCER)*100;
+		return ((float) Statistic.NB_REACHED_SOCCER / Statistic.NB_SET_SOCCER)*100;
 	}
 	public static float statSoccerPart() {
-		return ((float) Globals.NB_REACHED_SOCCER / Globals.TOT_REACHED_TARGET)*100;
+		return ((float) Statistic.NB_REACHED_SOCCER / Statistic.TOT_REACHED_TARGET)*100;
 	}
 	
 	//Basket
 	public static float statBasketReached() {
-		return ((float) Globals.NB_REACHED_BASKETBALL / Globals.NB_SET_BASKETBALL)*100;
+		return ((float) Statistic.NB_REACHED_BASKETBALL / Statistic.NB_SET_BASKETBALL)*100;
 	}
 	public static float statBasketPart() {
-		return ((float) Globals.NB_REACHED_BASKETBALL / Globals.TOT_REACHED_TARGET)*100;
+		return ((float) Statistic.NB_REACHED_BASKETBALL / Statistic.TOT_REACHED_TARGET)*100;
 	}
 	
 	//Bench
 	public static float statBenchReached() {
-		return ((float) Globals.NB_REACHED_BENCH / Globals.NB_SET_BENCH)*100;
+		return ((float) Statistic.NB_REACHED_BENCH / Statistic.NB_SET_BENCH)*100;
 	}
 	public static float statBenchPart() {
-		return ((float) Globals.NB_REACHED_BENCH / Globals.TOT_REACHED_TARGET)*100;
+		return ((float) Statistic.NB_REACHED_BENCH / Statistic.TOT_REACHED_TARGET)*100;
 	}
 	
 	//Library
 	public static float statLibraryReached() {
-		return ((float) Globals.NB_REACHED_LIBRARY / Globals.NB_SET_LIBRARY)*100;
+		return ((float) Statistic.NB_REACHED_LIBRARY / Statistic.NB_SET_LIBRARY)*100;
 	}
 	public static float statLibraryPart() {
-		return ((float) Globals.NB_REACHED_LIBRARY / Globals.TOT_REACHED_TARGET)*100;
+		return ((float) Statistic.NB_REACHED_LIBRARY / Statistic.TOT_REACHED_TARGET)*100;
 	}
 	
 	//ClassLine
 	public static float statClassLineReached() {
-		return ((float) Globals.NB_REACHED_CLASSLINE / Globals.NB_SET_CLASSLINE)*100;
+		return ((float) Statistic.NB_REACHED_CLASSLINE / Statistic.NB_SET_CLASSLINE)*100;
 	}
 	public static float statClassLinePart() {
-		return ((float) Globals.NB_REACHED_CLASSLINE / Globals.TOT_REACHED_TARGET)*100;
+		return ((float) Statistic.NB_REACHED_CLASSLINE / Statistic.TOT_REACHED_TARGET)*100;
 	}
 	
 	//Forest
 	public static float statForestReached() {
-		return ((float) Globals.NB_REACHED_FOREST / Globals.NB_SET_FOREST)*100;
+		return ((float) Statistic.NB_REACHED_FOREST / Statistic.NB_SET_FOREST)*100;
 	}
 	public static float statForestPart() {
-		return ((float) Globals.NB_REACHED_FOREST / Globals.TOT_REACHED_TARGET)*100;
+		return ((float) Statistic.NB_REACHED_FOREST / Statistic.TOT_REACHED_TARGET)*100;
 	}
 	
 	//Toilet
 	public static float statToiletReached() {
-		return ((float) Globals.NB_REACHED_TOILET / Globals.NB_SET_TOILET)*100;
+		return ((float) Statistic.NB_REACHED_TOILET / Statistic.NB_SET_TOILET)*100;
 	}
 	public static float statToiletPart() {
-		return ((float) Globals.NB_REACHED_TOILET / Globals.TOT_REACHED_TARGET)*100;
+		return ((float) Statistic.NB_REACHED_TOILET / Statistic.TOT_REACHED_TARGET)*100;
 	}
 	
 	public static void countActivityTypeSet(ActivityType type) {
 		switch (type) {
 		case TENNISTABLE:
-			Globals.NB_SET_TENNISTABLE++;
+			Statistic.NB_SET_TENNISTABLE++;
 			break;
 		case SOCCER:
-			Globals.NB_SET_SOCCER++;
+			Statistic.NB_SET_SOCCER++;
 			break;
 		case BASKETBALL:
-			Globals.NB_SET_BASKETBALL++;
+			Statistic.NB_SET_BASKETBALL++;
 			break;
 		case BENCH:
-			Globals.NB_SET_BENCH++;
+			Statistic.NB_SET_BENCH++;
 			break;
 		case LIBRARY:
-			Globals.NB_SET_LIBRARY++;
+			Statistic.NB_SET_LIBRARY++;
 			break;
 		case CLASSLINE:
-			Globals.NB_SET_CLASSLINE++;
+			Statistic.NB_SET_CLASSLINE++;
 			break;
 		case FOREST:
-			Globals.NB_SET_FOREST++;
+			Statistic.NB_SET_FOREST++;
 			break;
 		case TOILET:
-			Globals.NB_SET_TOILET++;
+			Statistic.NB_SET_TOILET++;
 			break;
 		default:
 			break;
@@ -153,28 +179,28 @@ public class Statistic {
 	public static void countActivityTypeReached(ActivityType type) {
 		switch (type) {
 		case TENNISTABLE:
-			Globals.NB_REACHED_TENNISTABLE++;
+			Statistic.NB_REACHED_TENNISTABLE++;
 			break;
 		case SOCCER:
-			Globals.NB_REACHED_SOCCER++;
+			Statistic.NB_REACHED_SOCCER++;
 			break;
 		case BASKETBALL:
-			Globals.NB_REACHED_BASKETBALL++;
+			Statistic.NB_REACHED_BASKETBALL++;
 			break;
 		case BENCH:
-			Globals.NB_REACHED_BENCH++;
+			Statistic.NB_REACHED_BENCH++;
 			break;
 		case LIBRARY:
-			Globals.NB_REACHED_LIBRARY++;
+			Statistic.NB_REACHED_LIBRARY++;
 			break;
 		case CLASSLINE:
-			Globals.NB_REACHED_CLASSLINE++;
+			Statistic.NB_REACHED_CLASSLINE++;
 			break;
 		case FOREST:
-			Globals.NB_REACHED_FOREST++;
+			Statistic.NB_REACHED_FOREST++;
 			break;
 		case TOILET:
-			Globals.NB_REACHED_TOILET++;
+			Statistic.NB_REACHED_TOILET++;
 			break;
 		default:
 			break;
@@ -182,19 +208,19 @@ public class Statistic {
 	}
 	
 	public static float averageDistance() {
-		return ((float)Globals.TOT_WALKED_DISTANCE / Globals.NB_AGENTS) / 20 ;
+		return ((float)Statistic.TOT_WALKED_DISTANCE / Globals.NB_AGENTS) / 20 ;
 	}
 	
 	public static float averageWalkingTimePerAct() {
-		return ((float)Globals.WALKING_TIME / Globals.TOT_REACHED_TARGET)/ 1000;
+		return ((float)Statistic.WALKING_TIME / Statistic.TOT_REACHED_TARGET)/ 1000;
 	}
 	
 	public static float averageTimePerAct() {
-		return ((float)Globals.ACTIVITY_TIME / Globals.TOT_REACHED_TARGET)/ 1000;
+		return ((float)Statistic.ACTIVITY_TIME / Statistic.TOT_REACHED_TARGET)/ 1000;
 	}
 	
 	public static float averageSpeed() {
-		return ((((float)Globals.TOT_WALKED_DISTANCE / Globals.NB_AGENTS) /20) / ((float)Globals.WALKING_TIME/1000));
+		return ((((float)Statistic.TOT_WALKED_DISTANCE / Globals.NB_AGENTS) /20) / ((float)Statistic.WALKING_TIME/1000));
 	}
 
 }
