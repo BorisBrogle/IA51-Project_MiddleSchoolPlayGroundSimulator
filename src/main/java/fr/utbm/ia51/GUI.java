@@ -184,6 +184,7 @@ public class GUI extends Application {
                 							"\nTotal walked distance : " + Globals.TOT_WALKED_DISTANCE/20 + "m ( " + Statistic.averageDistance() + "m per student in average)" +
                 							"\nTotal walking time : " + (float)Globals.WALKING_TIME/1000 + "sec (" + Statistic.averageWalkingTimePerAct() + "sec per activity )" +
                 							"\nTotal activity time : " + (float)Globals.ACTIVITY_TIME/1000 + "sec (" + Statistic.averageTimePerAct() + "sec per activity )" +
+                							"\nAverage speed : " + Statistic.averageSpeed() + "m/sec" +
                 							"\n\nPercentage Activity :\n" +
                 							"Tennis Table : " + Statistic.statTennisTableReached() + "% reached (" + Statistic.statTennisTablePart() + "%)\n" +
                 							"Soccer : " + Statistic.statSoccerReached() + "% reached (" + Statistic.statSoccerPart() + "%)\n" +
