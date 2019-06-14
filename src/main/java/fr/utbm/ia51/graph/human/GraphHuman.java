@@ -194,9 +194,9 @@ public class GraphHuman extends EnvironmentEntity {
 	
 	
 	/*
-	 * Used to show the force arrow of the agent, representing the direction it is following.
+	 * Used to update the force arrow of the agent, representing the direction it is following.
 	 */
-	public void showForce(double endX, double endY) {
+	public void updateForceVector(double endX, double endY) {
 		double x = this.getX();
 		double y = this.getY();
 		this.forceArrow.setStartX(x);
