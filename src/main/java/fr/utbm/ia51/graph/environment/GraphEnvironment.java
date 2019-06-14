@@ -13,6 +13,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 public class GraphEnvironment extends StackPane {
+	
+	
 	private ArrayList<EnvironmentEntity> artifacts = new ArrayList<>();
 	private ArrayList<EnvironmentEntity> coveredAreas = new ArrayList<>();
 	
@@ -38,7 +40,6 @@ public class GraphEnvironment extends StackPane {
 	public GraphEnvironment(double width, double height) {
 		super();
 		this.setPrefSize(width, height);
-		this.setStyle("-fx-border-color : blue");
 		
 		// All the environment elements are defined by their 1600:900 coordinates
 		this.wFactor = width/1600; // Width factor to multiply the width coordinate
@@ -121,7 +122,11 @@ public class GraphEnvironment extends StackPane {
 	public ArrayList<EnvironmentEntity> getIntersectedArtifacts(GraphHuman graphHuman) {
 		ArrayList<EnvironmentEntity> intersectArtifacts = new ArrayList<>();
 		for(EnvironmentEntity s : this.artifacts) {
-			if(s.getBoundsInParent().intersects(graphHuman.getBoundsInParent()) && !s.contains(new Point2D(graphHuman.getCenterPoint().getX(),graphHuman.getCenterPoint().getY()))) {
+			
+			
+			
+			if(graphHuman.getBoundsInParent().intersects(s.getMinX(), s.getMinY(), s.getWidth(), s.getHeight())&& !s.getBoundsInParent().contains(new Point2D(graphHuman.getCenterPoint().getX(),graphHuman.getCenterPoint().getY()))) {
+//			if(s.getBoundsInParent().intersects(graphHuman.getBoundsInParent()) && !s.contains(new Point2D(graphHuman.getCenterPoint().getX(),graphHuman.getCenterPoint().getY()))) {
 				//System.out.println("Intersect with "+s.getClass().getName());
 				intersectArtifacts.add(s);
 			}

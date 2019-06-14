@@ -4,12 +4,17 @@ import fr.utbm.ia51.tools.PseudoRandomGenerator;
 import tools.Chrono;
 
 public class Globals {
-	public static PseudoRandomGenerator randomGenerator = new PseudoRandomGenerator(34253076);
+	public static PseudoRandomGenerator randomGenerator = new PseudoRandomGenerator();
 	public static Chrono chrono = new Chrono();
+	
+	
+	public static final int NB_AGENTS = 1;
 	
 	public static final int WIDTH = 1280; // Height of our map, and of our base window
 	public static final int HEIGHT = 720; // Width of our map, and of our base window
 	
+	public static final int START_POS_X = 200;
+	public static final int START_POS_Y = 200;
 	public static long LOOP_DURATION = 100; // Duration between each steps, in milliseconds
 	
 	public static long ACTIVITY_CHANGE_FREQUENCY = 3600; // All the agents will change activity every x seconds on average

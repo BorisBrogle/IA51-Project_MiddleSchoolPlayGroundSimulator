@@ -5,6 +5,7 @@ import fr.utbm.ia51.activities.ActivityType;
 import fr.utbm.ia51.graph.human.GraphHuman;
 import fr.utbm.ia51.tools.Point2f;
 import fr.utbm.ia51.tools.Vector2f;
+import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -82,7 +83,7 @@ public class EnvironmentEntity extends StackPane {
 		double xmax = this.getBoundsInParent().getMaxX();
 		double ymax = this.getBoundsInParent().getMaxY();
 		
-		return new Point2f((xmax+xmin)/2.0,(ymax+ymin)/2.0);
+		return new Point2f(xmin+((xmax-xmin)/2),ymin+((ymax-ymin)/2));
 	}
 
 
@@ -157,6 +158,34 @@ public class EnvironmentEntity extends StackPane {
 		return new Point2f(newX,newY);
 	}
 	
+	
+	public double getMinX() {
+		return this.getBoundsInParent().getMinX();
+	}
+	
+	public double getMinY() {
+		return this.getBoundsInParent().getMinY();
+	}
+	
+	public double getMaxX(){
+		return this.getBoundsInParent().getMaxX();
+	}
+	
+	public double getMaxY() {
+		return this.getBoundsInParent().getMaxY();
+	}
+	
+	public double getEnvironmentEntityHeight() {
+		return this.getBoundsInParent().getHeight();
+	}
+	
+	public double getEnvironmentEntityWidth() {
+		return this.getBoundsInParent().getWidth();
+	}
+	
+	public Bounds getBoundsOfEntity() {
+		return this.getBoundsInParent();
+	}
 	
 	public ActivityType getActivityType() {
 		return this.activityType;

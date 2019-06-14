@@ -10,6 +10,9 @@ import fr.utbm.ia51.graph.environment.GraphEnvironment;
 import fr.utbm.ia51.tools.Point2f;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -20,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import sun.misc.GC;
 import tools.Arrow;
 
 public class GraphHuman extends EnvironmentEntity {
@@ -92,7 +96,7 @@ public class GraphHuman extends EnvironmentEntity {
 //		this.coordinatesLabel.textProperty().bind(Bindings.createStringBinding(
 //				()->"x="+this.boundsInParentProperty().getValue().getMaxX()/2+" y="+this.boundsInParentProperty().getValue().getMaxY()/2,this.boundsInParentProperty(),this.boundsInParentProperty()));
 		this.coordinatesLabel.setFont(new Font(radius*0.8));
-		this.coordinatesLabel.setTranslateY(this.head.getRadius()*-2);
+		this.coordinatesLabel.setTranslateY(-this.head.getRadius()*-2);
 		this.coordinatesLabel.setVisible(false);
 	
 		
@@ -158,14 +162,29 @@ public class GraphHuman extends EnvironmentEntity {
 	public void moveTo(double x, double y, double speed) {
 //		this.head.setTranslateX(x);
 //		this.head.setTranslateY(y);
-		this.setTranslateX(x-this.viewField.getWidth()/2);
-		this.setTranslateY(y-this.viewField.getHeight()/2);
-		
-		
+//		this.setTranslateX(x-this.viewField.getWidth()/2);
+//		this.setTranslateY(y-this.viewField.getHeight()/2);
+//		
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		this.setTranslateX(x-this.viewField.getWidth()/2);
+//		this.setTranslateY(y-this.viewField.getHeight()/2);
 		Platform.runLater(()->{
+			this.setTranslateX(x-this.viewField.getWidth()/2);
+			this.setTranslateY(y-this.viewField.getHeight()/2);
 			this.coordinatesLabel.setText("x="+(int)this.getTranslateX()+"y="+(int)this.getTranslateY());
 		});
+		
+		
+		
+		
 	}
+	
+	
 	
 	
 	/*
@@ -200,14 +219,44 @@ public class GraphHuman extends EnvironmentEntity {
 	}
 	
 	
+	@Override
+	public double getMinX() {
+		System.out.println("CollisionMinX :"+this.collisionBox.getBoundsInParent().getMinX());
+		return this.getBoundsInParent().getMinX()+(this.collisionBox.getBoundsInParent().getMinX()-this.getBoundsInParent().getMinX());
+	}
+	
+	@Override
+	public double getMinY() {
+		return this.getBoundsInParent().getMinY()+this.collisionBox.getBoundsInParent().getMinY();
+	}
+	
+	@Override
+	public double getMaxX(){
+		return this.getBoundsInParent().getMaxX()-this.collisionBox.getBoundsInParent().getMaxX();
+	}
+	
+	@Override
+	public double getMaxY() {
+		return this.getBoundsInParent().getMaxY()-this.collisionBox.getBoundsInParent().getMaxY();
+	}
+	
+	@Override
+	public double getEnvironmentEntityHeight() {
+		return this.collisionBox.getHeight();
+	}
+	
+	@Override
+	public double getEnvironmentEntityWidth() {
+		return this.collisionBox.getWidth();
+	}
 	
 	
 	@Override
 	public Point2f getNearestPointInEntity(Point2f point) {
 		double xmin = this.getBoundsInParent().getMinX()+(this.collisionBox.getBoundsInParent().getMinX()-this.getBoundsInParent().getMinX());
-		double ymin = this.getBoundsInParent().getMinY()+(this.collisionBox.getBoundsInParent().getMinY()-this.getBoundsInParent().getMinY());;
-		double xmax = this.getBoundsInParent().getMaxX()+(this.collisionBox.getBoundsInParent().getMaxX()-this.getBoundsInParent().getMaxX());;
-		double ymax = this.getBoundsInParent().getMaxY()+(this.collisionBox.getBoundsInParent().getMaxY()-this.getBoundsInParent().getMaxY());;
+		double ymin = this.getBoundsInParent().getMinY()+(this.collisionBox.getBoundsInParent().getMinY()-this.getBoundsInParent().getMinY());
+		double xmax = this.getBoundsInParent().getMaxX()+(this.collisionBox.getBoundsInParent().getMaxX()-this.getBoundsInParent().getMaxX());
+		double ymax = this.getBoundsInParent().getMaxY()+(this.collisionBox.getBoundsInParent().getMaxY()-this.getBoundsInParent().getMaxY());
 
 		double x = (double)point.getX();
 		double y = (double)point.getY();
@@ -234,7 +283,6 @@ public class GraphHuman extends EnvironmentEntity {
 	}
 	
 
-
 	public UUID getUuid() {
 		return uuid;
 	}
@@ -243,6 +291,8 @@ public class GraphHuman extends EnvironmentEntity {
 	public void setUuid(UUID uuid) {
 		this.uuid = uuid;
 	}
+	
+	
 	
 	public double getX() {
 		return (this.getBoundsInParent().getMaxX() - (this.getBoundsInParent().getMaxX() - this.getBoundsInParent().getMinX())/2);
