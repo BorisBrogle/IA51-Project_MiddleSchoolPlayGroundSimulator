@@ -40,7 +40,6 @@ public class GraphEnvironment extends StackPane {
 	public GraphEnvironment(double width, double height) {
 		super();
 		this.setPrefSize(width, height);
-		this.setStyle("-fx-border-color : blue");
 		
 		// All the environment elements are defined by their 1600:900 coordinates
 		this.wFactor = width/1600; // Width factor to multiply the width coordinate

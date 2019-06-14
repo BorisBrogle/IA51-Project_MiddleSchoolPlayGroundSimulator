@@ -28,4 +28,8 @@ public class Globals {
 	public static boolean SHOW_VIEW_FIELD = false; // If we should show the view field of the agents
 	public static boolean SHOW_AGENTS_COORDINATES = false; // If we should show the x;y coordinates of the agents
 	public static boolean SHOW_ACTIVITY_TOOLTIP = false; // If we should show the activities of the agents
+	
+	public static boolean SHOW_STAT = false; // If we should show the statistics
+	public static int TOT_SET_TARGET = 0;
+	public static int TOT_REACHED_TARGET = 0;
 }

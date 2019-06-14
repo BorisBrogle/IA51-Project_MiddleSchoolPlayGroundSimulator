@@ -41,7 +41,7 @@ public class GraphHuman extends EnvironmentEntity {
 	private Rectangle viewField;
 	private Rectangle collisionBox;
 	
-	
+
 	
 	private Arrow forceArrow;
 	
@@ -51,7 +51,9 @@ public class GraphHuman extends EnvironmentEntity {
 	public GraphHuman (int x,int y, String headStyle, String armStyle, double radius, String name, GraphEnvironment environment) {
 		super(null);
 		this.setManaged(true);
-		
+
+		this.setStyle("-fx-border-color : red");
+
 		this.environment = environment;
 		this.setTranslateX(x);
 		this.setTranslateY(y);
@@ -220,22 +222,23 @@ public class GraphHuman extends EnvironmentEntity {
 	
 	@Override
 	public double getMinX() {
+		System.out.println("CollisionMinX :"+this.collisionBox.getBoundsInParent().getMinX());
 		return this.getBoundsInParent().getMinX()+(this.collisionBox.getBoundsInParent().getMinX()-this.getBoundsInParent().getMinX());
 	}
 	
 	@Override
 	public double getMinY() {
-		return this.getBoundsInParent().getMinY()+(this.collisionBox.getBoundsInParent().getMinY()-this.getBoundsInParent().getMinY());
+		return this.getBoundsInParent().getMinY()+this.collisionBox.getBoundsInParent().getMinY();
 	}
 	
 	@Override
 	public double getMaxX(){
-		return this.getBoundsInParent().getMaxX()+(this.collisionBox.getBoundsInParent().getMaxX()-this.getBoundsInParent().getMaxX());
+		return this.getBoundsInParent().getMaxX()-this.collisionBox.getBoundsInParent().getMaxX();
 	}
 	
 	@Override
 	public double getMaxY() {
-		return this.getBoundsInParent().getMaxY()+(this.collisionBox.getBoundsInParent().getMaxY()-this.getBoundsInParent().getMaxY());
+		return this.getBoundsInParent().getMaxY()-this.collisionBox.getBoundsInParent().getMaxY();
 	}
 	
 	@Override
@@ -348,4 +351,21 @@ public class GraphHuman extends EnvironmentEntity {
 	
 	
 	
+	/*public double getDistance() {
+		return this.distance;
+	}
+	
+	public void setDistance(double d) {
+		this.distance = d;
+	}*/
+//	
+//	
+//	public void move(Point2D originalVect, Point2D newVect) {
+//		if(originalVect.angle(newVect)!=null)
+//			
+//	}
+//	
+	
+
+
 }

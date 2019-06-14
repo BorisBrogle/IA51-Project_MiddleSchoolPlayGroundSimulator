@@ -46,6 +46,7 @@ agent Environment {
 	var numberOfPersonToSpawn = 2
 	var numberOfInfluencesGot = 0
 	var numberOfInfluencesToGet = 0
+
 	
 	
 	
@@ -251,5 +252,14 @@ agent Environment {
 			// influence.caller.posX
 		}
 	}
+	
+	/*def computeDistance(listGraphHumans : LinkedList<GraphHuman>) {
+		for (var i = 0; i < listGraphHumans.size; i++) {
+			//ancienne position a nouvelle position b
+			// sqrt((xb - xa)²+(yb - ya)²)
+			var distance = 0.0;
+			listGraphHumans.get(i).setDistance(listGraphHumans.get(i).getDistance() + distance);
+		}
+	}*/
 
 }
