@@ -71,7 +71,6 @@ agent Environment {
 				g.visible=true;
 				spawnAPerson("Person"+i,g,g.environment,i)
 				i++
-				emit(new RunBeginingOfStep)
 			}
 			emit(new RunBeginingOfStep)
 		}
