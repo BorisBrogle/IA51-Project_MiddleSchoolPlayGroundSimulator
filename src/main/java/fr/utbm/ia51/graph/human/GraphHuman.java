@@ -86,7 +86,7 @@ public class GraphHuman extends EnvironmentEntity {
 		
 		this.collisionBox = new Rectangle(radius*2, radius*2);
 		this.collisionBox.setMouseTransparent(true);
-		this.collisionBox.setFill(Color.RED);
+		this.collisionBox.setFill(Color.TRANSPARENT);
 		
 //		this.collisionBox.setTranslateX(-30);
 //		this.collisionBox.setTranslateY(-30);
@@ -182,7 +182,7 @@ public class GraphHuman extends EnvironmentEntity {
 		Platform.runLater(()->{
 			this.setTranslateX(x-this.viewField.getWidth()/2);
 			this.setTranslateY(y-this.viewField.getHeight()/2);
-			this.coordinatesLabel.setText("x="+(int)this.getTranslateX()+"y="+(int)this.getTranslateY()+"collisionXmin"+(int)(this.getBoundsInParent().getMinX()+this.collisionBox.getBoundsInParent().getMinX())+"collisionYmin"+(int)(this.getBoundsInParent().getMinY()+this.collisionBox.getBoundsInParent().getMinY()));
+			this.coordinatesLabel.setText("x="+(int)this.getTranslateX()+"y="+(int)this.getTranslateY());
 		});
 		
 		
@@ -240,12 +240,12 @@ public class GraphHuman extends EnvironmentEntity {
 	
 	@Override
 	public double getMaxX(){
-		return this.getBoundsInParent().getMaxX()-this.collisionBox.getBoundsInParent().getMaxX();
+		return this.getBoundsInParent().getMaxX()-this.collisionBox.getBoundsInParent().getMinX();
 	}
 	
 	@Override
 	public double getMaxY() {
-		return this.getBoundsInParent().getMaxY()-this.collisionBox.getBoundsInParent().getMaxY();
+		return this.getBoundsInParent().getMaxY()-this.collisionBox.getBoundsInParent().getMinY();
 	}
 	
 	@Override
@@ -265,8 +265,8 @@ public class GraphHuman extends EnvironmentEntity {
 		double ymin = this.getBoundsInParent().getMinY()+this.collisionBox.getBoundsInParent().getMinY();
 		
 		
-		double xmax = this.getBoundsInParent().getMaxX()-this.collisionBox.getBoundsInParent().getMaxX();
-		double ymax = this.getBoundsInParent().getMaxY()-this.collisionBox.getBoundsInParent().getMaxY();
+		double xmax = this.getBoundsInParent().getMaxX()-this.collisionBox.getBoundsInParent().getMinX();
+		double ymax = this.getBoundsInParent().getMaxY()-this.collisionBox.getBoundsInParent().getMinY();
 
 		double x = (double)point.getX();
 		double y = (double)point.getY();
