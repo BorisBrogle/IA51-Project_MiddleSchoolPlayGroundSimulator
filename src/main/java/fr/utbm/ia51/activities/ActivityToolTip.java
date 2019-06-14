@@ -84,10 +84,6 @@ public class ActivityToolTip extends StackPane{
 		case TOILET:
 			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-toilet.png");
 			break;
-			
-		case FIGHT:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-fight.png");
-			break;
  
 		default:
 			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-01.png");
@@ -105,8 +101,7 @@ public class ActivityToolTip extends StackPane{
 		LIBRARY,
 		CLASSLINE,
 		FOREST,
-		TOILET,
-		FIGHT;
+		TOILET;
 	}*/
 
 }
