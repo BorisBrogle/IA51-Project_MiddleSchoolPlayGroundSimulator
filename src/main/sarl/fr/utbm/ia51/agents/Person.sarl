@@ -38,7 +38,7 @@ import io.sarl.core.MemberLeft
 import tools.Chrono
 
 import fr.utbm.ia51.tools.Vector2f
-
+import fr.utbm.ia51.Statistic
 
 // Person = corps, behavior = tete en gros
 agent Person {
@@ -122,6 +122,7 @@ agent Person {
 			this.target = getNewTarget(activityType)
 			emit(new UpdatedActivity(this.ID, this.activityType))
 			this.hasReachedActivity = false
+			Statistic::countActivityTypeSet(this.activityType)
 			Globals::TOT_SET_TARGET++
 		}
 	}
@@ -234,6 +235,7 @@ agent Person {
 				this.emitInfluence(new MotionAlgorithmOutput)
 				
 				if (!this.hasReachedActivity) {
+					Statistic::countActivityTypeReached(this.activityType)
 					Globals::TOT_REACHED_TARGET++
 					this.hasReachedActivity = true
 				}
