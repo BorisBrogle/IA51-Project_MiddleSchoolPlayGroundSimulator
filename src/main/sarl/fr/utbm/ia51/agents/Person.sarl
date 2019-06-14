@@ -38,7 +38,7 @@ import io.sarl.core.MemberLeft
 import tools.Chrono
 
 import fr.utbm.ia51.tools.Vector2f
-
+import fr.utbm.ia51.Statistic
 
 // Person = corps, behavior = tete en gros
 agent Person {
@@ -126,6 +126,7 @@ agent Person {
 			this.target = getNewTarget(activityType)
 			emit(new UpdatedActivity(this.ID, this.activityType))
 			this.hasReachedActivity = false
+			Statistic::countActivityTypeSet(this.activityType)
 			Globals::TOT_SET_TARGET++
 		}
 	}
@@ -196,8 +197,8 @@ agent Person {
 							occurrence.position,
 							occurrence.currentLinearSpeed,
 							occurrence.maxLinear,
-							// nearest point
-							entry.value.get(0)
+							// nearest object's to flee point
+							entry.value
 						)
 						// TODO, check if it's the right way to add all the flee motions
 						// adding every repulsive vector to the flee output
@@ -207,8 +208,9 @@ agent Person {
 							occurrence.position,
 							occurrence.currentLinearSpeed,
 							occurrence.maxLinear,
-							// center point
-							entry.value.get(0)
+							this.target,
+							// nearest object's to flee point
+							entry.value
 						)
 
 						avoidMotionOutput.linear += tmpAvoidMotionOutput.linear
@@ -238,6 +240,7 @@ agent Person {
 				this.emitInfluence(new MotionAlgorithmOutput)
 				
 				if (!this.hasReachedActivity) {
+					Statistic::countActivityTypeReached(this.activityType)
 					Globals::TOT_REACHED_TARGET++
 					this.hasReachedActivity = true
 				}

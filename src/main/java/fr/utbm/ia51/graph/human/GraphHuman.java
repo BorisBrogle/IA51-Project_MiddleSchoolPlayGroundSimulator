@@ -55,8 +55,6 @@ public class GraphHuman extends EnvironmentEntity {
 		this.setVisible(false);
 		this.setManaged(true);
 
-		this.setStyle("-fx-border-color : red");
-
 		this.environment = environment;
 		this.setTranslateX(x);
 		this.setTranslateY(y);
@@ -119,7 +117,8 @@ public class GraphHuman extends EnvironmentEntity {
 
 		this.selectionCircle.visibleProperty().bind(isSelected);
 		this.environment.getChildren().add(infoBox);
-
+		this.environment.getArtifacts().add(this);
+		
 		this.head.setOnMouseClicked(e->{
 			System.out.println();
 			if(this.isSelected.getValue() == true) 
@@ -225,7 +224,6 @@ public class GraphHuman extends EnvironmentEntity {
 	
 	@Override
 	public double getMinX() {
-		System.out.println("CollisionMinX :"+this.collisionBox.getBoundsInParent().getMinX());
 		return this.getBoundsInParent().getMinX()+(this.collisionBox.getBoundsInParent().getMinX()-this.getBoundsInParent().getMinX());
 	}
 	
