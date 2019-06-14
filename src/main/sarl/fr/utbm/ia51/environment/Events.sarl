@@ -22,10 +22,13 @@ event Perception {
 
 	// List of the nearest points of the perceived objects (in his view field) and their ActivityType
 	val perceivedObjects : HashMap<ActivityType, Point2f>
+	
+	// List of the nearest points of the perceived people (in his view field)
+	val perceivedPeople : ArrayList<Point2f>
 
 	new(position : Point2f, orientation : Vector2f, currentLinearSpeed : float, maxLinear : float,
 		currentAngularSpeed : float, maxAngular : float, bellRings : boolean,
-		perceivedObjects : HashMap<ActivityType, Point2f>)
+		perceivedObjects : HashMap<ActivityType, Point2f>, perceivedPeople : ArrayList<Point2f>)
 	{
 		this.position = position
 		this.orientation = orientation
@@ -35,9 +38,8 @@ event Perception {
 		this.maxAngular = maxAngular
 		this.bellRings = bellRings
 		this.perceivedObjects = perceivedObjects
+		this.perceivedPeople = perceivedPeople
 	}
-	
-	
 }
 
 // Influence sent to the environment by an agent

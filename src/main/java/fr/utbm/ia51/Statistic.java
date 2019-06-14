@@ -119,15 +119,6 @@ public class Statistic {
 		return ((float) Globals.NB_REACHED_TOILET / Globals.TOT_REACHED_TARGET)*100;
 	}
 	
-	//Fight
-	public static float statFightReached() {
-		return ((float) Globals.NB_REACHED_FIGHT / Globals.NB_SET_FIGHT)*100;
-	}
-	public static float statFightPart() {
-		return ((float) Globals.NB_REACHED_FIGHT / Globals.TOT_REACHED_TARGET)*100;
-	}
-	
-	
 	public static void countActivityTypeSet(ActivityType type) {
 		switch (type) {
 		case TENNISTABLE:
@@ -153,9 +144,6 @@ public class Statistic {
 			break;
 		case TOILET:
 			Globals.NB_SET_TOILET++;
-			break;
-		case FIGHT:
-			Globals.NB_SET_FIGHT++;
 			break;
 		default:
 			break;
@@ -187,9 +175,6 @@ public class Statistic {
 			break;
 		case TOILET:
 			Globals.NB_REACHED_TOILET++;
-			break;
-		case FIGHT:
-			Globals.NB_REACHED_FIGHT++;
 			break;
 		default:
 			break;

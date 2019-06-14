@@ -8,6 +8,5 @@ public enum ActivityType {
 	LIBRARY,
 	CLASSLINE,
 	FOREST,
-	TOILET,
-	FIGHT;
+	TOILET;
 }

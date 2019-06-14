@@ -190,8 +190,7 @@ public class GUI extends Application {
                 							"Library : " + Statistic.statLibraryReached() + "% reached (" + Statistic.statLibraryPart() + "%)\n" +
                 							"ClassLine : " + Statistic.statClassLineReached() + "% reached (" + Statistic.statClassLinePart() + "%)\n" +
                 							"Forest : " + Statistic.statForestReached() + "% reached (" + Statistic.statForestPart() + "%)\n" +
-                							"Toilet : " + Statistic.statToiletReached() + "% reached (" + Statistic.statToiletPart() + "%)\n" +
-                							"Fight : " + Statistic.statFightReached() + "% reached (" + Statistic.statFightPart() + "%)\n"
+                							"Toilet : " + Statistic.statToiletReached() + "% reached (" + Statistic.statToiletPart() + "%)\n"
                 							);
                 
                 StackPane statLayout = new StackPane();

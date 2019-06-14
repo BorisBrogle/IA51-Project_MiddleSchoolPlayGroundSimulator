@@ -32,7 +32,8 @@ agent Environment {
 	uses Logging, DefaultContextInteractions, Lifecycle, Schedules
 		
 	// the time/date of the app
-	var time = 0
+//	var time = 0
+
 	
 	var personIdList = <UUID>newLinkedList
 	var influenceList = <Influence>newLinkedList
@@ -65,10 +66,11 @@ agent Environment {
 			info("The environment was started.")
 			var i= 0
 			for (g : listGraphHumans) {
-				this.graphHumans.put(g.uuid, g)
-				spawnAPerson("Person"+i,g,g.environment)
-				i++
 				
+				this.graphHumans.put(g.uuid, g)
+				g.visible=true;
+				spawnAPerson("Person"+i,g,g.environment,i)
+				i++
 			}
 			emit(new RunBeginingOfStep)
 		}
@@ -119,12 +121,13 @@ agent Environment {
 				numberOfInfluencesGot = 0
 				emit(new RunEndOfStep) // [it == defaultAddress]
 			}
+			
 		}
 	}
 
 	on RunEndOfStep {
 		synchronized (this) {
-			//info("The step ends")
+//			info("The step ends")
 			applyInfluences(influenceList)
 			/*
 			// Endogenous behavior: move the pacman from the player's action
@@ -151,7 +154,7 @@ agent Environment {
 			*/
 			// Move to next step
 			
-			time++
+			Globals::LOOP_COUNTER++
 			
 			var sleepTime = Globals::LOOP_DURATION - Globals::chrono.getTime()
 			if(sleepTime < 0) sleepTime = 0
@@ -192,23 +195,25 @@ agent Environment {
 				var angularSpeed : float = 0f
 				var maxAngular : float = 0f
 				var perceivedObjects = <ActivityType, Point2f>newHashMap
+				var perceivedPeople = <Point2f>newArrayList
 				var intersectedArtifacts = graphHuman.environment.getIntersectedArtifacts(graphHuman)
 				
 				for (intersectedArtifact : intersectedArtifacts) {
 					var intersectedPoint = intersectedArtifact.getNearestPointInEntity(position)
 					
 					if (intersectedArtifact instanceof GraphHuman) {
-						error("got a graphHuman")
+						perceivedPeople.add(intersectedPoint)
+						//info("got a graphHuman, intersectedPoint: " + intersectedPoint + ", our point: (" + intersectedArtifact.x + "," + intersectedArtifact.y + ")")
 					} else {
 						perceivedObjects.put(intersectedArtifact.activityType, intersectedPoint)
-						//error(intersectedArtifact.activityType)
+						//info(intersectedArtifact.activityType)
 					}
 				}
 				
 				// info("Sending a perception")
 				emit(
 					new Perception(position, orientation, linearSpeed, maxLinear, angularSpeed, maxAngular, this.bellRings,
-						perceivedObjects), [it.UUID == uuid])
+						perceivedObjects, perceivedPeople), [it.UUID == uuid])
 			}
 			this.bellRings = false
 		}
@@ -222,9 +227,9 @@ agent Environment {
 		}
 	}
 	
-	def spawnAPerson(name: String, graphHuman : GraphHuman, environment : GraphEnvironment) {
+	def spawnAPerson(name: String, graphHuman : GraphHuman, environment : GraphEnvironment, i : int) {
 		
-		var id = spawnInContextWithID(typeof(Person),graphHuman.uuid,defaultContext,name,graphHuman.x,graphHuman.y,environment)
+		var id = spawnInContextWithID(typeof(Person),graphHuman.uuid,defaultContext,name,graphHuman.x,graphHuman.y,environment,Globals::LOOP_COUNTER+10*i)
 		info(name + " spawned")
 		numberOfInfluencesToGet++
 		personIdList.add(id)

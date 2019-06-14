@@ -27,6 +27,8 @@ import sun.misc.GC;
 import tools.Arrow;
 
 public class GraphHuman extends EnvironmentEntity {
+	
+	private String name;
 	private GraphEnvironment environment;
 	private StackPane humanBody;
 	//private Rectangle arms;
@@ -50,6 +52,7 @@ public class GraphHuman extends EnvironmentEntity {
 	
 	public GraphHuman (int x,int y, String headStyle, String armStyle, double radius, String name, GraphEnvironment environment) {
 		super(null);
+		this.setVisible(false);
 		this.setManaged(true);
 
 		this.environment = environment;
@@ -59,6 +62,7 @@ public class GraphHuman extends EnvironmentEntity {
 		this.head.setCenterY(y);
 		this.head.setRadius(radius);
 		this.head.setFill(Color.NAVAJOWHITE);
+		this.name = name;
 		
 		
 		this.uuid = UUID.randomUUID();
@@ -102,7 +106,6 @@ public class GraphHuman extends EnvironmentEntity {
 		
 		//TODO Faire la récupération des données depuis la classe élève et non pas en dur comme codé actuellement 
 		
-		this.infoWindow = new GraphInformationWindow("Students", "Gudule", "2", "Good Goat");
 		
 		this.selectionCircle.setRadius(this.head.getRadius()+2);
 		this.selectionCircle.setFill(Color.YELLOW);
@@ -111,8 +114,7 @@ public class GraphHuman extends EnvironmentEntity {
 		
 		HBox infoBox = new HBox();
 		infoBox.setAlignment(Pos.BOTTOM_LEFT);
-		infoBox.getChildren().add(this.infoWindow);
-		this.infoWindow.visibleProperty().bind(isSelected);
+
 		this.selectionCircle.visibleProperty().bind(isSelected);
 		this.environment.getChildren().add(infoBox);
 		this.environment.getArtifacts().add(this);
@@ -146,6 +148,10 @@ public class GraphHuman extends EnvironmentEntity {
 		this.forceArrow.setEndY(y+25);
 		this.forceArrow.setVisible(false);
 		
+		this.infoWindow = new GraphInformationWindow(this.name, this.activityType);
+		infoBox.getChildren().add(this.infoWindow);
+		this.infoWindow.visibleProperty().bind(isSelected);
+
 		
 		this.humanBody = new StackPane();
 		
@@ -165,13 +171,11 @@ public class GraphHuman extends EnvironmentEntity {
 //		this.setTranslateY(y-this.viewField.getHeight()/2);
 //		
 		try {
-			Thread.sleep(10);
+			Thread.sleep(20);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		this.setTranslateX(x-this.viewField.getWidth()/2);
-//		this.setTranslateY(y-this.viewField.getHeight()/2);
 		Platform.runLater(()->{
 			this.setTranslateX(x-this.viewField.getWidth()/2);
 			this.setTranslateY(y-this.viewField.getHeight()/2);
@@ -345,6 +349,8 @@ public class GraphHuman extends EnvironmentEntity {
 	public Arrow getForceArrow() {
 		return forceArrow;
 	}
+	
+	
 	
 	
 	
