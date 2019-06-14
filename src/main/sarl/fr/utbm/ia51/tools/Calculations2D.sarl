@@ -1,0 +1,45 @@
+/** 
+ * 
+ */
+package fr.utbm.ia51.tools
+
+/** 
+ * @author Yann
+ * 
+ */
+class Calculations2D extends Object {
+	
+	/*
+	 * @param A Point2f of the first line used to create a vector director of the line
+	 * @param B Point2f of the first line used to create a vector director of the line
+	 * @param C Point2f of the second line used to create a vector director of the line
+	 * @param D Point2f of the second line used to create a vector director of the line
+	 * @param Pab Point2f of the first line and of the perpendicular of the first line
+	 * @param Pcd Point2f of the second line
+	 * @return Point2f intersection point between the perpendicular of AB going through Pab and CD going through Pcd
+	 */
+	def static perpendicularLineLineIntersection(A : Point2f, B : Point2f, C : Point2f, D : Point2f, Pab : Point2f, Pcd : Point2f)
+	{
+	    var b1 = B.y - A.y
+	    var a1 = B.x - A.x
+	    var c1 = a1*(Pab.x) + b1*(Pab.y)
+	
+	    // Line CD represented as a2x + b2y = c2
+	    var a2 = D.y - C.y
+	    var b2 = C.x - D.x
+	    var c2 = a2*(Pcd.x)+ b2*(Pcd.y)
+	
+	    var determinant = a1*b2 - a2*b1
+	
+	    if (determinant == 0) { //Should not happen but we never know, better than having nan values
+	        // The lines are parallel. This is simplified
+	        // by returning a pair of FLT_MAX
+	        return new Point2f(-1.0, -1.0)
+	    } else {
+	        var x = (b2*c1 - b1*c2)/determinant
+	        var y = (a1*c2 - a2*c1)/determinant
+	        return new Point2f(x, y)
+	    }
+	}
+	
+}

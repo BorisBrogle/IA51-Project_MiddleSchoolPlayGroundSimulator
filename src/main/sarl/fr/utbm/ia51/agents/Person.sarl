@@ -179,8 +179,8 @@ agent Person {
 							occurrence.position,
 							occurrence.currentLinearSpeed,
 							occurrence.maxLinear,
-							// nearest point
-							entry.value.get(0)
+							// nearest object's to flee point
+							entry.value
 						)
 						// TODO, check if it's the right way to add all the flee motions
 						// adding every repulsive vector to the flee output
@@ -190,8 +190,9 @@ agent Person {
 							occurrence.position,
 							occurrence.currentLinearSpeed,
 							occurrence.maxLinear,
-							// center point
-							entry.value.get(0)
+							this.target,
+							// nearest object's to flee point
+							entry.value
 						)
 
 						avoidMotionOutput.linear += tmpAvoidMotionOutput.linear
