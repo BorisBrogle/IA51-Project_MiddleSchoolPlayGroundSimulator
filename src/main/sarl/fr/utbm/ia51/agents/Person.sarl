@@ -66,11 +66,8 @@ agent Person {
 	var avoidanceDivFactor : float = 1.4f
 	
 	//STATISTIC the distance walked by the agent, its time, etc
-	var walkedDistance = 0f
 	var walkedChrono = new Chrono()
-	var hasReachedActivity : boolean
-	/*var nbActivitySet = 0
-	var nbActivityReached = 0*/
+	var hasReachedActivity : boolean = false
 	
 	var isInClass : boolean
 	
@@ -128,6 +125,8 @@ agent Person {
 			this.hasReachedActivity = false
 			Statistic::countActivityTypeSet(this.activityType)
 			Globals::TOT_SET_TARGET++
+			this.walkedChrono.reset()
+			
 		}
 	}
 	
@@ -237,6 +236,9 @@ agent Person {
 					Statistic::countActivityTypeReached(this.activityType)
 					Globals::TOT_REACHED_TARGET++
 					this.hasReachedActivity = true
+					Globals::WALKING_TIME += this.walkedChrono.getTime()
+					info(this.walkedChrono.getTime())
+					
 				}
 			}
 			

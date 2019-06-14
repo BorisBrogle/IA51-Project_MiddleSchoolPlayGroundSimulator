@@ -181,7 +181,8 @@ public class GUI extends Application {
                 Label statTarget = new Label("Number of target set : " + Globals.TOT_SET_TARGET + 
                 							"\nNumber of target reached : " + Globals.TOT_REACHED_TARGET + 
                 							"\nPercentage reached : " + Statistic.statActivityReached() + "%" + 
-                							"\nTotal walked distance : " + Globals.TOT_WALKED_DISTANCE/20 + " ( " + Statistic.averageDistance() + "m per student in average)" +
+                							"\nTotal walked distance : " + Globals.TOT_WALKED_DISTANCE/20 + "m ( " + Statistic.averageDistance() + "m per student in average)" +
+                							"\nTotal walking time : " + Globals.WALKING_TIME +
                 							"\n\nPercentage Activity :\n" +
                 							"Tennis Table : " + Statistic.statTennisTableReached() + "% reached (" + Statistic.statTennisTablePart() + "%)\n" +
                 							"Soccer : " + Statistic.statSoccerReached() + "% reached (" + Statistic.statSoccerPart() + "%)\n" +
