@@ -181,6 +181,7 @@ public class GUI extends Application {
                 Label statTarget = new Label("Number of target set : " + Globals.TOT_SET_TARGET + 
                 							"\nNumber of target reached : " + Globals.TOT_REACHED_TARGET + 
                 							"\nPercentage reached : " + Statistic.statActivityReached() + "%" + 
+                							"\nTotal walked distance : " + Globals.TOT_WALKED_DISTANCE/20 + " ( " + Statistic.averageDistance() + "m per student in average)" +
                 							"\n\nPercentage Activity :\n" +
                 							"Tennis Table : " + Statistic.statTennisTableReached() + "% reached (" + Statistic.statTennisTablePart() + "%)\n" +
                 							"Soccer : " + Statistic.statSoccerReached() + "% reached (" + Statistic.statSoccerPart() + "%)\n" +
@@ -189,14 +190,13 @@ public class GUI extends Application {
                 							"Library : " + Statistic.statLibraryReached() + "% reached (" + Statistic.statLibraryPart() + "%)\n" +
                 							"ClassLine : " + Statistic.statClassLineReached() + "% reached (" + Statistic.statClassLinePart() + "%)\n" +
                 							"Forest : " + Statistic.statForestReached() + "% reached (" + Statistic.statForestPart() + "%)\n" +
-                							"Toilet : " + Statistic.statToiletReached() + "% reached (" + Statistic.statToiletPart() + "%)\n" +
-                							"Fight : " + Statistic.statFightReached() + "% reached (" + Statistic.statFightPart() + "%)\n"
+                							"Toilet : " + Statistic.statToiletReached() + "% reached (" + Statistic.statToiletPart() + "%)\n"
                 							);
                 
                 StackPane statLayout = new StackPane();
                 statLayout.getChildren().addAll(statTarget);
  
-                Scene statScene = new Scene(statLayout, 230, 300);
+                Scene statScene = new Scene(statLayout, 400, 300);
  
                 // New window (Stage)
                 Stage newWindow = new Stage();

@@ -196,6 +196,7 @@ agent Environment {
 				var angularSpeed : float = 0f
 				var maxAngular : float = 0f
 				var perceivedObjects = <ActivityType, Point2f>newHashMap
+				var perceivedPeople = <Point2f>newArrayList
 				var intersectedArtifacts = graphHuman.environment.getIntersectedArtifacts(graphHuman)
 				
 				for (intersectedArtifact : intersectedArtifacts) {
@@ -208,14 +209,14 @@ agent Environment {
 						
 					} else {
 						perceivedObjects.put(intersectedArtifact.activityType, intersectedPoint)
-						//error(intersectedArtifact.activityType)
+						//info(intersectedArtifact.activityType)
 					}
 				}
 				
 				// info("Sending a perception")
 				emit(
 					new Perception(position, orientation, linearSpeed, maxLinear, angularSpeed, maxAngular, this.bellRings,
-						perceivedObjects), [it.UUID == uuid])
+						perceivedObjects, perceivedPeople), [it.UUID == uuid])
 			}
 			this.bellRings = false
 		}

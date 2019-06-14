@@ -52,6 +52,5 @@ public class Globals {
 	public static int NB_REACHED_FOREST = 0;
 	public static int NB_SET_TOILET = 0;
 	public static int NB_REACHED_TOILET = 0;
-	public static int NB_SET_FIGHT = 0;
-	public static int NB_REACHED_FIGHT = 0;
+	public static float TOT_WALKED_DISTANCE = 0;
 }
