@@ -191,18 +191,18 @@ agent Environment {
 				var maxLinear : float = 3f
 				var angularSpeed : float = 0f
 				var maxAngular : float = 0f
-				var perceivedObjects = <ActivityType, ArrayList<Point2f>>newHashMap
+				var perceivedObjects = <ActivityType, Point2f>newHashMap
 				var intersectedArtifacts = graphHuman.environment.getIntersectedArtifacts(graphHuman)
 				
-				for(intersectedArtifact : intersectedArtifacts) {
+				for (intersectedArtifact : intersectedArtifacts) {
 					var intersectedPoint = intersectedArtifact.getNearestPointInEntity(position)
-					var centerPoint = intersectedArtifact.getCenterPoint()
 					
-					var points = <Point2f>newArrayList
-					points.add(intersectedPoint)
-					points.add(centerPoint)
-					
-					perceivedObjects.put(intersectedArtifact.activityType, points)
+					if (intersectedArtifact instanceof GraphHuman) {
+						error("got a graphHuman")
+					} else {
+						perceivedObjects.put(intersectedArtifact.activityType, intersectedPoint)
+						//error(intersectedArtifact.activityType)
+					}
 				}
 				
 				// info("Sending a perception")

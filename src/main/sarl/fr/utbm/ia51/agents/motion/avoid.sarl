@@ -4,15 +4,14 @@
 package fr.utbm.ia51.agents.motion
 
 import fr.utbm.ia51.Globals
+import fr.utbm.ia51.tools.Calculations2D
 import fr.utbm.ia51.tools.MotionAlgorithmOutput
 import fr.utbm.ia51.tools.Point2f
-import fr.utbm.ia51.tools.Vector2f
 
 /** 
- * Seek Behavior.
+ * Avoid Behavior.
  * 
- * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
- * @version $Name$ $Revision$ $Date$
+ * @author Yann
  */
 interface AvoidAlgorithm {
 
@@ -20,52 +19,33 @@ interface AvoidAlgorithm {
 		 * @param position is the current position of the entity.
 		 * @param linearSpeed is the current linear speed of the entity.
 		 * @param maxLinear is the maximal linear speed or acceleration (depending on getType()) of the entity.
-		 * @param target is the point to flee.
+		 * @param target is the point to reach.
+		 * @param nearestPoint is the nearest point of the entity to avoid
 		 * @return the behaviour output.
 		 */
-	def run(position : Point2f, linearSpeed : float, maxLinear : float, target : Point2f) : MotionAlgorithmOutput
+	def run(position : Point2f, linearSpeed : float, maxLinear : float, target : Point2f, nearestPoint : Point2f) : MotionAlgorithmOutput
 
 }
 
 /** 
- * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
- * @version $Name$ $Revision$ $Date$
+ * @author Yann
  */
 class KinematicAvoidAlgorithm implements AvoidAlgorithm {
-	override run(position : Point2f, linearSpeed : float, maxLinear : float, target : Point2f) : MotionAlgorithmOutput {
+	override run(position : Point2f, linearSpeed : float, maxLinear : float, target : Point2f, nearestPoint : Point2f) : MotionAlgorithmOutput {
 		var output = new MotionAlgorithmOutput()
-
-		var direction = target - position
-		var normalDirection = new Vector2f(-direction.y, direction.x)
-		var sizeOfExcludedZone = 5.0
-		var minDemiWidth = Globals.WIDTH / 2 - sizeOfExcludedZone
-		var minDemiHeight = Globals.HEIGHT / 2 - sizeOfExcludedZone
-		var maxDemiWidth = Globals.WIDTH / 2 + sizeOfExcludedZone
-		var maxDemiHeight = Globals.HEIGHT / 2 + sizeOfExcludedZone
 		
-		// top-left or bottom-left part of the map
-		if((position.x < minDemiWidth && position.y < minDemiHeight) || (position.x > maxDemiWidth && position.y > maxDemiHeight)) {
-			if(direction.x > 0) {
-				if (direction.y > 0) {
-					normalDirection = new Vector2f(direction.y, -direction.x)
-				} else {
-					normalDirection = new Vector2f(-direction.y, direction.x)
-				}
-			} else {
-				if (direction.y > 0) {
-					normalDirection = new Vector2f(-direction.y, direction.x)
-				} else {
-					normalDirection = new Vector2f(direction.y, -direction.x)
-				}
-			}
-		} else if ((position.x < minDemiWidth && position.y > maxDemiHeight) ||
-			(position.x > maxDemiWidth && position.y < minDemiHeight)) {
-			if (direction.x > 0) {
-				normalDirection = new Vector2f(direction.y, -direction.x)
-			} else {
-				normalDirection = new Vector2f(-direction.y, direction.x)
-			}
+		// center point of the map
+		var centerPoint = new Point2f(Globals.WIDTH / 2, Globals.HEIGHT / 2)
+
+		// point that intersects the normal of (position - nearestPoint) going through nearestPoint and the line (centerPoint - target) going through centerPoint
+		var intersectionPoint = Calculations2D::perpendicularLineLineIntersection(position, nearestPoint, centerPoint, target, nearestPoint, centerPoint)
+		
+		// case of normal and second lines are parallels
+		if(intersectionPoint.x < 0) {
+			intersectionPoint = centerPoint
 		}
+		
+		var normalDirection = intersectionPoint - nearestPoint
 		
 		// println("direction: " + direction + " normalDirection: " + normalDirection)
 		normalDirection.length = maxLinear
