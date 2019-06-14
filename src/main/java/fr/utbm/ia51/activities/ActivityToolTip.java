@@ -49,9 +49,10 @@ public class ActivityToolTip extends StackPane{
 		return this.position;
 	}
 	
-	
+
 	
 	public void changeDesire(ActivityType type) {
+		
 		switch (type) {
 		case TENNISTABLE:
 			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-tennis-table.png");

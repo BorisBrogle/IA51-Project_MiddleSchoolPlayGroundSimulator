@@ -163,7 +163,7 @@ agent Person {
 					// TODO set the right classroom ?
 					this.setActivity(ActivityType.CLASSLINE)
 					this.isInClass = true
-				info("The agent will go back to the CLASSLINE")
+					info("The agent will go back to the CLASSLINE")
 				} else if (occurrence.bellRings && this.isInClass) {
 					this.setActivity(this.activityManager.chooseActivity())
 					this.isInClass = false
