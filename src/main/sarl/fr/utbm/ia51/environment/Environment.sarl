@@ -176,10 +176,9 @@ agent Environment {
 					var intersectedPoint = intersectedArtifact.getNearestPointInEntity(position)
 					
 					if (intersectedArtifact instanceof GraphHuman) {
-						if(graphHuman.name=="Person0")
-						error("got a graphHuman")
-//						info("MinX intersected artifacts " + intersectedArtifact.minX);
-						
+						perceivedPeople.add(intersectedPoint)
+						// info("got a graphHuman")
+						// info("MinX intersected artifacts " + intersectedArtifact.minX);
 					} else {
 						perceivedObjects.put(intersectedArtifact.activityType, intersectedPoint)
 						//info(intersectedArtifact.activityType)
