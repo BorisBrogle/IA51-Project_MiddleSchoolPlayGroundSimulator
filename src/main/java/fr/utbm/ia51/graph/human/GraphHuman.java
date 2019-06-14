@@ -222,7 +222,6 @@ public class GraphHuman extends EnvironmentEntity {
 	
 	@Override
 	public double getMinX() {
-		System.out.println("CollisionMinX :"+this.collisionBox.getBoundsInParent().getMinX());
 		return this.getBoundsInParent().getMinX()+(this.collisionBox.getBoundsInParent().getMinX()-this.getBoundsInParent().getMinX());
 	}
 	
