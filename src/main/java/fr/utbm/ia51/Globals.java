@@ -31,5 +31,5 @@ public class Globals {
 	public static boolean SHOW_AGENTS_COORDINATES = true; // If we should show the x;y coordinates of the agents
 	public static boolean SHOW_ACTIVITY_TOOLTIP = false; // If we should show the activities of the agents
 	
-	public static boolean SHOW_STAT = false; // If we should show the statistics
+	//public static boolean SHOW_STAT = false; // If we should show the statistics
 }
