@@ -17,7 +17,7 @@ public class GraphInformationWindow extends VBox{
 	public GraphInformationWindow(String name,ActivityType activity)
 	{
 		super();
-		this.getStylesheets().add("file:src/main/resources/css/informationWindow.css");
+		this.getStylesheets().add("file:resources/css/informationWindow.css");
 		this.getStyleClass().add("information-window");
 		
 		this.setMouseTransparent(true);

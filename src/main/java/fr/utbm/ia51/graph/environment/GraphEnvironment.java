@@ -52,41 +52,41 @@ public class GraphEnvironment extends StackPane {
 		// You should use the method add this way => this.add(object, width, height, xPosition, yPosition)
 		
 		// Forest 
-		this.forest = new Forest("file:src/main/resources/graphism/image/forest.png");
+		this.forest = new Forest("file:resources/graphism/image/forest.png");
 		this.add(this.forest, 549, 432, 1050, 0);
 
 		// Basket court
-		this.basketCourt = new BasketCourt("file:src/main/resources/graphism/image/basketcourt.png");
+		this.basketCourt = new BasketCourt("file:resources/graphism/image/basketcourt.png");
 		this.add(this.basketCourt, 257, 369, 730, 0);
 
 		// Soccer field
-		this.soccerField = new SoccerField("file:src/main/resources/graphism/image/soccerfield.png");
+		this.soccerField = new SoccerField("file:resources/graphism/image/soccerfield.png");
 		this.add(this.soccerField, 572, 320, 1024, 576);
 
 		// Library
-		this.library = new Library("file:src/main/resources/graphism/image/library.png");
+		this.library = new Library("file:resources/graphism/image/library.png");
 		this.add(this.library, 495, 220, 492, 680);
 
 		// Toilet
-		this.toilet = new Toilet("file:src/main/resources/graphism/image/toilets.png");
+		this.toilet = new Toilet("file:resources/graphism/image/toilets.png");
 		this.add(this.toilet, 218, 127, 53, 0);
 
 		// Class lines
-		this.classline = new ClassLine("file:src/main/resources/graphism/image/classline.png");
+		this.classline = new ClassLine("file:resources/graphism/image/classline.png");
 		this.add(this.classline, 112, 208, 27, 422);
 
 		// Tennis tables
-		this.tennisTable = new TennisTable("file:src/main/resources/graphism/image/tabletennisarea.png");
+		this.tennisTable = new TennisTable("file:resources/graphism/image/tabletennisarea.png");
 		this.add(this.tennisTable, 342, 57, 63, 806);
 
 		// Bench
-		this.bench = new Bench("file:src/main/resources/graphism/image/bencharea.png");
+		this.bench = new Bench("file:resources/graphism/image/bencharea.png");
 		this.add(this.bench, 305, 26, 353, 17);
 		
 		
 		
 		this.ringButton = new Button();
-		ImageView image = new ImageView(new Image("file:src/main/resources/graphism/image/bell.png"));
+		ImageView image = new ImageView(new Image("file:resources/graphism/image/bell.png"));
 		image.setPreserveRatio(false);
 		image.setFitHeight(40);
 		image.setFitWidth(40);
