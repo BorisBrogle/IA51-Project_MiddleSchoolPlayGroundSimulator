@@ -3,9 +3,6 @@ package fr.utbm.ia51;
 import fr.utbm.ia51.Statistic;
 import fr.utbm.ia51.activities.ActivityType;
 
-import java.util.LinkedList;
-import fr.utbm.ia51.graph.human.GraphHuman;
-import javafx.scene.image.Image;
 
 public class Statistic {
 	public static int TOT_SET_TARGET = 0;
@@ -34,47 +31,33 @@ public class Statistic {
 	public static long WALKING_TIME = 0;
 	public static long ACTIVITY_TIME = 0;
 	
+	//STAT FOR EACH ACTIVITIES
+	public static int NB_SET_BASKETBALL = 0;
+	public static int NB_REACHED_BASKETBALL = 0;
+	public static int NB_SET_TENNISTABLE = 0;
+	public static int NB_REACHED_TENNISTABLE = 0;
+	public static int NB_SET_SOCCER = 0;
+	public static int NB_REACHED_SOCCER = 0;
+	public static int NB_SET_BENCH = 0;
+	public static int NB_REACHED_BENCH = 0;
+	public static int NB_SET_LIBRARY = 0;
+	public static int NB_REACHED_LIBRARY = 0;
+	public static int NB_SET_CLASSLINE = 0;
+	public static int NB_REACHED_CLASSLINE = 0;
+	public static int NB_SET_FOREST = 0;
+	public static int NB_REACHED_FOREST = 0;
+	public static int NB_SET_TOILET = 0;
+	public static int NB_REACHED_TOILET = 0;
 	
-	private float averageGlobalDistance;
-	private float averageGlobalTime;
-	private float averageStatisticpeed;
+	public static float TOT_WALKED_DISTANCE = 0;
 	
-	private int numberActivitySet;
-	private int numberActivityReached;
-	
-	
-	private float proportionActivity;
-
+	public static long WALKING_TIME = 0;
+	public static long ACTIVITY_TIME = 0;
 	
 	public Statistic() {
-		averageGlobalDistance = 0;
-		averageGlobalTime = 0;
-		averageStatisticpeed = 0;
-		
-		//numberActivityReached=0;
-		//numberActivitySet = 0;
+
 	}
-	
-	public static void setAverageGlobalDistance(/*liste des distances, student number*/) {
-		//averageGlobalDistance = 0;
-		/*for
-		
-		*/
-	}
-	
-	public static void setAverageGlobalTime(/*liste des temps, student number*/) {
-		//averageGlobalTime = 0;
-		/*for
-		
-		*/
-	}
-	
-	public static void setAverageStatisticpeed(/*liste des vitesse, student number*/) {
-		//averageStatisticpeed = 0;
-		/*for
-		
-		*/
-	}
+
 	
 	//percentage of reached activities
 	public static float statActivityReached() {

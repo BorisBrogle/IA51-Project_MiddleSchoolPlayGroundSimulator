@@ -8,7 +8,7 @@ public class Globals {
 	public static Chrono chrono = new Chrono();
 	
 	
-	public static final int NB_AGENTS = 5;
+	public static final int NB_AGENTS = 1;
 	
 	public static final int WIDTH = 1280; // Height of our map, and of our base window
 	public static final int HEIGHT = 720; // Width of our map, and of our base window
@@ -31,5 +31,5 @@ public class Globals {
 	public static boolean SHOW_AGENTS_COORDINATES = true; // If we should show the x;y coordinates of the agents
 	public static boolean SHOW_ACTIVITY_TOOLTIP = false; // If we should show the activities of the agents
 	
-	public static boolean SHOW_STAT = false; // If we should show the statistics
+	//public static boolean SHOW_STAT = false; // If we should show the statistics
 }
