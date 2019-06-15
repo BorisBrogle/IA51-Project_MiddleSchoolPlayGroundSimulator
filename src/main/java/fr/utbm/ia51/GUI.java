@@ -75,7 +75,7 @@ public class GUI extends Application {
         Scene scene = new Scene(root, this.WIDTH, this.HEIGHT, Color.TRANSPARENT);
         
         BackgroundImage bg = new BackgroundImage(
-        						new Image("file:src/main/resources/graphism/image/background.png", this.WIDTH, this.HEIGHT, false, true),
+        						new Image("file:resources/graphism/image/background.png", this.WIDTH, this.HEIGHT, false, true),
                 				BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         root.setBackground(new Background(bg));
         

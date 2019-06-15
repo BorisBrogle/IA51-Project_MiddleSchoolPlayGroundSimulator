@@ -58,39 +58,39 @@ public class ActivityToolTip extends StackPane{
 		
 		switch (type) {
 		case TENNISTABLE:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-tennis-table.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-tennis-table.png");
 			break;
 			
 		case SOCCER:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-football.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-football.png");
 			break;
 		
 		case BASKETBALL:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-basketball.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-basketball.png");
 			break;
 		
 		case BENCH:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-bench.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-bench.png");
 			break;
 			
 		case LIBRARY:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-library.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-library.png");
 			break;
 			
 		case CLASSLINE:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-classline.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-classline.png");
 			break;
 		
 		case FOREST:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-forest.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-forest.png");
 			break;
 		
 		case TOILET:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-toilet.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-toilet.png");
 			break;
  
 		default:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-01.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-01.png");
 			break;
 		}
 		
