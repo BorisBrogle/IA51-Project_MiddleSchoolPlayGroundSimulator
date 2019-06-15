@@ -119,6 +119,11 @@ public class GraphEnvironment extends StackPane {
 	}
 	
 	
+	/**
+	 * Get every environment entities (students representations & artifacts) located in the agent viewfield
+	 * @param graphHuman
+	 * @return
+	 */
 	public ArrayList<EnvironmentEntity> getIntersectedArtifacts(GraphHuman graphHuman) {
 		ArrayList<EnvironmentEntity> intersectArtifacts = new ArrayList<>();
 		for(EnvironmentEntity s : this.artifacts) {
@@ -148,6 +153,13 @@ public class GraphEnvironment extends StackPane {
 	}
 	
 	
+	
+	
+	/**
+	 * Used to get artifact from an activity, in order to get a target position for an agent
+	 * @param activityType
+	 * @return
+	 */
 	public EnvironmentEntity getArtifactFromActivity(ActivityType activityType) {
 		switch(activityType) {
 			case BASKETBALL: return this.basketCourt;

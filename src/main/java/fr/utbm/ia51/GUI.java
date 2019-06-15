@@ -92,6 +92,8 @@ public class GUI extends Application {
         root.getChildren().add(environment);
  
         
+        //*******Part Dedicated to the launch configuration*******//
+        
         Label nbAgentLabel = new Label("Choose number of Students to spawn : ");
         Spinner<Integer> nbAgentSpinner = new Spinner<>(1, 50, 5);
         Tooltip nbAgentTooltip = new Tooltip("According to your computer performances, crashes may occure if you put too much agents in the simulation. Try at your own risks ;)");
@@ -123,7 +125,7 @@ public class GUI extends Application {
         	
         	Globals.NB_AGENTS = nbAgentSpinner.getValue();
             for(int i=0;i<Globals.NB_AGENTS;i++) {
-            	GraphHuman g = new GraphHuman(Globals.START_POS_X, Globals.START_POS_Y, "", "", Globals.AGENT_RADIUS, null, environment);
+            	GraphHuman g = new GraphHuman(Globals.START_POS_X, Globals.START_POS_Y, Globals.AGENT_RADIUS, null, environment);
             	root.getChildren().add(g);
             	this.graphHumans.add(g);
             }
@@ -132,10 +134,13 @@ public class GUI extends Application {
             //Ici faut 
             long seed = Long.parseLong(seedTextField.getText());
             //Wala faut réussir à me le set par là ^^ 
+            
+       //************************************************//
 
 
             
-            
+      //*******Part Dedicated to the control panel*******//
+  
             VBox controlVBox = new VBox();
             controlVBox.setSpacing(5);
             controlVBox.setAlignment(Pos.CENTER);
@@ -251,7 +256,8 @@ public class GUI extends Application {
                     newWindow.show();
                 }
             });       
-            
+            //************************************************//
+
             
             controlVBox.getChildren().addAll(coordVBox, vectVBox, viewfieldVBox, tooltipVBox, statButton);
             
@@ -259,6 +265,8 @@ public class GUI extends Application {
             
             root.getChildren().add(controlVBox);
             try {
+            	
+            	// Launch the Environment Agent 
     			SRE.getBootstrap().startAgent(Boot.class, this.graphHumans);
     		} catch (Exception exception) {
     			// TODO Auto-generated catch block
@@ -275,9 +283,6 @@ public class GUI extends Application {
         primaryStage.show();
         
         
-        //primaryStage.setMaximized(true);
-        
-        //addMouseClickCoords(scene);
         
 
     }
@@ -299,6 +304,9 @@ public class GUI extends Application {
     }
     
     
+    /**
+     *Override the close method the application's window
+     */
     @Override
     public void stop() throws Exception {
     	System.out.println("--> Shutting down the application");

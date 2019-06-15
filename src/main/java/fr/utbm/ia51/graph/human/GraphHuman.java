@@ -26,18 +26,18 @@ import javafx.scene.text.Font;
 import sun.misc.GC;
 import tools.Arrow;
 
+/**
+ * @author Arthur
+ *
+ */
 public class GraphHuman extends EnvironmentEntity {
 	
 	private String name;
 	private GraphEnvironment environment;
 	private StackPane humanBody;
-	//private Rectangle arms;
 	private Circle head = new Circle();
-	private Circle selectionCircle = new Circle();
 	private Circle lefteye, righteye;
 	private Label coordinatesLabel;
-	private SimpleBooleanProperty isSelected = new SimpleBooleanProperty(false);
-	private GraphInformationWindow infoWindow;
 	private UUID uuid;
 	private ActivityToolTip activityDesired;
 	private Rectangle viewField;
@@ -50,13 +50,12 @@ public class GraphHuman extends EnvironmentEntity {
 	//Add position 
 	
 	
-	public GraphHuman (int x,int y, String headStyle, String armStyle, double radius, String name, GraphEnvironment environment) {
+	public GraphHuman (int x,int y, double radius, String name, GraphEnvironment environment) {
 		super(null);
 		this.setVisible(false);
 		this.setManaged(true);
 		
-//		this.setStyle("-fx-border-color : red");
-
+		
 		this.environment = environment;
 		this.setTranslateX(x);
 		this.setTranslateY(y);
@@ -81,8 +80,6 @@ public class GraphHuman extends EnvironmentEntity {
 			
 		this.viewField = new Rectangle(head.getRadius()*8, head.getRadius()*8);
 		this.viewField.setFill(new Color(0,1,0,0.50));
-//		this.arms = new Rectangle(x-4,y-4,18*sizeRatioHead,6*sizeRatioHead);
-//		this.arms.setFill(Color.GREEN);
 		this.viewField.setVisible(false);
 		
 		
@@ -97,67 +94,29 @@ public class GraphHuman extends EnvironmentEntity {
 		
 		
 		this.coordinatesLabel=new Label();
-		
-//		this.coordinatesLabel.textProperty().bind(Bindings.createStringBinding(
-//				()->"x="+this.boundsInParentProperty().getValue().getMaxX()/2+" y="+this.boundsInParentProperty().getValue().getMaxY()/2,this.boundsInParentProperty(),this.boundsInParentProperty()));
 		this.coordinatesLabel.setFont(new Font(radius*0.8));
 		this.coordinatesLabel.setTranslateY(-this.head.getRadius()*-2);
 		this.coordinatesLabel.setVisible(false);
-	
-		
-		//Management of information view when clicking on the human head
-		
-		//TODO Faire la récupération des données depuis la classe élève et non pas en dur comme codé actuellement 
-		
-		
-		this.selectionCircle.setRadius(this.head.getRadius()+2);
-		this.selectionCircle.setFill(Color.YELLOW);
-		this.selectionCircle.setVisible(false);
-		
-		
-		HBox infoBox = new HBox();
-		infoBox.setAlignment(Pos.BOTTOM_LEFT);
 
-		this.selectionCircle.visibleProperty().bind(isSelected);
-		this.environment.getChildren().add(infoBox);
-		this.environment.getArtifacts().add(this);
-		
-		this.head.setOnMouseClicked(e->{
-			System.out.println();
-			if(this.isSelected.getValue() == true) 
-				this.isSelected.set(false);
-			else 
-				this.isSelected.set(true);
-		});
-		
-		this.addEventFilter(KeyEvent.ANY, e->{
-			if(e.getCode().equals(KeyCode.ESCAPE))
-				isSelected.set(false);
-		});
+
 		
 		activityDesired = new ActivityToolTip(ActivityType.BASKETBALL);
-//		this.activityDesired.setTranslateX(5);
-//		this.activityDesired.setTranslateY(-30);
 		this.activityDesired.setVisible(false);
 		
 		
 		// Arrow representing the force vector of the agent
 		this.forceArrow = new Arrow();
-
 		this.forceArrow.setStartX(x);
 		this.forceArrow.setStartY(y);
 		this.forceArrow.setEndX(x+25);
 		this.forceArrow.setEndY(y+25);
 		this.forceArrow.setVisible(false);
 		
-		this.infoWindow = new GraphInformationWindow(this.name, this.activityType);
-		infoBox.getChildren().add(this.infoWindow);
-		this.infoWindow.visibleProperty().bind(isSelected);
+
 
 		
 		this.humanBody = new StackPane();
-		
-		this.humanBody.getChildren().addAll(selectionCircle,head,lefteye,righteye);
+		this.humanBody.getChildren().addAll(head,lefteye,righteye);
 		this.getChildren().addAll(this.viewField, this.coordinatesLabel,this.collisionBox, this.humanBody, this.activityDesired, this.forceArrow);
 		
 	}
@@ -166,16 +125,17 @@ public class GraphHuman extends EnvironmentEntity {
 
 	
 	
+	/**
+	 * Translate the graphical representation of an agent
+	 * @param x
+	 * @param y
+	 * @param speed
+	 */
 	public void moveTo(double x, double y, double speed) {
-//		this.head.setTranslateX(x);
-//		this.head.setTranslateY(y);
-//		this.setTranslateX(x-this.viewField.getWidth()/2);
-//		this.setTranslateY(y-this.viewField.getHeight()/2);
-//		
 		try {
+			//Let time to the GUI for refreshing
 			Thread.sleep(2+Globals.NB_AGENTS);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Platform.runLater(()->{
@@ -205,6 +165,10 @@ public class GraphHuman extends EnvironmentEntity {
 	}
 	
 	
+	/**
+	 * Used to modify the aspect of a student when it enters in a covered area (like forest or buildings) 
+	 * @param hide
+	 */
 	public void sethideInCoveredArea(boolean hide) {
 		if(hide) {
 			this.lefteye.setVisible(false);
@@ -226,6 +190,11 @@ public class GraphHuman extends EnvironmentEntity {
 	
 	
 	
+	
+	
+	/**
+	 *Those fonctions override the EnvironmentEntity's function to get the collision area according to a rectangle surrounding the student head
+	 */
 	@Override
 	public double getMinX() {
 
@@ -373,24 +342,7 @@ public class GraphHuman extends EnvironmentEntity {
 		this.name = name;
 	}
 	
-	
-	
-	
-	
-	/*public double getDistance() {
-		return this.distance;
-	}
-	
-	public void setDistance(double d) {
-		this.distance = d;
-	}*/
-//	
-//	
-//	public void move(Point2D originalVect, Point2D newVect) {
-//		if(originalVect.angle(newVect)!=null)
-//			
-//	}
-//	
+
 	
 
 
