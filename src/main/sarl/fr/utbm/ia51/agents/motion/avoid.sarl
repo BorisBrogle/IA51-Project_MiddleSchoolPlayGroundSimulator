@@ -1,6 +1,3 @@
-/** 
- * 
- */
 package fr.utbm.ia51.agents.motion
 
 import fr.utbm.ia51.Globals
@@ -47,7 +44,6 @@ class KinematicAvoidAlgorithm implements AvoidAlgorithm {
 		
 		var normalDirection = intersectionPoint - nearestPoint
 		
-		// println("direction: " + direction + " normalDirection: " + normalDirection)
 		normalDirection.length = maxLinear
 
 		output.linear = normalDirection
