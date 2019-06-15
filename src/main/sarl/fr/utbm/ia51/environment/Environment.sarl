@@ -1,6 +1,3 @@
-/** 
- * 
- */
 package fr.utbm.ia51.environment
 
 import fr.utbm.ia51.Globals
@@ -10,159 +7,71 @@ import fr.utbm.ia51.graph.environment.GraphEnvironment
 import fr.utbm.ia51.graph.human.GraphHuman
 import fr.utbm.ia51.tools.Point2f
 import fr.utbm.ia51.tools.Vector2f
-import io.sarl.core.AgentKilled
-import io.sarl.core.AgentSpawned
-import io.sarl.core.ContextJoined
-import io.sarl.core.ContextLeft
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
-import io.sarl.core.MemberJoined
-import io.sarl.core.MemberLeft
-import io.sarl.core.Schedules
-import java.util.ArrayList
 import java.util.LinkedList
 import java.util.UUID
 import javafx.^event.ActionEvent
 import javafx.scene.control.Button
-import javafx.scene.shape.Circle
 
 agent Environment {
-	uses Logging, DefaultContextInteractions, Lifecycle, Schedules
-		
-	// the time/date of the app
-//	var time = 0
-
+	uses Logging, DefaultContextInteractions, Lifecycle
 	
 	var personIdList = <UUID>newLinkedList
 	var influenceList = <Influence>newLinkedList
 	
-	
+	// This list will be used to fill the following HashMap at some point
 	var listGraphHumans = <GraphHuman>newLinkedList
+	// This HashMap links the GraphHumans with their person's UUID
 	var graphHumans  = <UUID,GraphHuman>newHashMap
+	// JavaFX button used to send actions to the environment when we click on the button
 	var ringButton : Button 
 	
-
-	var numberOfPersonToSpawn = 2
 	var numberOfInfluencesGot = 0
 	var numberOfInfluencesToGet = 0
-
 	
-	
-	
+	// To know if the bell rings or not
 	var bellRings = false
 	
 	on Initialize {	
 		synchronized (this) {
-			// Event trigger before the agent begin to live or to be used.
-			// You should put all the initialization statements in this block of code.
+			// A GraphHuman is the GUI representation of an agent
 			this.listGraphHumans = occurrence.parameters.get(0) as LinkedList<GraphHuman>
 			ringButton = this.listGraphHumans.first.graphEnvironment.ringButton
-			
 			ringButton.onAction = [e : ActionEvent| this.bellRings = true]
 			
 			loggingName = "Environment"
 			info("The environment was started.")
-			var i= 0
+			
+			// For every GraphHuman, we spawn an agent
+			var i = 0
 			for (g : listGraphHumans) {
-				
 				this.graphHumans.put(g.uuid, g)
 				g.visible=true;
 				spawnAPerson("Person"+i,g,g.environment,i)
 				i++
 			}
-			emit(new RunBeginingOfStep)
+			
+			// At the end of the initialization, we start the loop
+			emit(new RunBeginningOfStep)
 		}
 	}
 
-	on Destroy {
-		// Event trigger when the agent is destroyed from the system.
-		// You should put all the resource releasing statements in this block of code.
-		info("The agent was stopped.")
-	}
-
-	on AgentSpawned {
-		// A new agent has been spawned in our context.
-	}
-
-	on AgentKilled {
-		// A new agent has been killed in our context.
-	}
-
-	on ContextJoined {
-		// Event trigger when an agent of the level joins a shared context.
-		// Sent to a agent of the same level.
-	}
-
-	on ContextLeft {
-		// Event trigger when an agent of the level jleaves a shared context.
-		// Sent to a agent of the same level.
-	}
-
-	on MemberJoined {
-		// Event trigger when an agent joins one of our shared super-holons.
-		// Sent to all members of the considered super-holon.
-	}
-
-	on MemberLeft {
-		// Event trigger when an agent leaves one of our shared super-holons.
-		// Sent to all members of the considered super-holon.
-	}
-
-	on Influence {
+	// Start of the loop
+	on RunBeginningOfStep {
 		synchronized (this) {
-			//info("Got an influence")
-			// this.actions += new MazeChangeQuery(occurrence.source.UUID, occurrence.direction)
-			influenceList.add(occurrence)
-			numberOfInfluencesGot++
-			if (numberOfInfluencesGot > numberOfInfluencesToGet-1) {
-				//info("Got all the influences")
-				numberOfInfluencesGot = 0
-				emit(new RunEndOfStep) // [it == defaultAddress]
-			}
-			
-		}
-	}
-
-	on RunEndOfStep {
-		synchronized (this) {
-//			info("The step ends")
-			applyInfluences(influenceList)
-			
-			Globals::LOOP_COUNTER++
-			
-			var sleepTime = Globals::LOOP_DURATION - Globals::chrono.getTime()
-			if(sleepTime < 0) sleepTime = 0
-			Thread::sleep(sleepTime) // We sleep before the next step
-			
-			if (Globals::SHUT_DOWN_SIGNAL) {
-				emit(new ShutDown)
-			} else {
-				// Move to next step
-				emit(new RunBeginingOfStep)
-			}
-		}
-	}
-	
-	on ShutDown {
-		killMe()
-	}
-
-	on RunBeginingOfStep {
-		synchronized (this) {
+			// The chrono that computes each loop duration is reset at each beginning of loop
 			Globals::chrono.reset();
-			//info("The step begins")
 
-			influenceList.clear()
-			
 			for (entry : graphHumans.entrySet) {
 				var graphHuman = entry.value
 				var uuid = entry.key
-				
+
+				// Those variables will be sent in a Perception to the right Person
 				var position : Point2f = new Point2f(graphHuman.x, graphHuman.y)
-				//TODO
 				var orientation : Vector2f = new Vector2f
 				var linearSpeed : float = 0f
 				var maxLinear : float = 3f
@@ -170,74 +79,115 @@ agent Environment {
 				var maxAngular : float = 0f
 				var perceivedObjects = <ActivityType, Point2f>newHashMap
 				var perceivedPeople = <Point2f>newArrayList
-				var intersectedArtifacts = graphHuman.environment.getIntersectedArtifacts(graphHuman)
 				
+				// Getting every artifact in the agent's view field
+				var intersectedArtifacts = graphHuman.environment.getIntersectedArtifacts(graphHuman)
+
+				// For every intersected artifact in the agent's view field
 				for (intersectedArtifact : intersectedArtifacts) {
+					// We get the nearest point in the artifact
 					var intersectedPoint = intersectedArtifact.getNearestPointInEntity(position)
-					
+
+					// If the intersected artifact is actually a person then we add him to the right list
+					// because we manage activities and person differently in terms of repulsions
 					if (intersectedArtifact instanceof GraphHuman) {
 						perceivedPeople.add(intersectedPoint)
-						// info("got a graphHuman")
-						// info("MinX intersected artifacts " + intersectedArtifact.minX);
 					} else {
 						perceivedObjects.put(intersectedArtifact.activityType, intersectedPoint)
-						//info(intersectedArtifact.activityType)
+						// info(intersectedArtifact.activityType)
 					}
 				}
 				
-				// info("Sending a perception")
-				emit(
-					new Perception(position, orientation, linearSpeed, maxLinear, angularSpeed, maxAngular, this.bellRings,
-						perceivedObjects, perceivedPeople), [it.UUID == uuid])
+				// Sending the Perception to the right Person
+				emit(new Perception(position, orientation, linearSpeed, maxLinear, angularSpeed, maxAngular,
+						this.bellRings, perceivedObjects, perceivedPeople), [it.UUID == uuid])
 			}
+			// After emitting all the Perceptions, we set the bellRings boolean to false
 			this.bellRings = false
 		}
 	}
-	
-	on UpdatedActivity {
 
+	// When getting an Influence from an agent
+	on Influence {
+		synchronized (this) {
+			// The Influence is added to the list
+			influenceList.add(occurrence)
+			numberOfInfluencesGot++
+			
+			// If we got all the Influences
+			if (numberOfInfluencesGot > numberOfInfluencesToGet-1) {
+				// Starting the end of the loop
+				emit(new RunEndOfStep)
+			}
+			
+		}
+	}
+
+	// End of the loop
+	on RunEndOfStep {
+		synchronized (this) {
+			applyInfluences(influenceList)
+			numberOfInfluencesGot = 0
+			influenceList.clear()
+			
+			Globals::LOOP_COUNTER++
+			
+			// Managing the minimal duration of a loop
+			var sleepTime = Globals::LOOP_DURATION - Globals::chrono.getTime()
+			if(sleepTime < 0) sleepTime = 0
+			Thread::sleep(sleepTime) // We sleep before the next step
+			
+			// Shutting the application down when closing the application's window
+			if (Globals::SHUT_DOWN_SIGNAL) {
+				emit(new ShutDown)
+			} else {
+				// Move to next step
+				emit(new RunBeginningOfStep)
+			}
+		}
+	}
+	
+	// Used to update the person's tooltip
+	on UpdatedActivity {
 		synchronized(this){		
-//		this.graphHumans.get(occurrence.callerID).activityDesired.visible=true
 		this.graphHumans.get(occurrence.callerID).activity = occurrence.activity
 		}
 	}
 	
-	def spawnAPerson(name: String, graphHuman : GraphHuman, environment : GraphEnvironment, i : int) {
-		
+	def spawnAPerson(name: String, graphHuman : GraphHuman, environment : GraphEnvironment, i : int) {	
 		var id = spawnInContextWithID(typeof(Person),graphHuman.uuid,defaultContext,name,graphHuman.x,graphHuman.y,environment,Globals::LOOP_COUNTER+10*i)
 		info(name + " spawned")
 		numberOfInfluencesToGet++
 		personIdList.add(id)
 	}
 	
+	// Computing the Influences to send the actions to the agent and to update the graphical part
 	def applyInfluences(influenceList: LinkedList<Influence>) {
 		for (var i = 0; i < influenceList.size; i++) {
 			var influence = influenceList.get(i)
 			
 			var newPosition : Point2f = influence.position + influence.linear
 			
+			// Updating the graphical part
 			this.graphHumans.get(influence.callerID).moveTo(newPosition.x, newPosition.y, 2)
 			this.graphHumans.get(influence.callerID).updateForceVector(influence.linear.x, influence.linear.y)
 			
-			
-			
+			// Hiding the person if he is in a building or under the trees
 			if(this.graphHumans.get(influence.callerID).environment.isInCoveredArea(newPosition))
 				this.graphHumans.get(influence.callerID).sethideInCoveredArea(true)
 			else
 				this.graphHumans.get(influence.callerID).sethideInCoveredArea(false)
-					
+			
+			// Updating the agent
 			emit(new ActionToPerson(newPosition.x, newPosition.y), [it.UUID == influence.callerID])
-			// influence.caller.posX
 		}
 	}
-	
-	/*def computeDistance(listGraphHumans : LinkedList<GraphHuman>) {
-		for (var i = 0; i < listGraphHumans.size; i++) {
-			//ancienne position a nouvelle position b
-			// sqrt((xb - xa)²+(yb - ya)²)
-			var distance = 0.0;
-			listGraphHumans.get(i).setDistance(listGraphHumans.get(i).getDistance() + distance);
-		}
-	}*/
 
+	on ShutDown {
+		killMe()
+	}
+
+	on Destroy {
+		info("The agent was stopped.")
+	}
 }
