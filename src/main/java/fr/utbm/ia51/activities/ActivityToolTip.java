@@ -11,7 +11,7 @@ public class ActivityToolTip extends StackPane{
 	
 	private ImageView tooltip;
 	private Image fieldImage;
-	private Circle position;
+//	private Circle position;
 	
 	public ActivityToolTip(ActivityType type) {
 		super();
@@ -28,28 +28,31 @@ public class ActivityToolTip extends StackPane{
         
 		tooltip.setFitWidth(30);
 		tooltip.setPreserveRatio(true);
+		
+		tooltip.setTranslateX(5);
+		tooltip.setTranslateY(-30);
        
 //        this.setStyle("-fx-border-color : red");
-        this.position = new Circle(1);
-        this.position.setFill(Color.TRANSPARENT);
-        //this.position.setStyle("-fx-border-color : transparent");
-        
-        this.getChildren().addAll(tooltip,position);
+//        this.position = new Circle(1);
+//        this.position.setFill(Color.TRANSPARENT);
+//        //this.position.setStyle("-fx-border-color : transparent");
+//        
+        this.getChildren().addAll(tooltip);
+//	}
+//	
+//	public DoubleProperty getXPosition() {
+//		return this.position.centerXProperty();
+//	}
+//	
+//	public DoubleProperty getYPosition() {
+//		return this.position.centerYProperty();
+//	}
+//	
+//	public Circle getPosition(){
+//		return this.position;
+//	}
+//	
 	}
-	
-	public DoubleProperty getXPosition() {
-		return this.position.centerXProperty();
-	}
-	
-	public DoubleProperty getYPosition() {
-		return this.position.centerYProperty();
-	}
-	
-	public Circle getPosition(){
-		return this.position;
-	}
-	
-
 	
 	public void changeDesire(ActivityType type) {
 		

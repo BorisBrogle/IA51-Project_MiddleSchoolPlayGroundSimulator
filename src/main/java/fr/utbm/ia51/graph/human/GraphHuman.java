@@ -54,6 +54,8 @@ public class GraphHuman extends EnvironmentEntity {
 		super(null);
 		this.setVisible(false);
 		this.setManaged(true);
+		
+//		this.setStyle("-fx-border-color : red");
 
 		this.environment = environment;
 		this.setTranslateX(x);
@@ -88,9 +90,7 @@ public class GraphHuman extends EnvironmentEntity {
 		this.collisionBox.setMouseTransparent(true);
 		this.collisionBox.setFill(Color.TRANSPARENT);
 		
-//		this.collisionBox.setTranslateX(-30);
-//		this.collisionBox.setTranslateY(-30);
-//		this.collisionBox.setStyle("-fx-border-color : blue");
+
 		
 		
 		
@@ -136,9 +136,8 @@ public class GraphHuman extends EnvironmentEntity {
 		});
 		
 		activityDesired = new ActivityToolTip(ActivityType.BASKETBALL);
-		this.activityDesired.rotateProperty().bind(this.rotateProperty().multiply(-1));
-		this.activityDesired.setTranslateX(5);
-		this.activityDesired.setTranslateY(-30);
+//		this.activityDesired.setTranslateX(5);
+//		this.activityDesired.setTranslateY(-30);
 		this.activityDesired.setVisible(false);
 		
 		
