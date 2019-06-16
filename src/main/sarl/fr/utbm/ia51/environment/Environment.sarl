@@ -89,7 +89,7 @@ agent Environment {
 					var intersectedPoint = intersectedArtifact.getNearestPointInEntity(position)
 
 					// If the intersected artifact is actually a person then we add him to the right list
-					// because we manage activities and person differently in terms of repulsions
+					// because we manage activities and person differently in terms of repulsions				
 					if (intersectedArtifact instanceof GraphHuman) {
 						perceivedPeople.add(intersectedPoint)
 					} else {

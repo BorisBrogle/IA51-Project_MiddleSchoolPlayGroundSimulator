@@ -244,7 +244,7 @@ agent Person {
 						this.inActivityChrono.reset()			
 					}	
 				}
-			
+
 				// taking care of repulsion between agents
 				for (perceivedPerson : occurrence.perceivedPeople) {
 					var tmpFleeMotionOutput = this.fleeBehavior.run(
@@ -254,7 +254,7 @@ agent Person {
 						perceivedPerson // nearest person's to flee point
 					)
 				
-				// adding every repulsive vector to the flee output
+					// adding every repulsive vector to the flee output
 					peopleFleeMotionOutput.linear += tmpFleeMotionOutput.linear
 				}
 
