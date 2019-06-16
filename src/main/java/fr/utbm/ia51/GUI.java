@@ -73,12 +73,8 @@ public class GUI extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("High School Playground Simulator - seed "+Globals.randomGenerator.getSeed());
         Pane root = new Pane();
-        
-        
-        
-
+        primaryStage.setTitle("High School Playground Simulator");
         
         Scene scene = new Scene(root, this.WIDTH, this.HEIGHT, Color.TRANSPARENT);
         
@@ -96,7 +92,7 @@ public class GUI extends Application {
         
         Label nbAgentLabel = new Label("Choose number of Students to spawn : ");
         Spinner<Integer> nbAgentSpinner = new Spinner<>(1, 50, 5);
-        Tooltip nbAgentTooltip = new Tooltip("According to your computer performances, crashes may occure if you put too much agents in the simulation. Try at your own risks ;)");
+        Tooltip nbAgentTooltip = new Tooltip("According to your computer performances, crashes may occur if you put too much agents in the simulation. Try at your own risks");
         Tooltip.install(nbAgentSpinner, nbAgentTooltip);
         HBox nbAgentChooseHBox = new HBox(nbAgentLabel,nbAgentSpinner);
         nbAgentChooseHBox.setSpacing(2);
@@ -104,10 +100,6 @@ public class GUI extends Application {
         
         Label seedLabel = new Label("Add a seed to the simulation");
         TextField seedTextField = new TextField();
-        seedTextField.textProperty().addListener((obs,old,val)->{
-			if(!val.matches("\\d*"))
-				seedTextField.setText(old);
-		});
         Tooltip seedTooltip = new Tooltip("Seeds will make you able to reproduce a scenario that already occured in a past simulation.\nNot mandatory to launch the simulation");
         Tooltip.install(seedTextField, seedTooltip);
         HBox seedHBox = new HBox(seedLabel,seedTextField);
@@ -121,8 +113,6 @@ public class GUI extends Application {
         root.getChildren().add(mainMenuVBox);
         
         launchButton.setOnAction(e->{
-        	
-        	
         	Globals.NB_AGENTS = nbAgentSpinner.getValue();
             for(int i=0;i<Globals.NB_AGENTS;i++) {
             	GraphHuman g = new GraphHuman(Globals.START_POS_X, Globals.START_POS_Y, Globals.AGENT_RADIUS, null, environment);
@@ -130,10 +120,19 @@ public class GUI extends Application {
             	this.graphHumans.add(g);
             }
             
-            //TODO
-            //Ici faut 
-            long seed = Long.parseLong(seedTextField.getText());
-            //Wala faut réussir à me le set par là ^^ 
+            String seedString = seedTextField.getText();
+            if(seedString.length() != 0) {
+                long seed = 0;
+                for(int i = 0; i < seedString.length(); ++i) {
+                	seed += (int)seedString.charAt(i)*(10*(i+1));
+                }
+                Globals.initGenerator(seed);
+                primaryStage.setTitle("High School Playground Simulator - seed "+seedString);
+            } else {
+                Globals.initGenerator();
+                primaryStage.setTitle("High School Playground Simulator - seed "+Globals.randomGenerator.getSeed());
+            }
+
             
        //************************************************//
 

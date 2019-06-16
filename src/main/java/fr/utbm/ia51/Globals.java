@@ -4,7 +4,7 @@ import fr.utbm.ia51.tools.PseudoRandomGenerator;
 import tools.Chrono;
 
 public class Globals {
-	public static PseudoRandomGenerator randomGenerator = new PseudoRandomGenerator();
+	public static PseudoRandomGenerator randomGenerator;
 	public static Chrono chrono = new Chrono();
 	
 	
@@ -31,5 +31,12 @@ public class Globals {
 	public static boolean SHOW_AGENTS_COORDINATES = true; // If we should show the x;y coordinates of the agents
 	public static boolean SHOW_ACTIVITY_TOOLTIP = false; // If we should show the activities of the agents
 	
-	//public static boolean SHOW_STAT = false; // If we should show the statistics
+
+	public static void initGenerator(long seed) {
+		Globals.randomGenerator = new PseudoRandomGenerator(seed);
+	}
+	public static void initGenerator() {
+		Globals.randomGenerator = new PseudoRandomGenerator();
+	}
 }
+
