@@ -1,9 +1,7 @@
-/** 
- * 
- */
 package fr.utbm.ia51.agents
 
 import fr.utbm.ia51.Globals
+import fr.utbm.ia51.Statistic
 import fr.utbm.ia51.activities.ActivityManager
 import fr.utbm.ia51.activities.ActivityType
 import fr.utbm.ia51.agents.motion.AvoidAlgorithm
@@ -22,102 +20,89 @@ import fr.utbm.ia51.environment.UpdatedActivity
 import fr.utbm.ia51.graph.environment.GraphEnvironment
 import fr.utbm.ia51.tools.MotionAlgorithmOutput
 import fr.utbm.ia51.tools.Point2f
-import fr.utbm.ia51.tools.Vector2f
-import io.sarl.core.AgentKilled
-import io.sarl.core.AgentSpawned
-import io.sarl.core.ContextJoined
-import io.sarl.core.ContextLeft
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
-import io.sarl.core.MemberJoined
-import io.sarl.core.MemberLeft
-
 import tools.Chrono
 
-import fr.utbm.ia51.tools.Vector2f
-import fr.utbm.ia51.Statistic
-
-// Person = corps, behavior = tete en gros
 agent Person {
 	uses Logging, DefaultContextInteractions, Lifecycle
 	
+	// the agent's position
 	var position : Point2f
 
 	// the activity that the agent wants to perform
 	var activityType : ActivityType
 	var activityManager = new ActivityManager()
 	var activityChrono = new Chrono()
+
+	// his target which depends on his activity
+	var target : Point2f
 	
+	// number of loop before start of motion
 	var loopBeforeStart : int 
 	
+	// chrono used to count how much time a person is motion less
 	var motionlessChrono : Chrono = new Chrono()
 	var wasMotionless = false
 	
-	// his target which depends on the his activity
-	var target : Point2f
-
 	// the maximum distance between the agent and its target for him to stop moving (min 2f)
 	var maxTargetDistance = 3f
 	
 	// a factor to reduce the avoidance's vector length compared to the other vector's length
 	var avoidanceDivFactor : float = 1.4f
+
+	// boolean to know if the person is in class line
+	var isInClass : boolean
+
+	// the environment in which the agent will live
+	var environment : GraphEnvironment
+
+	// motions behaviors
+	var seekBehavior : SeekAlgorithm
+	var wanderBehavior : WanderAlgorithm
+	var fleeBehavior : FleeAlgorithm
+	var avoidBehavior : AvoidAlgorithm
 	
 	//STATISTIC the distance walked by the agent, its time, etc
 	var walkedChrono = new Chrono()
 	var inActivityChrono = new Chrono()
 	var hasReachedActivity : boolean = false
 	
-	var isInClass : boolean
-	
-	//the environment in which the agent will live
-	var environment : GraphEnvironment
-	
-//	var listOfAvailableArtifacts = <EnvironmentEntity>newArrayList
-//	var listPerceivedtArtifacts = <EnvironmentEntity>newArrayList
-
-	// behaviors
-	var seekBehavior : SeekAlgorithm
-	var wanderBehavior : WanderAlgorithm
-	var fleeBehavior : FleeAlgorithm
-	var avoidBehavior : AvoidAlgorithm
-	// var b : Behavior
-	
 	on Initialize {
 		synchronized (this) {
-			// Event trigger before the agent begin to live or to be used.
-			// You should put all the initialization statements in this block of code.
+			// Setting variables from the event's parameters
 			loggingName = ""+occurrence.parameters.get(0)
-			
-			position = new Point2f(occurrence.parameters.get(1) as Double, occurrence.parameters.get(2) as Double)
-			
-			environment = occurrence.parameters.get(3) as GraphEnvironment 
-			
-			loopBeforeStart = occurrence.parameters.get(4) as Integer 
+			this.position = new Point2f(occurrence.parameters.get(1) as Double, occurrence.parameters.get(2) as Double)
+			this.environment = occurrence.parameters.get(3) as GraphEnvironment
+			this.loopBeforeStart = occurrence.parameters.get(4) as Integer 
 			
 			info("The agent was started.")
 	
+			// The agent chose his activity within the available ones
 			this.setActivity(this.activityManager.chooseActivity())
 			info("The agent will do activity "+this.activityType)
 			
-			//Acquisition of target according to the Person's activity type
+			// Acquisition of target according to the Person's activity type
 			this.target = this.getNewTarget
 	
+			// On spawn, it is the start of pause so the agent doesn't have to go the class line
 			this.isInClass = false
 	
+			// Setting the right motion algorithm to the agent
 			this.seekBehavior = new KinematicSeekAlgorithm
 			this.wanderBehavior = new KinematicWanderAlgorithm
 			this.fleeBehavior = new KinematicFleeAlgorithm
 			this.avoidBehavior = new KinematicAvoidAlgorithm
-			
-				// b = new NormalBehavior(this)
-				// b.registerBehavior
-				
 		}
 	}
 	
+	/* This function sets the person's activity to another one, updates his target
+	 * sends a event to update the tooltip, and manages some statistics
+	 * @param act is the activity type we want to set our person to
+	 */
 	def setActivity(act : ActivityType) : void {
 		synchronized (this) {
 			this.activityType = act
@@ -132,36 +117,49 @@ agent Person {
 		}
 	}
 	
-	def getNewTarget(at : ActivityType) : Point2f {
+	/* This function returns a random point in the desired activity
+	 * @param act is the activityType we use to get a random point in the desired activity
+	 * @return Point2f the random point in the activity
+	 */
+	def getNewTarget(act : ActivityType) : Point2f {
 		synchronized (this) {
-			this.environment.getArtifactFromActivity(at).randomPointInEntity
+			this.environment.getArtifactFromActivity(act).randomPointInEntity
 		}
 	}
+
+	/* This function returns a random point in the person's activity
+	 * @return Point2f the random point in the activity
+	 */
 	def getNewTarget() : Point2f {
 		synchronized (this) {
 			this.environment.getArtifactFromActivity(this.activityType).randomPointInEntity
 		}
 	}
 	
+	/* This function sends an Influence to the environment
+	 * @param output is the motion the agent would like to perform
+	 */
 	def emitInfluence(output: MotionAlgorithmOutput) {
 		synchronized (this) {
 			emit(new Influence(this.ID, 0, this.position, output.linear, output.angular))
 		}
 	}
 	
+	// This manages everything necessary after getting a Perception from the environment (mainly motions)
 	on Perception {
 		synchronized (this) {
 			// we wait some loops before starting moving
 			if (Globals::LOOP_COUNTER > loopBeforeStart) {
 				var perceivedObjects = occurrence.perceivedObjects
 
+				// we will need those motions output later, so we set them to default motion (no motion)
 				var targetMotionOutput = new MotionAlgorithmOutput
 				var objectsFleeMotionOutput = new MotionAlgorithmOutput
 				var peopleFleeMotionOutput = new MotionAlgorithmOutput
 				var avoidMotionOutput = new MotionAlgorithmOutput
 
+				// when we click on the bell button and we are not in the class line yet
 				if (occurrence.bellRings && !this.isInClass) {
-					// TODO set the right classroom ?
 					this.setActivity(ActivityType.CLASSLINE)
 					this.isInClass = true
 					info("The agent will go back to the CLASSLINE")
@@ -171,14 +169,15 @@ agent Person {
 					info("The agent will do activity " + this.activityType)
 				}
 
+				// checking if we are close to the target or not
 				if (occurrence.position.distance(target) > this.maxTargetDistance) {
 					if (this.target !== null) {
 						// run the seek behavior
 						targetMotionOutput = this.seekBehavior.run(
-							occurrence.position,
-							occurrence.currentLinearSpeed,
-							occurrence.maxLinear,
-							this.target
+							occurrence.position, // the person's position
+							occurrence.currentLinearSpeed, // the current person's speed
+							occurrence.maxLinear, // the speed we want
+							this.target // the target where we want to go
 						)
 					} else {
 						// run the wander behavior
@@ -193,31 +192,31 @@ agent Person {
 					}
 
 					for (entry : perceivedObjects.entrySet) {
-						// run the flee behavior
 						// check to no to flee our activity
 						if (entry.key != this.activityType) {
+							// run the flee behavior for objects
 							var tmpFleeMotionOutput = this.fleeBehavior.run(
 								occurrence.position,
 								occurrence.currentLinearSpeed,
 								occurrence.maxLinear,
-								// nearest object's to flee point
-							entry.value
+								entry.value // nearest object's to flee point
 							)
 							// adding every repulsive vector to the flee output
 							objectsFleeMotionOutput.linear += tmpFleeMotionOutput.linear
 
+							// run the avoid behavior for objects
 							var tmpAvoidMotionOutput = this.avoidBehavior.run(
 								occurrence.position,
 								occurrence.currentLinearSpeed,
 								occurrence.maxLinear,
 								this.target,
-								// nearest object's to flee point
-								entry.value
+								entry.value // nearest object's to avoid point
 							)
-
+							// adding every avoiding vector to the avoid output
 							avoidMotionOutput.linear += tmpAvoidMotionOutput.linear
 						}
 					}
+					
 					// setting the flee and avoid vectors to the right length
 					if (objectsFleeMotionOutput.linear.length > 0) {
 						objectsFleeMotionOutput.linear.length = occurrence.maxLinear
@@ -229,42 +228,42 @@ agent Person {
 					// taking the repulsive behavior into account
 					targetMotionOutput.linear += objectsFleeMotionOutput.linear
 				
-				// taking the avoiding behavior into account
-				targetMotionOutput.linear += avoidMotionOutput.linear
+					// taking the avoiding behavior into account
+					targetMotionOutput.linear += avoidMotionOutput.linear
 				
-			} else {
-				// setting the movement to 0 because we reached our target
-				targetMotionOutput.linear.length = 0
-				
-				if (!this.hasReachedActivity) {
-					Statistic::countActivityTypeReached(this.activityType)
-					Statistic::TOT_REACHED_TARGET++
-					this.hasReachedActivity = true
-					Statistic::WALKING_TIME += this.walkedChrono.getTime()	
-					this.inActivityChrono.reset()			
-				}	
-			}
+				} else {
+					// setting the movement to 0 because we reached our target
+					targetMotionOutput.linear.length = 0
+					
+					// statistics about the time to reach target and the walked time
+					if (!this.hasReachedActivity) {
+						Statistic::countActivityTypeReached(this.activityType)
+						Statistic::TOT_REACHED_TARGET++
+						this.hasReachedActivity = true
+						Statistic::WALKING_TIME += this.walkedChrono.getTime()	
+						this.inActivityChrono.reset()			
+					}	
+				}
 			
-			// taking care of repulsion between agents
+				// taking care of repulsion between agents
 				for (perceivedPerson : occurrence.perceivedPeople) {
 					var tmpFleeMotionOutput = this.fleeBehavior.run(
 						occurrence.position,
 						occurrence.currentLinearSpeed,
 						occurrence.maxLinear,
-						// nearest person's to flee point
-						perceivedPerson
+						perceivedPerson // nearest person's to flee point
 					)
 				
 				// adding every repulsive vector to the flee output
 					peopleFleeMotionOutput.linear += tmpFleeMotionOutput.linear
 				}
 
+				// setting the flee vector to the right length
 				if (peopleFleeMotionOutput.linear.length > 0) {
 					peopleFleeMotionOutput.linear.length = occurrence.maxLinear
-					// info("fleeing a person: " + peopleFleeMotionOutput.linear.length)
 				}
 
-				// taking the repulsive behavior into account
+				// taking the repulsive behavior between agents into account
 				targetMotionOutput.linear += peopleFleeMotionOutput.linear
 
 				// setting the resulting vector to the right length
@@ -281,30 +280,32 @@ agent Person {
 		}
 	}
 	
+	// when the environment processed our influence, it sends this event back to tell us what to do
 	on ActionToPerson {
 		synchronized (this) {
 			var x = occurrence.newPosX as float
 			var y = occurrence.newPosY as float
 			
+			// Statistics: the walked distance is updated
 			var nextPos = new Point2f(x, y)
 			var distanceVec = this.position-nextPos
 			Statistic::TOT_WALKED_DISTANCE += distanceVec.length
-			
-			//info("Person moving from {0,number,#.##}:{1,number,#.##} to {2,number,#.##}:{3,number,#.##}", position.x, position.y, x, y)
 
-			if(position.x == x && position.y == y) { //The person hasn't moved this loop
+			// If the person hasn't moved this loop, we decide if it should move or not
+			if(position.x == x && position.y == y) { 
 				this.stayMotionlessOrNot
 			} else {
 				this.motionlessChrono.reset()
 				wasMotionless = false
 			}
-			
+
+			// we update our position and our activity that might have changed
 			this.position.set(x, y)
 			this.updateActivity()
 		}
 	}
 	
-	
+	// This function make the agent decide if he should move within his activity or not
 	def stayMotionlessOrNot() {
 		synchronized (this) {
 			if (this.wasMotionless) {
@@ -320,7 +321,7 @@ agent Person {
 		}
 	}
 	
-	
+	// This function make the agent change his activity with a low chance
 	def updateActivity() {
 		var timePassed = this.activityChrono.getTime()
 		var randomValue = Globals::randomGenerator.getRandom(0, Globals::ACTIVITY_CHANGE_FREQUENCY*1000)
@@ -330,45 +331,11 @@ agent Person {
 		this.activityChrono.reset()
 	}
 
-	def getActivityReached(){
-		
-	}
-
 	on ShutDown {
 		killMe();
 	}
 
 	on Destroy {
-		// Event trigger when the agent is destroyed from the system.
-		// You should put all the resource releasing statements in this block of code.
 		info("The agent was stopped.")
-	}
-
-	on AgentSpawned {
-		// A new agent has been spawned in our context.
-	}
-
-	on AgentKilled {
-		// A new agent has been killed in our context.
-	}
-
-	on ContextJoined {
-		// Event trigger when an agent of the level joins a shared context.
-		// Sent to a agent of the same level.
-	}
-
-	on ContextLeft {
-		// Event trigger when an agent of the level jleaves a shared context.
-		// Sent to a agent of the same level.
-	}
-
-	on MemberJoined {
-		// Event trigger when an agent joins one of our shared super-holons.
-		// Sent to all members of the considered super-holon.
-	}
-
-	on MemberLeft {
-		// Event trigger when an agent leaves one of our shared super-holons.
-		// Sent to all members of the considered super-holon.
 	}
 }

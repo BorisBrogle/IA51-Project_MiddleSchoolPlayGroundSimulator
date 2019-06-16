@@ -11,7 +11,7 @@ public class ActivityToolTip extends StackPane{
 	
 	private ImageView tooltip;
 	private Image fieldImage;
-	private Circle position;
+//	private Circle position;
 	
 	public ActivityToolTip(ActivityType type) {
 		super();
@@ -28,66 +28,69 @@ public class ActivityToolTip extends StackPane{
         
 		tooltip.setFitWidth(30);
 		tooltip.setPreserveRatio(true);
+		
+		tooltip.setTranslateX(5);
+		tooltip.setTranslateY(-30);
        
 //        this.setStyle("-fx-border-color : red");
-        this.position = new Circle(1);
-        this.position.setFill(Color.TRANSPARENT);
-        //this.position.setStyle("-fx-border-color : transparent");
-        
-        this.getChildren().addAll(tooltip,position);
+//        this.position = new Circle(1);
+//        this.position.setFill(Color.TRANSPARENT);
+//        //this.position.setStyle("-fx-border-color : transparent");
+//        
+        this.getChildren().addAll(tooltip);
+//	}
+//	
+//	public DoubleProperty getXPosition() {
+//		return this.position.centerXProperty();
+//	}
+//	
+//	public DoubleProperty getYPosition() {
+//		return this.position.centerYProperty();
+//	}
+//	
+//	public Circle getPosition(){
+//		return this.position;
+//	}
+//	
 	}
-	
-	public DoubleProperty getXPosition() {
-		return this.position.centerXProperty();
-	}
-	
-	public DoubleProperty getYPosition() {
-		return this.position.centerYProperty();
-	}
-	
-	public Circle getPosition(){
-		return this.position;
-	}
-	
-
 	
 	public void changeDesire(ActivityType type) {
 		
 		switch (type) {
 		case TENNISTABLE:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-tennis-table.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-tennis-table.png");
 			break;
 			
 		case SOCCER:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-football.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-football.png");
 			break;
 		
 		case BASKETBALL:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-basketball.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-basketball.png");
 			break;
 		
 		case BENCH:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-bench.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-bench.png");
 			break;
 			
 		case LIBRARY:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-library.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-library.png");
 			break;
 			
 		case CLASSLINE:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-classline.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-classline.png");
 			break;
 		
 		case FOREST:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-forest.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-forest.png");
 			break;
 		
 		case TOILET:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-toilet.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-toilet.png");
 			break;
  
 		default:
-			this.fieldImage = new Image("file:src/main/resources/graphism/image/tooltip-01.png");
+			this.fieldImage = new Image("file:resources/graphism/image/tooltip-01.png");
 			break;
 		}
 		

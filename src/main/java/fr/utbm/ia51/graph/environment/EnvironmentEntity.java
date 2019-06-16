@@ -11,6 +11,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * @author Arthur
+ * Represents any artifacts of the environment but also the students representations, use to compute collision between agents and playfields 
+ */
 public class EnvironmentEntity extends StackPane {
 	protected ActivityType activityType;
 	private String imagePath;
@@ -48,6 +52,11 @@ public class EnvironmentEntity extends StackPane {
 	}
 	
 
+	/**
+	 * Used to perform the repulsion, repulsion vector will be computed by taking the nearest point in an artifact according to the agent position as vector's start, and the agent's position as vector's end 
+	 * @param point : position of an agent 
+	 * @return
+	 */
 	public Point2f getNearestPointInEntity(Point2f point) {
 		double xmin = this.getBoundsInParent().getMinX();
 		double ymin = this.getBoundsInParent().getMinY();
@@ -77,6 +86,7 @@ public class EnvironmentEntity extends StackPane {
 		return projete(x,y,xmin,ymax,xmax,ymax);
 	}
 	
+	
 	public Point2f getCenterPoint() {
 		double xmin = this.getBoundsInParent().getMinX();
 		double ymin = this.getBoundsInParent().getMinY();
@@ -87,37 +97,37 @@ public class EnvironmentEntity extends StackPane {
 	}
 
 
+	
+	/**
+	 * Not used, made to compute a normal vector of a point by taking the cross product of vectors computed from applicationPoint's neighbor 
+	 * @param applicationPoint 
+	 * @return normal vector of a side of an artifact
+	 */
 	public Vector2f getNormalVectorAtPoint(Point2f applicationPoint) {
-		//Le terme previous et next n'a pas vraiment une grande importance, c'est juste les points voisins à 1 près dans la figure
 		Point2f previousPoint=new Point2f(-1.0,-1.0);
 		Point2f nextPoint = new Point2f(-1.0,-1.0);
 
-		//Cas du coin en haut à gauche
 		if(applicationPoint.getX()==this.getBoundsInParent().getMinX()&&applicationPoint.getY()==this.getBoundsInParent().getMinY()) {
 			previousPoint = new Point2f(applicationPoint.getX(),applicationPoint.getY()-1);
 			nextPoint = new Point2f(applicationPoint.getX()+1,applicationPoint.getY());
 		}
 		
-		//Cas du coin en haut à droite
 		if(applicationPoint.getX()==this.getBoundsInParent().getMaxX()&&applicationPoint.getY()==this.getBoundsInParent().getMinY()) {
 			previousPoint = new Point2f(applicationPoint.getX()-1,applicationPoint.getY());
 			nextPoint = new Point2f(applicationPoint.getX(),applicationPoint.getY()+1);
 		}
 
-		//Cas du coin en bas à droite
 		if(applicationPoint.getX()==this.getBoundsInParent().getMaxX()&&applicationPoint.getY()==this.getBoundsInParent().getMaxY()) {
 			previousPoint = new Point2f(applicationPoint.getX(),applicationPoint.getY()-1);
 			nextPoint = new Point2f(applicationPoint.getX()-1,applicationPoint.getY());
 		}
 
-		//Cas du coin en bas à gauche
 		if(applicationPoint.getX()==this.getBoundsInParent().getMinX()&&applicationPoint.getY()==this.getBoundsInParent().getMaxY()) {
 			previousPoint = new Point2f(applicationPoint.getX()+1,applicationPoint.getY());
 			nextPoint = new Point2f(applicationPoint.getX(),applicationPoint.getY()-1);
 		}
 
 		if(previousPoint.getX()==-1.0) {
-			//Présence du point d'application sur un des côtés verticaux
 			if(applicationPoint.getX()==this.getBoundsInParent().getMinX() || applicationPoint.getX()==this.getBoundsInParent().getMaxX()) {
 					previousPoint = new Point2f(applicationPoint.getX(),applicationPoint.getY()+1);
 					nextPoint = new Point2f(applicationPoint.getX(),applicationPoint.getY()-1);
@@ -134,12 +144,27 @@ public class EnvironmentEntity extends StackPane {
 	}
 
 	
+	/**
+	 * Compute the orthogonal projection of a point(x,y) on a segment AB((xa,ya),(xb,yb))
+	 * @param x
+	 * @param y
+	 * @param xa
+	 * @param ya
+	 * @param xb
+	 * @param yb
+	 * @return
+	 */
 	public Point2f projete(double x, double y, double xa, double ya, double xb,double yb) {
 		return new Point2f((xa + (((x-xa)*(xb-xa)+(y-ya)*(yb-ya))/((xb-xa)*(xb-xa)+(yb-ya)*(yb-ya)))*(xb-xa))
 				,(ya + (((x-xa)*(xb-xa)+(y-ya)*(yb-ya))/((xb-xa)*(xb-xa)+(yb-ya)*(yb-ya)))*(yb-ya)));
 	}
 	
+	
+	
 
+	/**
+	 * @return a random point in an artifact, used to get target coordinates for an agent
+	 */
 	public Point2f getRandomPointInEntity() {
 		// We make sure that the entity is wide and tall enough for the agents
 		double xMax = this.getBoundsInParent().getMaxX()-2.0*Globals.AGENT_RADIUS;

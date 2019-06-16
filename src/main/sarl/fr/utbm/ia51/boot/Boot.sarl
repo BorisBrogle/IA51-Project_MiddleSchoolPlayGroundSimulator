@@ -1,6 +1,3 @@
-/** 
- * 
- */
 package fr.utbm.ia51.boot
 
 import fr.utbm.ia51.environment.Environment

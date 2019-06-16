@@ -17,6 +17,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -44,7 +47,7 @@ public class GUI extends Application {
 	private CheckBox vectorCheckBox = new CheckBox();
 	private CheckBox viewfieldCheckBox = new CheckBox();
 	private CheckBox tooltipCheckBox = new CheckBox();
-	private CheckBox StatCheckBox = new CheckBox();
+	private Scene mainMenu;
 	
     public static void main(String[] args) {
         Application.launch(GUI.class, args);
@@ -70,89 +73,210 @@ public class GUI extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("High School Playground Simulator - seed "+Globals.randomGenerator.getSeed());
         Pane root = new Pane();
+        primaryStage.setTitle("High School Playground Simulator");
+        
         Scene scene = new Scene(root, this.WIDTH, this.HEIGHT, Color.TRANSPARENT);
         
         BackgroundImage bg = new BackgroundImage(
-        						new Image("file:src/main/resources/graphism/image/background.png", this.WIDTH, this.HEIGHT, false, true),
+        						new Image("file:resources/graphism/image/background.png", this.WIDTH, this.HEIGHT, false, true),
                 				BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         root.setBackground(new Background(bg));
         
         
         GraphEnvironment environment = new GraphEnvironment(this.WIDTH, this.HEIGHT);
         root.getChildren().add(environment);
-
-        // We add two dummy Persons for our tests
-        
-        for(int i=0;i<Globals.NB_AGENTS;i++) {
-        	GraphHuman g = new GraphHuman(Globals.START_POS_X, Globals.START_POS_Y, "", "", Globals.AGENT_RADIUS, null, environment);
-        	root.getChildren().add(g);
-        	this.graphHumans.add(g);
-        }
-//        GraphHuman buddy = new GraphHuman(300, 300, "", "", Globals.AGENT_RADIUS, null, environment); 
-//        GraphHuman bob = new GraphHuman(200, 200, "", "", Globals.AGENT_RADIUS, null, environment);
-//        root.getChildren().add(buddy);
-//        root.getChildren().add(bob);
-//        this.graphHumans.add(bob);
-//        this.graphHumans.add(buddy);
-        
-        
-        VBox controlVBox = new VBox();
-        controlVBox.setSpacing(5);
-        controlVBox.setAlignment(Pos.CENTER);
-        controlVBox.getChildren().add(environment.getRingButton());
-        
-        
-        VBox coordVBox = new VBox();
-        coordVBox.setAlignment(Pos.CENTER);
-        coordCheckBox.selectedProperty().addListener((obs,old,val)->{
-        	for(GraphHuman g : graphHumans) {
-        		if(val)
-        			g.getCoordinatesLabel().setVisible(true);
-        		else
-        			g.getCoordinatesLabel().setVisible(false);
-        	}
-        });
-        coordCheckBox.setSelected(Globals.SHOW_AGENTS_COORDINATES);
-        Label coordLabel = new Label("Coordinates");
-        coordLabel.setTextFill(Color.WHITE);
-        coordVBox.getChildren().addAll(coordLabel,coordCheckBox);
-        
-        
  
-        VBox vectVBox = new VBox();
-        vectVBox.setAlignment(Pos.CENTER);
-        vectorCheckBox.selectedProperty().addListener((obs,old,val)->{
-        	for(GraphHuman g : this.graphHumans) {
-        		if(val)
-        			g.getForceArrow().setVisible(true);
-        		else
-        			g.getForceArrow().setVisible(false);
-        	}
-        	
-        });
-        vectorCheckBox.setSelected(Globals.SHOW_FORCE_VECTOR);
-        Label vectorLabel = new Label("Vector direction");
-        vectorLabel.setTextFill(Color.WHITE);
-        vectVBox.getChildren().addAll(vectorLabel,vectorCheckBox);
+        
+        //*******Part Dedicated to the launch configuration*******//
+        
+        Label nbAgentLabel = new Label("Choose number of Students to spawn : ");
+        Spinner<Integer> nbAgentSpinner = new Spinner<>(1, 50, 5);
+        Tooltip nbAgentTooltip = new Tooltip("According to your computer performances, crashes may occur if you put too much agents in the simulation. Try at your own risks");
+        Tooltip.install(nbAgentSpinner, nbAgentTooltip);
+        HBox nbAgentChooseHBox = new HBox(nbAgentLabel,nbAgentSpinner);
+        nbAgentChooseHBox.setSpacing(2);
         
         
-        VBox tooltipVBox = new VBox();
-        tooltipVBox.setAlignment(Pos.CENTER);
-        tooltipCheckBox.selectedProperty().addListener((obs,old,val)->{
-        	for(GraphHuman g : this.graphHumans) {
-        		if(val)
-        			g.getActivityDesired().setVisible(true);
-        		else
-        			g.getActivityDesired().setVisible(false);
-        	}
-        	
+        Label seedLabel = new Label("Add a seed to the simulation");
+        TextField seedTextField = new TextField();
+        Tooltip seedTooltip = new Tooltip("Seeds will make you able to reproduce a scenario that already occured in a past simulation.\nNot mandatory to launch the simulation");
+        Tooltip.install(seedTextField, seedTooltip);
+        HBox seedHBox = new HBox(seedLabel,seedTextField);
+        
+        Button launchButton = new Button("Launch Simulation");
+      
+        VBox mainMenuVBox = new VBox(nbAgentChooseHBox,seedHBox,launchButton);
+        mainMenuVBox.setStyle("-fx-background-color : #bdb5b5cc");
+        mainMenuVBox.setTranslateX(450);
+        mainMenuVBox.setTranslateY(300);
+        root.getChildren().add(mainMenuVBox);
+        
+        launchButton.setOnAction(e->{
+        	Globals.NB_AGENTS = nbAgentSpinner.getValue();
+            for(int i=0;i<Globals.NB_AGENTS;i++) {
+            	GraphHuman g = new GraphHuman(Globals.START_POS_X, Globals.START_POS_Y, Globals.AGENT_RADIUS, null, environment);
+            	root.getChildren().add(g);
+            	this.graphHumans.add(g);
+            }
+            
+            String seedString = seedTextField.getText();
+            if(seedString.length() != 0) {
+                long seed = 0;
+                for(int i = 0; i < seedString.length(); ++i) {
+                	seed += (int)seedString.charAt(i)*(10*(i+1));
+                }
+                Globals.initGenerator(seed);
+                primaryStage.setTitle("High School Playground Simulator - seed "+seedString);
+            } else {
+                Globals.initGenerator();
+                primaryStage.setTitle("High School Playground Simulator - seed "+Globals.randomGenerator.getSeed());
+            }
+
+            
+       //************************************************//
+
+
+            
+      //*******Part Dedicated to the control panel*******//
+  
+            VBox controlVBox = new VBox();
+            controlVBox.setSpacing(5);
+            controlVBox.setAlignment(Pos.CENTER);
+            controlVBox.getChildren().add(environment.getRingButton());
+            
+            
+            VBox coordVBox = new VBox();
+            coordVBox.setAlignment(Pos.CENTER);
+            coordCheckBox.selectedProperty().addListener((obs,old,val)->{
+            	for(GraphHuman g : graphHumans) {
+            		if(val)
+            			g.getCoordinatesLabel().setVisible(true);
+            		else
+            			g.getCoordinatesLabel().setVisible(false);
+            	}
+            });
+            coordCheckBox.setSelected(Globals.SHOW_AGENTS_COORDINATES);
+            Label coordLabel = new Label("Coordinates");
+            coordLabel.setTextFill(Color.WHITE);
+            coordVBox.getChildren().addAll(coordLabel,coordCheckBox);
+            
+            
+     
+            VBox vectVBox = new VBox();
+            vectVBox.setAlignment(Pos.CENTER);
+            vectorCheckBox.selectedProperty().addListener((obs,old,val)->{
+            	for(GraphHuman g : this.graphHumans) {
+            		if(val)
+            			g.getForceArrow().setVisible(true);
+            		else
+            			g.getForceArrow().setVisible(false);
+            	}
+            	
+            });
+            vectorCheckBox.setSelected(Globals.SHOW_FORCE_VECTOR);
+            Label vectorLabel = new Label("Vector direction");
+            vectorLabel.setTextFill(Color.WHITE);
+            vectVBox.getChildren().addAll(vectorLabel,vectorCheckBox);
+            
+            
+            VBox tooltipVBox = new VBox();
+            tooltipVBox.setAlignment(Pos.CENTER);
+            tooltipCheckBox.selectedProperty().addListener((obs,old,val)->{
+            	for(GraphHuman g : this.graphHumans) {
+            		if(val)
+            			g.getActivityDesired().setVisible(true);
+            		else
+            			g.getActivityDesired().setVisible(false);
+            	}
+            	
+            });
+            tooltipCheckBox.setSelected(Globals.SHOW_ACTIVITY_TOOLTIP);
+            Label tooltipLabel = new Label("Activity tooltip");
+            tooltipLabel.setTextFill(Color.WHITE);
+            tooltipVBox.getChildren().addAll(tooltipLabel,tooltipCheckBox);
+
+            
+            VBox viewfieldVBox = new VBox();
+            viewfieldVBox.setAlignment(Pos.CENTER);
+            viewfieldCheckBox.selectedProperty().addListener((obs,old,val)->{
+            	for(GraphHuman g : this.graphHumans) {
+            		if(val)
+            			g.getViewField().setVisible(true);
+            		else
+            			g.getViewField().setVisible(false);
+            	}
+            });
+            viewfieldCheckBox.setSelected(Globals.SHOW_VIEW_FIELD);
+            Label viewfieldLabel = new Label("Viewfield");
+            viewfieldLabel.setTextFill(Color.WHITE);
+            viewfieldVBox.getChildren().addAll(viewfieldLabel,viewfieldCheckBox);
+            
+            
+            Button statButton = new Button();
+            statButton.setAlignment(Pos.CENTER);
+            statButton.setText("Statistics");
+            statButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+     
+                    Label statTarget = new Label("Number of target set : " + Statistic.TOT_SET_TARGET + 
+                    							"\nNumber of target reached : " + Statistic.TOT_REACHED_TARGET + 
+                    							"\nPercentage reached : " + Statistic.statActivityReached() + "%" + 
+                    							"\nTotal walked distance : " + Statistic.TOT_WALKED_DISTANCE/20 + "m ( " + Statistic.averageDistance() + "m per student in average)" +
+                    							"\nTotal walking time : " + (float)Statistic.WALKING_TIME/1000 + "sec (" + Statistic.averageWalkingTimePerAct() + "sec per activity )" +
+                    							"\nTotal activity time : " + (float)Statistic.ACTIVITY_TIME/1000 + "sec (" + Statistic.averageTimePerAct() + "sec per activity )" +
+                    							"\nAverage speed : " + Statistic.averageSpeed() + "m/sec" +
+                    							"\n\nPercentage Activity :\n" +
+                    							"Tennis Table : " + Statistic.statTennisTableReached() + "% reached (" + Statistic.statTennisTablePart() + "%)\n" +
+                    							"Soccer : " + Statistic.statSoccerReached() + "% reached (" + Statistic.statSoccerPart() + "%)\n" +
+                    							"BasketBall : " + Statistic.statBasketReached() + "% reached (" + Statistic.statBasketPart() + "%)\n" +
+                    							"Bench : " + Statistic.statBenchReached() + "% reached (" + Statistic.statBenchPart() + "%)\n" +
+                    							"Library : " + Statistic.statLibraryReached() + "% reached (" + Statistic.statLibraryPart() + "%)\n" +
+                    							"ClassLine : " + Statistic.statClassLineReached() + "% reached (" + Statistic.statClassLinePart() + "%)\n" +
+                    							"Forest : " + Statistic.statForestReached() + "% reached (" + Statistic.statForestPart() + "%)\n" +
+                    							"Toilet : " + Statistic.statToiletReached() + "% reached (" + Statistic.statToiletPart() + "%)\n"
+                    							);
+                    
+                    StackPane statLayout = new StackPane();
+                    statLayout.getChildren().addAll(statTarget);
+     
+                    Scene statScene = new Scene(statLayout, 400, 300);
+     
+                    // New window (Stage)
+                    Stage newWindow = new Stage();
+                    newWindow.setTitle("Statistics");
+                    newWindow.setScene(statScene);
+     
+                    // Set position of second window, related to primary window.
+                    newWindow.setX(primaryStage.getX() + 200);
+                    newWindow.setY(primaryStage.getY() + 100);
+     
+                    newWindow.show();
+                }
+            });       
+            //************************************************//
+
+            
+            controlVBox.getChildren().addAll(coordVBox, vectVBox, viewfieldVBox, tooltipVBox, statButton);
+            
+            
+            
+            root.getChildren().add(controlVBox);
+            try {
+            	
+            	// Launch the Environment Agent 
+    			SRE.getBootstrap().startAgent(Boot.class, this.graphHumans);
+    		} catch (Exception exception) {
+    			// TODO Auto-generated catch block
+    			exception.printStackTrace();
+    		}
+        	mainMenuVBox.setVisible(false);
+
+            
         });
-        tooltipCheckBox.setSelected(Globals.SHOW_ACTIVITY_TOOLTIP);
-        Label tooltipLabel = new Label("Activity tooltip");
-        tooltipLabel.setTextFill(Color.WHITE);
-        tooltipVBox.getChildren().addAll(tooltipLabel,tooltipCheckBox);
+         
+               
 
         
         VBox viewfieldVBox = new VBox();
@@ -178,31 +302,28 @@ public class GUI extends Application {
             @Override
             public void handle(ActionEvent event) {
  
-                Label statTarget = new Label("Number of students : " + Globals.NB_AGENTS +
-                							"\nNumber of target set : " + Statistic.TOT_SET_TARGET + 
-                							"\nNumber of target reached : " + Statistic.TOT_REACHED_TARGET +
+                Label statTarget = new Label("Number of target set : " + Statistic.TOT_SET_TARGET + 
+                							"\nNumber of target reached : " + Statistic.TOT_REACHED_TARGET + 
                 							"\nPercentage reached : " + Statistic.statActivityReached() + "%" + 
-                							
-                							"\n\nTotal walked distance : " + Statistic.TOT_WALKED_DISTANCE/20 + "m ( " + Statistic.averageDistance() + "m per student in average)" +
+                							"\nTotal walked distance : " + Statistic.TOT_WALKED_DISTANCE/20 + "m ( " + Statistic.averageDistance() + "m per student in average)" +
                 							"\nTotal walking time : " + (float)Statistic.WALKING_TIME/1000 + "sec (" + Statistic.averageWalkingTimePerAct() + "sec per activity )" +
                 							"\nTotal activity time : " + (float)Statistic.ACTIVITY_TIME/1000 + "sec (" + Statistic.averageTimePerAct() + "sec per activity )" +
                 							"\nAverage speed : " + Statistic.averageSpeed() + "m/sec" +
-                							
                 							"\n\nPercentage Activity :\n" +
-                							"Tennis Table : " + Statistic.statTennisTableReached() + "% reached (" + Statistic.statTennisTablePart() + "% of all activities)\n" +
-                							"Soccer : " + Statistic.statSoccerReached() + "% reached (" + Statistic.statSoccerPart() + "% of all activities)\n" +
-                							"BasketBall : " + Statistic.statBasketReached() + "% reached (" + Statistic.statBasketPart() + "% of all activities)\n" +
-                							"Bench : " + Statistic.statBenchReached() + "% reached (" + Statistic.statBenchPart() + "% of all activities)\n" +
-                							"Library : " + Statistic.statLibraryReached() + "% reached (" + Statistic.statLibraryPart() + "% of all activities)\n" +
-                							"ClassLine : " + Statistic.statClassLineReached() + "% reached (" + Statistic.statClassLinePart() + "% of all activities)\n" +
-                							"Forest : " + Statistic.statForestReached() + "% reached (" + Statistic.statForestPart() + "% of all activities)\n" +
-                							"Toilet : " + Statistic.statToiletReached() + "% reached (" + Statistic.statToiletPart() + "% of all activities)\n"
+                							"Tennis Table : " + Statistic.statTennisTableReached() + "% reached (" + Statistic.statTennisTablePart() + "%)\n" +
+                							"Soccer : " + Statistic.statSoccerReached() + "% reached (" + Statistic.statSoccerPart() + "%)\n" +
+                							"BasketBall : " + Statistic.statBasketReached() + "% reached (" + Statistic.statBasketPart() + "%)\n" +
+                							"Bench : " + Statistic.statBenchReached() + "% reached (" + Statistic.statBenchPart() + "%)\n" +
+                							"Library : " + Statistic.statLibraryReached() + "% reached (" + Statistic.statLibraryPart() + "%)\n" +
+                							"ClassLine : " + Statistic.statClassLineReached() + "% reached (" + Statistic.statClassLinePart() + "%)\n" +
+                							"Forest : " + Statistic.statForestReached() + "% reached (" + Statistic.statForestPart() + "%)\n" +
+                							"Toilet : " + Statistic.statToiletReached() + "% reached (" + Statistic.statToiletPart() + "%)\n"
                 							);
                 
                 StackPane statLayout = new StackPane();
                 statLayout.getChildren().addAll(statTarget);
  
-                Scene statScene = new Scene(statLayout, 400, 380);
+                Scene statScene = new Scene(statLayout, 400, 300);
  
                 // New window (Stage)
                 Stage newWindow = new Stage();
@@ -228,16 +349,8 @@ public class GUI extends Application {
         primaryStage.show();
         
         
-        //primaryStage.setMaximized(true);
         
-        //addMouseClickCoords(scene);
-        
-        try {
-			SRE.getBootstrap().startAgent(Boot.class, this.graphHumans);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
     }
     
     
@@ -257,6 +370,9 @@ public class GUI extends Application {
     }
     
     
+    /**
+     *Override the close method the application's window
+     */
     @Override
     public void stop() throws Exception {
     	System.out.println("--> Shutting down the application");
