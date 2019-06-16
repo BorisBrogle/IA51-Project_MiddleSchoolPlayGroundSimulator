@@ -3,8 +3,6 @@ package fr.utbm.ia51;
 import java.util.LinkedList;
 import java.util.concurrent.CountDownLatch;
 
-import com.sun.xml.internal.bind.v2.runtime.Coordinator;
-
 import fr.utbm.ia51.boot.Boot;
 import fr.utbm.ia51.graph.environment.GraphEnvironment;
 import fr.utbm.ia51.graph.human.GraphHuman;
@@ -32,7 +30,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
@@ -266,10 +263,10 @@ public class GUI extends Application {
 
             
             controlVBox.getChildren().addAll(coordVBox, vectVBox, viewfieldVBox, tooltipVBox, statButton);
-            
-            
-            
             root.getChildren().add(controlVBox);
+
+            
+            
             try {
             	
             	// Launch the Environment Agent 
@@ -305,6 +302,9 @@ public class GUI extends Application {
         Button statButton = new Button();
         statButton.setAlignment(Pos.CENTER);
         statButton.setText("Statistics");
+        
+        
+        
         statButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -346,11 +346,7 @@ public class GUI extends Application {
         });       
         
         
-        controlVBox.getChildren().addAll(coordVBox, vectVBox, viewfieldVBox, tooltipVBox, statButton);
-        
-        
-        
-        root.getChildren().add(controlVBox);
+
        
         primaryStage.setScene(scene);
         primaryStage.show();
