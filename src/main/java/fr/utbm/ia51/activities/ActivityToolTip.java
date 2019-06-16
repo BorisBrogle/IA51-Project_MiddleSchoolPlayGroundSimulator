@@ -1,11 +1,8 @@
 package fr.utbm.ia51.activities;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 public class ActivityToolTip extends StackPane{
 	
