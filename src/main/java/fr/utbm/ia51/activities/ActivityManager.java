@@ -37,7 +37,7 @@ public class ActivityManager {
 		} while(totalWeights <= rnd && activity < nbActivities-1);
 
 		raiseActivity(activities[activity]);
-		printActivitiesAndWeights(); //I let it print for the moment, you can comment it if you want
+//		printActivitiesAndWeights(); //I let it print for the moment, you can comment it if you want
 		return activities[activity];
 	}
 	
