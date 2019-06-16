@@ -44,7 +44,6 @@ public class GUI extends Application {
 	private CheckBox vectorCheckBox = new CheckBox();
 	private CheckBox viewfieldCheckBox = new CheckBox();
 	private CheckBox tooltipCheckBox = new CheckBox();
-	private Scene mainMenu;
 	
     public static void main(String[] args) {
         Application.launch(GUI.class, args);

@@ -9,21 +9,12 @@ import fr.utbm.ia51.graph.environment.EnvironmentEntity;
 import fr.utbm.ia51.graph.environment.GraphEnvironment;
 import fr.utbm.ia51.tools.Point2f;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
-import javafx.geometry.Point3D;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import sun.misc.GC;
 import tools.Arrow;
 
 /**

@@ -1,10 +1,7 @@
 package fr.utbm.ia51.graph.human;
 
 import fr.utbm.ia51.activities.ActivityType;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class GraphInformationWindow extends VBox{
