@@ -17,9 +17,9 @@ public class Globals {
 	public static final int START_POS_Y = 200;
 	public static long LOOP_DURATION = 100; // Duration between each steps, in milliseconds
 
-	public static int LOOP_COUNTER =0;
+	public static int LOOP_COUNTER = 0;
 	
-	public static long ACTIVITY_CHANGE_FREQUENCY = 3600; // All the agents will change activity every x seconds on average
+	public static long ACTIVITY_CHANGE_FREQUENCY = 150; // All the agents will change activity every x seconds on average
 	public static long IMMOBILITY_TIME = 5; // The agents will stay motionless for 5 seconds max on average
 	
 	public static long AGENT_RADIUS = 10; // Radius of the agents
