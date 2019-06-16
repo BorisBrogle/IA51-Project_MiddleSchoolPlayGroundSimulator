@@ -285,6 +285,73 @@ public class GUI extends Application {
          
                
 
+        
+        VBox viewfieldVBox = new VBox();
+        viewfieldVBox.setAlignment(Pos.CENTER);
+        viewfieldCheckBox.selectedProperty().addListener((obs,old,val)->{
+        	for(GraphHuman g : this.graphHumans) {
+        		if(val)
+        			g.getViewField().setVisible(true);
+        		else
+        			g.getViewField().setVisible(false);
+        	}
+        });
+        viewfieldCheckBox.setSelected(Globals.SHOW_VIEW_FIELD);
+        Label viewfieldLabel = new Label("Viewfield");
+        viewfieldLabel.setTextFill(Color.WHITE);
+        viewfieldVBox.getChildren().addAll(viewfieldLabel,viewfieldCheckBox);
+        
+        
+        Button statButton = new Button();
+        statButton.setAlignment(Pos.CENTER);
+        statButton.setText("Statistics");
+        statButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+ 
+                Label statTarget = new Label("Number of target set : " + Statistic.TOT_SET_TARGET + 
+                							"\nNumber of target reached : " + Statistic.TOT_REACHED_TARGET + 
+                							"\nPercentage reached : " + Statistic.statActivityReached() + "%" + 
+                							"\nTotal walked distance : " + Statistic.TOT_WALKED_DISTANCE/20 + "m ( " + Statistic.averageDistance() + "m per student in average)" +
+                							"\nTotal walking time : " + (float)Statistic.WALKING_TIME/1000 + "sec (" + Statistic.averageWalkingTimePerAct() + "sec per activity )" +
+                							"\nTotal activity time : " + (float)Statistic.ACTIVITY_TIME/1000 + "sec (" + Statistic.averageTimePerAct() + "sec per activity )" +
+                							"\nAverage speed : " + Statistic.averageSpeed() + "m/sec" +
+                							"\n\nPercentage Activity :\n" +
+                							"Tennis Table : " + Statistic.statTennisTableReached() + "% reached (" + Statistic.statTennisTablePart() + "%)\n" +
+                							"Soccer : " + Statistic.statSoccerReached() + "% reached (" + Statistic.statSoccerPart() + "%)\n" +
+                							"BasketBall : " + Statistic.statBasketReached() + "% reached (" + Statistic.statBasketPart() + "%)\n" +
+                							"Bench : " + Statistic.statBenchReached() + "% reached (" + Statistic.statBenchPart() + "%)\n" +
+                							"Library : " + Statistic.statLibraryReached() + "% reached (" + Statistic.statLibraryPart() + "%)\n" +
+                							"ClassLine : " + Statistic.statClassLineReached() + "% reached (" + Statistic.statClassLinePart() + "%)\n" +
+                							"Forest : " + Statistic.statForestReached() + "% reached (" + Statistic.statForestPart() + "%)\n" +
+                							"Toilet : " + Statistic.statToiletReached() + "% reached (" + Statistic.statToiletPart() + "%)\n"
+                							);
+                
+                StackPane statLayout = new StackPane();
+                statLayout.getChildren().addAll(statTarget);
+ 
+                Scene statScene = new Scene(statLayout, 400, 300);
+ 
+                // New window (Stage)
+                Stage newWindow = new Stage();
+                newWindow.setTitle("Statistics");
+                newWindow.setScene(statScene);
+ 
+                // Set position of second window, related to primary window.
+                newWindow.setX(primaryStage.getX() + 200);
+                newWindow.setY(primaryStage.getY() + 100);
+ 
+                newWindow.show();
+            }
+        });       
+        
+        
+        controlVBox.getChildren().addAll(coordVBox, vectVBox, viewfieldVBox, tooltipVBox, statButton);
+        
+        
+        
+        root.getChildren().add(controlVBox);
+       
         primaryStage.setScene(scene);
         primaryStage.show();
         
