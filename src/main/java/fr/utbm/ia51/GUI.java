@@ -91,7 +91,13 @@ public class GUI extends Application {
         //*******Part Dedicated to the launch configuration*******//
         
         Label nbAgentLabel = new Label("Choose number of Students to spawn : ");
-        Spinner<Integer> nbAgentSpinner = new Spinner<>(1, 50, 5);
+        Spinner<Integer> nbAgentSpinner = new Spinner<>(1,100, 5);
+        nbAgentSpinner.setEditable(true);
+        nbAgentSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        	  if (!newValue) {
+        		  nbAgentSpinner.increment(0); // won't change value, but will commit editor
+        	  }
+        	});
         Tooltip nbAgentTooltip = new Tooltip("According to your computer performances, crashes may occur if you put too much agents in the simulation. Try at your own risks");
         Tooltip.install(nbAgentSpinner, nbAgentTooltip);
         HBox nbAgentChooseHBox = new HBox(nbAgentLabel,nbAgentSpinner);
@@ -117,6 +123,7 @@ public class GUI extends Application {
             for(int i=0;i<Globals.NB_AGENTS;i++) {
             	GraphHuman g = new GraphHuman(Globals.START_POS_X, Globals.START_POS_Y, Globals.AGENT_RADIUS, null, environment);
             	root.getChildren().add(g);
+            	environment.getArtifacts().add(g);
             	this.graphHumans.add(g);
             }
             

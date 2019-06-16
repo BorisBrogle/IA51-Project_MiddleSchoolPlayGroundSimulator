@@ -132,7 +132,7 @@ public class GraphEnvironment extends StackPane {
 			if(s instanceof GraphHuman && !graphHuman.toString().equals(s.toString())) {
 				
 				if(graphHuman.getBoundsInParent().intersects(((GraphHuman)s).getMinX(),((GraphHuman)s).getMinY(),((GraphHuman)s).getEnvironmentEntityWidth(),((GraphHuman)s).getEnvironmentEntityHeight())) {
-//					System.out.println("Cas GraphHuman "+graphHuman.getUuid()+" GraphHumanBounds"+graphHuman.getBoundsInParent().toString()+" perceived.getMinX "+s.getMinX()+"perceived.getMinY"+s.getMinY());
+//				System.out.println("Cas GraphHuman "+graphHuman.getUuid()+" GraphHumanBounds"+graphHuman.getBoundsInParent().toString()+" perceived.getMinX "+s.getMinX()+"perceived.getMinY"+s.getMinY());
 //					System.out.println("Cas GraphHuman "+graphHuman.getBoundsInParent()+ "Detected Graphhuman" + s.getBoundsInParent());
 
 					intersectArtifacts.add(s);

@@ -134,7 +134,16 @@ public class GraphHuman extends EnvironmentEntity {
 	public void moveTo(double x, double y, double speed) {
 		try {
 			//Let time to the GUI for refreshing
-			Thread.sleep(2+Globals.NB_AGENTS);
+			if(Globals.NB_AGENTS>50) {
+				Thread.sleep((long) 0.2);
+				
+			}else
+			if(Globals.NB_AGENTS>20) {
+				Thread.sleep(1);
+			}else {
+				Thread.sleep(5%Globals.NB_AGENTS);
+			}
+//			Thread.sleep(2+Globals.NB_AGENTS/);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -143,7 +152,6 @@ public class GraphHuman extends EnvironmentEntity {
 			this.setTranslateY(y-this.viewField.getHeight()/2);
 			this.coordinatesLabel.setText("x="+(int)this.getTranslateX()+"y="+(int)this.getTranslateY());
 		});
-		
 		
 		
 		
