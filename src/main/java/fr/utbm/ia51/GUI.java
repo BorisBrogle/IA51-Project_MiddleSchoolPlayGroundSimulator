@@ -178,28 +178,31 @@ public class GUI extends Application {
             @Override
             public void handle(ActionEvent event) {
  
-                Label statTarget = new Label("Number of target set : " + Statistic.TOT_SET_TARGET + 
-                							"\nNumber of target reached : " + Statistic.TOT_REACHED_TARGET + 
+                Label statTarget = new Label("Number of students : " + Globals.NB_AGENTS +
+                							"\nNumber of target set : " + Statistic.TOT_SET_TARGET + 
+                							"\nNumber of target reached : " + Statistic.TOT_REACHED_TARGET +
                 							"\nPercentage reached : " + Statistic.statActivityReached() + "%" + 
-                							"\nTotal walked distance : " + Statistic.TOT_WALKED_DISTANCE/20 + "m ( " + Statistic.averageDistance() + "m per student in average)" +
+                							
+                							"\n\nTotal walked distance : " + Statistic.TOT_WALKED_DISTANCE/20 + "m ( " + Statistic.averageDistance() + "m per student in average)" +
                 							"\nTotal walking time : " + (float)Statistic.WALKING_TIME/1000 + "sec (" + Statistic.averageWalkingTimePerAct() + "sec per activity )" +
                 							"\nTotal activity time : " + (float)Statistic.ACTIVITY_TIME/1000 + "sec (" + Statistic.averageTimePerAct() + "sec per activity )" +
                 							"\nAverage speed : " + Statistic.averageSpeed() + "m/sec" +
+                							
                 							"\n\nPercentage Activity :\n" +
-                							"Tennis Table : " + Statistic.statTennisTableReached() + "% reached (" + Statistic.statTennisTablePart() + "%)\n" +
-                							"Soccer : " + Statistic.statSoccerReached() + "% reached (" + Statistic.statSoccerPart() + "%)\n" +
-                							"BasketBall : " + Statistic.statBasketReached() + "% reached (" + Statistic.statBasketPart() + "%)\n" +
-                							"Bench : " + Statistic.statBenchReached() + "% reached (" + Statistic.statBenchPart() + "%)\n" +
-                							"Library : " + Statistic.statLibraryReached() + "% reached (" + Statistic.statLibraryPart() + "%)\n" +
-                							"ClassLine : " + Statistic.statClassLineReached() + "% reached (" + Statistic.statClassLinePart() + "%)\n" +
-                							"Forest : " + Statistic.statForestReached() + "% reached (" + Statistic.statForestPart() + "%)\n" +
-                							"Toilet : " + Statistic.statToiletReached() + "% reached (" + Statistic.statToiletPart() + "%)\n"
+                							"Tennis Table : " + Statistic.statTennisTableReached() + "% reached (" + Statistic.statTennisTablePart() + "% of all activities)\n" +
+                							"Soccer : " + Statistic.statSoccerReached() + "% reached (" + Statistic.statSoccerPart() + "% of all activities)\n" +
+                							"BasketBall : " + Statistic.statBasketReached() + "% reached (" + Statistic.statBasketPart() + "% of all activities)\n" +
+                							"Bench : " + Statistic.statBenchReached() + "% reached (" + Statistic.statBenchPart() + "% of all activities)\n" +
+                							"Library : " + Statistic.statLibraryReached() + "% reached (" + Statistic.statLibraryPart() + "% of all activities)\n" +
+                							"ClassLine : " + Statistic.statClassLineReached() + "% reached (" + Statistic.statClassLinePart() + "% of all activities)\n" +
+                							"Forest : " + Statistic.statForestReached() + "% reached (" + Statistic.statForestPart() + "% of all activities)\n" +
+                							"Toilet : " + Statistic.statToiletReached() + "% reached (" + Statistic.statToiletPart() + "% of all activities)\n"
                 							);
                 
                 StackPane statLayout = new StackPane();
                 statLayout.getChildren().addAll(statTarget);
  
-                Scene statScene = new Scene(statLayout, 400, 300);
+                Scene statScene = new Scene(statLayout, 400, 380);
  
                 // New window (Stage)
                 Stage newWindow = new Stage();

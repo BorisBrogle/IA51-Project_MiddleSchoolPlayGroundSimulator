@@ -31,28 +31,6 @@ public class Statistic {
 	public static long WALKING_TIME = 0;
 	public static long ACTIVITY_TIME = 0;
 	
-	//STAT FOR EACH ACTIVITIES
-	public static int NB_SET_BASKETBALL = 0;
-	public static int NB_REACHED_BASKETBALL = 0;
-	public static int NB_SET_TENNISTABLE = 0;
-	public static int NB_REACHED_TENNISTABLE = 0;
-	public static int NB_SET_SOCCER = 0;
-	public static int NB_REACHED_SOCCER = 0;
-	public static int NB_SET_BENCH = 0;
-	public static int NB_REACHED_BENCH = 0;
-	public static int NB_SET_LIBRARY = 0;
-	public static int NB_REACHED_LIBRARY = 0;
-	public static int NB_SET_CLASSLINE = 0;
-	public static int NB_REACHED_CLASSLINE = 0;
-	public static int NB_SET_FOREST = 0;
-	public static int NB_REACHED_FOREST = 0;
-	public static int NB_SET_TOILET = 0;
-	public static int NB_REACHED_TOILET = 0;
-	
-	public static float TOT_WALKED_DISTANCE = 0;
-	
-	public static long WALKING_TIME = 0;
-	public static long ACTIVITY_TIME = 0;
 	
 	public Statistic() {
 
