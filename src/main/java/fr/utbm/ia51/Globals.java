@@ -27,9 +27,9 @@ public class Globals {
 	public static boolean SHUT_DOWN_SIGNAL = false; // Will be set to true when the GUI is closed, kills all the agents
 	
 	public static boolean SHOW_FORCE_VECTOR = false; // If we should show the force vector of the agents
-	public static boolean SHOW_VIEW_FIELD = true; // If we should show the view field of the agents
-	public static boolean SHOW_AGENTS_COORDINATES = true; // If we should show the x;y coordinates of the agents
-	public static boolean SHOW_ACTIVITY_TOOLTIP = false; // If we should show the activities of the agents
+	public static boolean SHOW_VIEW_FIELD = false; // If we should show the view field of the agents
+	public static boolean SHOW_AGENTS_COORDINATES = false; // If we should show the x;y coordinates of the agents
+	public static boolean SHOW_ACTIVITY_TOOLTIP = true; // If we should show the activities of the agents
 	
 
 	public static void initGenerator(long seed) {
