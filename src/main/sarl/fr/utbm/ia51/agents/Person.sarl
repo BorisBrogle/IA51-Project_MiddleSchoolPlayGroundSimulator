@@ -323,12 +323,16 @@ agent Person {
 	
 	// This function make the agent change his activity with a low chance
 	def updateActivity() {
-		var timePassed = this.activityChrono.getTime()
-		var randomValue = Globals::randomGenerator.getRandom(0, Globals::ACTIVITY_CHANGE_FREQUENCY*1000)
-		if(timePassed > randomValue) {
-			this.activity = activityManager.chooseActivity
+		synchronized (this) {
+			if (this.activityType != ActivityType.CLASSLINE) { // The person cannot change his activity if he's waiting in the classline
+				var timePassed = this.activityChrono.getTime()
+				var randomValue = Globals::randomGenerator.getRandom(0, Globals::ACTIVITY_CHANGE_FREQUENCY * 1000)
+				if (timePassed > randomValue) {
+					this.activity = activityManager.chooseActivity
+				}
+			}
+			this.activityChrono.reset()
 		}
-		this.activityChrono.reset()
 	}
 
 	on ShutDown {
